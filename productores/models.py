@@ -11,14 +11,14 @@ class Organizacion(models.Model):
     nombre = models.CharField(max_length = 200)
     tipo = models.ForeignKey(TipoOrganizacion)
 
-SI_NO_CHOICES = ((1,'Si'),(0,'No'))
+SI_NO_CHOICES = ((1,'Si'),(2,'No'))
 
 class Productor(models.Model):
     nombre = models.CharField(max_length = 200,verbose_name = 'Nombre y apellido')
-    fecha_naciemiento = models.DateField()
+    fecha_naciemiento = models.DateField(verbose_name = 'Fecha de nacimiento')
     organizacion = models.ForeignKey(Organizacion,verbose_name = 'Organización a la que pertenece')
     anios_vinculacion =  models.FloatField(verbose_name = 'Años de vinculación')
-    dueno_propiedad = models.IntegerField(choices = SI_NO_CHOICES)
+    dueno_propiedad = models.IntegerField(choices = SI_NO_CHOICES,verbose_name = '¿Es dueño de la propiedad/finca?')
     latitud = models.FloatField()
     longitud = models.FloatField()
 
@@ -29,6 +29,10 @@ class DuenoSi(models.Model):
     productor = models.ForeignKey(Productor)
     si = models.IntegerField(choices = DUENO_SI_CHOICES)
 
+    class Meta:
+        verbose_name = 'En el caso SI, indique a nombre de quien está'
+        verbose_name_plural = 'En el caso SI, indique a nombre de quien está'
+
 DUENO_NO_CHOICES = ((1,'Arrendada'),(2,'Tierra Ind/comunal'),
                     (3,'Promesa de venta'),(4,'Sin escritura'),
                     (5,'Prestada'),(6,'Colectivo/Cooperativa'))
@@ -36,3 +40,7 @@ DUENO_NO_CHOICES = ((1,'Arrendada'),(2,'Tierra Ind/comunal'),
 class DuenoNo(models.Model):
     productor = models.ForeignKey(Productor)
     no = models.IntegerField(choices = DUENO_NO_CHOICES)
+
+    class Meta:
+        verbose_name = 'En el caso que diga NO, especifique la situación'
+        verbose_name_plural = 'En el caso que diga NO, especifique la situación'
