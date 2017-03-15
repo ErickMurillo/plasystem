@@ -22,6 +22,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'productores',
+    'organizaciones',
+    'lugar',
+    'smart_selects',
+    'multiselectfield',
 ]
 
 MIDDLEWARE = [

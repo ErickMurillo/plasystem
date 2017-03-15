@@ -1,7 +1,7 @@
 (function($){
 	$(document).ready( function()
 	{
-    valor = $('#id_dueno_propiedad').val();
+    valor = $('.field-respuesta select').val();
     if (valor == 1) {
       $('#duenosi_set-group').show();
       $('#duenono_set-group').hide();
@@ -13,8 +13,8 @@
       $('#duenono_set-group').hide();
     }
 
-    $('#id_dueno_propiedad').change(function(){
-      valor = $('#id_dueno_propiedad').val();
+    $('.field-respuesta select').change(function(){
+      valor = $('.field-respuesta select').val();
       if (valor == 1) {
         $('#duenosi_set-group').show();
         $('#duenono_set-group').hide();
