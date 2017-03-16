@@ -2,10 +2,10 @@
 	$(document).ready( function()
 	{
     valor = $('.field-respuesta select').val();
-    if (valor == 1) {
+    if (valor == 'Si') {
       $('#duenosi_set-group').show();
       $('#duenono_set-group').hide();
-    } else if (valor == 2) {
+    } else if (valor == 'No') {
       $('#duenosi_set-group').hide();
       $('#duenono_set-group').show();
     } else {
@@ -15,7 +15,7 @@
 
     $('.field-respuesta select').change(function(){
       valor = $('.field-respuesta select').val();
-      if (valor == 1) {
+      if (valor == 'Si') {
         $('#duenosi_set-group').show();
         $('#duenono_set-group').hide();
       } else {

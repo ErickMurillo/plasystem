@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import *
+from nested_admin import NestedStackedInline,NestedTabularInline,NestedModelAdmin
 
 # Register your models here.
 class MiembrosFamilia_Inline(admin.TabularInline):
@@ -31,43 +32,88 @@ class ProductorAdmin(admin.ModelAdmin):
 
 admin.site.register(Productor,ProductorAdmin)
 
-class AreaFinca_Inline(admin.TabularInline):
+class AreaFinca_Inline(NestedTabularInline):
     model = AreaFinca
     can_delete = False
     max_num = 1
 
-class DistribucionFinca_Inline(admin.TabularInline):
+class DistribucionFinca_Inline(NestedTabularInline):
     model = DistribucionFinca
     max_num = 7
     extra = 1
 
-class Certificacion_Inline(admin.TabularInline):
+class Certificacion_Inline(NestedTabularInline):
     model = Certificacion
     can_delete = False
     max_num = 1
 
-class TipoCertificacion_Inline(admin.TabularInline):
+class TipoCertificacion_Inline(NestedTabularInline):
     model = TipoCertificacion
     can_delete = False
     max_num = 1
 
-class CertificadoEmpresa_Inline(admin.TabularInline):
+class CertificadoEmpresa_Inline(NestedTabularInline):
     model = CertificadoEmpresa
     can_delete = False
     max_num = 1
 
-class BPA_Inline(admin.TabularInline):
+class BPA_Inline(NestedTabularInline):
     model = BPA
     can_delete = False
     max_num = 1
 
-class Produccion_Inline(admin.TabularInline):
+class Produccion_Inline(NestedTabularInline):
     model = Produccion
     extra = 1
 
-class EncuestaAdmin(admin.ModelAdmin):
+class Mercado_Inline(NestedTabularInline):
+    model = Mercado
+    extra = 1
+
+class DestinoProduccion_Inline(NestedStackedInline):
+    model = DestinoProduccion
+    extra = 1
+    inlines = [Mercado_Inline]
+
+class IngresosOtrosCultivos_Inline(NestedTabularInline):
+    model = IngresosOtrosCultivos
+    extra = 1
+
+class IngresosFamilia_Inline(NestedTabularInline):
+    model = IngresosFamilia
+    can_delete = False
+    max_num = 1
+
+class FuenteIngresos_Inline(NestedTabularInline):
+    model = FuenteIngresos
+    extra = 1
+
+class IngresosActividadesGanaderia_Inline(NestedTabularInline):
+    model = IngresosActividadesGanaderia
+    extra = 1
+    max_num = 3
+
+class CondicionesRiegos_Inline(NestedTabularInline):
+    model = CondicionesRiegos
+    can_delete = False
+    max_num = 1
+
+class ConservacionSuelo_Inline(NestedStackedInline):
+    model = ConservacionSuelo
+    can_delete = False
+    max_num = 1
+
+class UsoEficienteAgua_Inline(NestedStackedInline):
+    model = UsoEficienteAgua
+    can_delete = False
+    max_num = 1
+
+class EncuestaAdmin(NestedModelAdmin):
     inlines = [AreaFinca_Inline,DistribucionFinca_Inline,Certificacion_Inline,TipoCertificacion_Inline,
-                CertificadoEmpresa_Inline,BPA_Inline,Produccion_Inline]
+                CertificadoEmpresa_Inline,BPA_Inline,Produccion_Inline,DestinoProduccion_Inline,
+                IngresosOtrosCultivos_Inline,IngresosFamilia_Inline,FuenteIngresos_Inline,
+                IngresosActividadesGanaderia_Inline,CondicionesRiegos_Inline,ConservacionSuelo_Inline,
+                UsoEficienteAgua_Inline]
 
     class Media:
 		js = ('js/encuesta-admin.js',)
@@ -79,3 +125,4 @@ admin.site.register(EmpresaCertifica)
 admin.site.register(EliminacionFocos)
 admin.site.register(ProteccionFuentes)
 admin.site.register(Cultivo)
+admin.site.register(TipoSistemaRiego)

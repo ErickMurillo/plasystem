@@ -15,6 +15,7 @@ from local_settings import *
 # Application definition
 
 INSTALLED_APPS = [
+    'flat_responsive',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -26,6 +27,7 @@ INSTALLED_APPS = [
     'lugar',
     'smart_selects',
     'multiselectfield',
+    'nested_admin',
 ]
 
 MIDDLEWARE = [
