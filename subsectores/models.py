@@ -93,3 +93,4 @@ class UmbrelaDesempeno(models.Model):
         verbose_name = 'Umbrela de desempeño'
         verbose_name_plural = 'Umbrelas de desempeños'
 
+
