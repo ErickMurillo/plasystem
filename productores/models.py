@@ -480,7 +480,7 @@ TIERRAS_AGRICOLAS = ((1,'Utilización de las tierras agrícolas está en su ópt
                     (4,'Tierras de cultivo no es apta para la agricultura')
                     )
 
-ESPECIES_INVASORAS
+ESPECIES_INVASORAS = ((1,'algo'),)
 
 class PaisajeSostenible(models.Model):
     encuesta = models.ForeignKey(Encuesta)

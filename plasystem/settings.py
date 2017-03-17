@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'productores',
     'organizaciones',
+    'subsectores',
     'lugar',
     'smart_selects',
     'multiselectfield',
