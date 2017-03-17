@@ -108,12 +108,28 @@ class UsoEficienteAgua_Inline(NestedStackedInline):
     can_delete = False
     max_num = 1
 
+class GestionRecursosNaturales_Inline(NestedStackedInline):
+    model = GestionRecursosNaturales
+    can_delete = False
+    max_num = 1
+
+class CambioClimatico_Inline(NestedStackedInline):
+    model = CambioClimatico
+    can_delete = False
+    max_num = 1
+
+class Biodiversidad_Inline(NestedStackedInline):
+    model = Biodiversidad
+    can_delete = False
+    max_num = 1
+
 class EncuestaAdmin(NestedModelAdmin):
     inlines = [AreaFinca_Inline,DistribucionFinca_Inline,Certificacion_Inline,TipoCertificacion_Inline,
                 CertificadoEmpresa_Inline,BPA_Inline,Produccion_Inline,DestinoProduccion_Inline,
                 IngresosOtrosCultivos_Inline,IngresosFamilia_Inline,FuenteIngresos_Inline,
                 IngresosActividadesGanaderia_Inline,CondicionesRiegos_Inline,ConservacionSuelo_Inline,
-                UsoEficienteAgua_Inline]
+                UsoEficienteAgua_Inline,GestionRecursosNaturales_Inline,CambioClimatico_Inline,
+                Biodiversidad_Inline]
 
     class Media:
 		js = ('js/encuesta-admin.js',)

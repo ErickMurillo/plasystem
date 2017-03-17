@@ -378,11 +378,29 @@ BALANCE_CHOICES = ((1,'Balance de N y P en la granja se mantiene'),
                     (3,'N y P gravemente desequilibrado, pero tomar contramedidas')
                     )
 
-RESIDUOS_CHOICES = ((1,'Agricultura orgánica sin dejar residuos, tales como contenedores de nocivos en el medio ambiente'),
+RESIDUOS_CHOICES = ((1,'Todos los pasos identificados han sido adoptados. No hay signos de botar o derrame'),
+                    (2,'La gestión de los residuos en el lugar con medidas tomadas para mejorar aún más'),
+                    (3,'Sin la gestión de los residuos , pero las medidas adoptadas'),
+                    (4,'La gestión de residuos y sin ningún tipo de medidas')
+                    )
+
+ENVASES_CHOICES = ((1,'Agricultura orgánica sin dejar residuos, tales como contenedores de nocivos en el medio ambiente'),
                     (2,'Aplicación de un sistema para recoger, devolver o la eliminación segura de los envases de agroquímicos'),
                     (3,'Sin gestión de residuos agroquímicos, pero las medidas adoptadas'),
                     (4,'Sin gestión de residuos de agroquímicos y sin medidas')
                     )
+
+PESTICIDA_CHOICES = ((1,'No se utilizan plaguicidas sintéticos'),
+                    (2,'Se aplican los plaguicidas de baja toxicidad y minimizada en consonancia con las Buenas Prácticas Agrícolas (GAP) y el "2017 SAN'),
+                    (3,'Gobierno nacional aprobó los plaguicidas se aplican según sus instrucciones de seguridad'),
+                    (4,'Alta toxicidad o pesticidas ilegales son utilizados en forma no segura')
+                    )
+
+MIP_CHOICES = ((1,'MIP es la estrategia para el control de plagas'),
+                (2,'MIP está parcialmente aplicada y control químico se combina con al menos dos métodos más'),
+                (3,'MIP no se aplica todavía, pero el control químico es combinada con al menos un método más (biológicas, fisicas)'),
+                (4,'El control de plagas se basa principalmente en el control químico (pesticidas sintéticos)')
+                )
 
 class GestionRecursosNaturales(models.Model):
     encuesta = models.ForeignKey(Encuesta)
@@ -392,3 +410,84 @@ class GestionRecursosNaturales(models.Model):
     balance = models.IntegerField(choices = BALANCE_CHOICES,verbose_name = '21.4 Balance de nitrógeno y fósforo')
     gestion_residuos = models.IntegerField(choices = RESIDUOS_CHOICES,verbose_name = '21.5 Gestión de los residuos de la producción para procesar')
     gestion_envases = models.IntegerField(choices = ENVASES_CHOICES,verbose_name = '21.6 Gestión de envases vacíos de agroquímicos y productos agroquímicos sobrantes')
+    uso_pesticida = models.IntegerField(choices = PESTICIDA_CHOICES,verbose_name = '21.7 Uso de pesticida')
+    mip = models.IntegerField(choices = MIP_CHOICES,verbose_name = '21.8 MIP/MPN (Manejo integrado y gestión de plagas naturales)')
+
+    class Meta:
+        verbose_name_plural = '21. Gestión de recursos naturales'
+
+EMISIONES_CARBONO = ((1,'Cero quema de materia orgánica en las granjas'),
+                    (2,'Evidencia de baja emisión de carbono y se toman medidas'),
+                    (3,'Altas y bajas emisiones de carbono, pero se han tomado medidas para mejorar'),
+                    (4,'Alta y baja emisión de carbono sin que se tomen medidas')
+                    )
+
+PROCESAMIENTO_TRANSPORTE = ((1,'Productos transformados llegar al mercado con una óptima eficiencia de combustible'),
+                            (2,'Los productos alcanzan el mercado estimado con alta eficiencia de combustible'),
+                            (3,'Los productos llegan con baja eficiencia de uso de combustible pero adoptan medidas'),
+                            (4,'Los productos llegan baja eficiencia de uso combustible (por vía aérea, ...) y no adoptan medidas')
+                            )
+
+class CambioClimatico(models.Model):
+    encuesta = models.ForeignKey(Encuesta)
+    emision_carbono = models.IntegerField(choices = EMISIONES_CARBONO,verbose_name = '22.1 El carbono y el óxido nitroso (N2O): emisión de carbono +')
+    procesamiento_transporte = models.IntegerField(choices = PROCESAMIENTO_TRANSPORTE,verbose_name = '22.2 Emisiones de Carbono: durante el procesamiento y transporte')
+
+    class Meta:
+        verbose_name_plural = '22. Cambio Climático'
+
+DIVERSIDAD_VEGETAL = ((1,'La diversidad de especies vegetales está a un nivel óptimo'),
+                        (2,'La diversidad vegetal debajo de una óptima con las medidas adoptadas'),
+                        (3,'La diversidad de las especies vegetales a continuación óptima pero se toman medidas'),
+                        (4,'Planta baja diversidad y ninguna de las medidas adoptadas')
+                        )
+
+DIVERSIDAD_GENETICA = ((1,'Sin el uso de Organismos genéticamente modificados / Transgénicos. La diversidad genética está aumentando'),
+                        (2,'Sin el uso de Organismos genéticamente modificados / Transgénicos. La diversidad genética en la granja se mantiene y se adopten medidas para incrementar la diversidad'),
+                        (3,'Se toman medidas para reducir el uso de los Organismos genéticamente modificados / Transgénicos. La diversidad genética en las explotaciones agrícolas está disminuyendo, pero se han tomado medidas'),
+                        (4,'Uso intencional de Organismos genéticamente modificados / Transgénicos. No se adoptan medidas para aumentar la diversidad genética')
+                        )
+USO_TIERRA = ((1,'Ninguna destrucción de ecosistemas de gran valor desde 2014 y la conversión de ecosistemas naturales desde 2015'),
+                (2,'No hay ninguna conversión de ecosistemas naturales desde 2015 y la compensación de las medidas adoptadas para la conversión anterior'),
+                (3,'No hay ninguna conversión de ecosistemas naturales desde 2015 y sin compensación de las medidas adoptadas'),
+                (4,'Conversión de ecosistemas naturales desde 2015')
+                )
+
+class Biodiversidad(models.Model):
+    encuesta = models.ForeignKey(Encuesta)
+    diversidad_vegetal = models.IntegerField(choices = DIVERSIDAD_VEGETAL,verbose_name = '23.1 Diversidad vegetal')
+    diversidad_genetica = models.IntegerField(choices = DIVERSIDAD_GENETICA,verbose_name = '23.2 Diversidad genética')
+    uso_tierra = models.IntegerField(choices = USO_TIERRA,verbose_name = '23.3 El uso de la tierra y la conversión de la tierra')
+
+    class Meta:
+        verbose_name_plural = '23. Biodiversidad'
+
+SALVAGUARDAR_ECOSISTEMAS = ((1,'Los ecosistemas naturales y sus valores de conectividad están aumentando'),
+                            (2,'Los ecosistemas naturales están bien documentados y mantenidos. Las medidas adoptadas para mejorar el ecosistema de valores'),
+                            (3,'Los ecosistemas naturales son mantenidas, pero ninguna de las medidas adoptadas para mejorar el ecosistema de valores'),
+                            (4,'Los ecosistemas naturales y sus valores están disminuyendo. Ninguna de las medidas adoptadas para mejorar el ecosistema de valores')
+                            )
+
+VIDA_SILVESTRE = ((1,'No hay caza de animales silvestres'),
+                    (2,'Caza legal sostenible a tarifa regulada'),
+                    (3,'Caza legal pero no reglamentada'),
+                    (4,'La caza ilegal o la caza en el ritmo insostenible')
+                    )
+
+TIERRAS_AGRICOLAS = ((1,'Utilización de las tierras agrícolas está en su óptimo definido localmente'),
+                    (2,'Utilización de tierras agrícolas está por debajo de su óptimo definido localmente con las medidas adoptadas'),
+                    (3,'Utilización de tierras agrícolas está por debajo de su óptimo definido localmente sin las medidas adoptadas'),
+                    (4,'Tierras de cultivo no es apta para la agricultura')
+                    )
+
+ESPECIES_INVASORAS
+
+class PaisajeSostenible(models.Model):
+    encuesta = models.ForeignKey(Encuesta)
+    salvaguardar_ecosistemas = models.IntegerField(choices = SALVAGUARDAR_ECOSISTEMAS,verbose_name = '24.1 Salvaguardar los ecosistemas naturales + conectividad')
+    proteccion_vida_silvestre = models.IntegerField(choices = VIDA_SILVESTRE,verbose_name = '24.2 Protección de la vida silvestre')
+    tierras_agricolas = models.IntegerField(choices = TIERRAS_AGRICOLAS,verbose_name = '24.3 Uso óptimo de las tierras agrícolas')
+    especies_invasoras = models.IntegerField(choices = ESPECIES_INVASORAS,verbose_name = '24.4 Especies invasoras')
+
+    class Meta:
+        verbose_name_plural = '24. Paisaje sostenible'
