@@ -14,7 +14,7 @@ SEXO_CHOICES = (('Mujer','Mujer'),('Hombre','Hombre'))
 class Productor(models.Model):
     nombre = models.CharField(max_length = 200,verbose_name = '1. Nombre y apellido')
     fecha_naciemiento = models.DateField(verbose_name = '2. Fecha de nacimiento')
-    sexo = models.CharField(max_length = 5,choices = SEXO_CHOICES,verbose_name = '3. Sexo')
+    sexo = models.CharField(max_length = 6,choices = SEXO_CHOICES,verbose_name = '3. Sexo')
     organizacion = models.ForeignKey(Organizacion,verbose_name = '4. Organización a la que pertenece')
     anios_vinculacion =  models.FloatField(verbose_name = '6. Años de vinculación')
     pais = models.ForeignKey(Pais)
@@ -22,6 +22,13 @@ class Productor(models.Model):
     municipio = ChainedForeignKey(Municipio,chained_field="departamento",chained_model_field="departamento")
     latitud = models.FloatField()
     longitud = models.FloatField()
+
+    class Meta:
+        verbose_name = 'Productor'
+        verbose_name_plural = 'Productores'
+
+    def __str__(self):
+		return self.nombre
 
 FAMILIA_CHOICES = (('Hombres > 31 años','Hombres > 31 años'),('Mujeres > 31 años','Mujeres > 31 años'),('Ancianos > 64 años','Ancianos > 64 años'),
                     ('Ancianas > 64 años','Ancianas > 64 años'),('Mujer joven de 19 a 30 años','Mujer joven de 19 a 30 años'),('Hombre joven de 19 a 30 años','Hombre joven de 19 a 30 años'),
@@ -72,7 +79,15 @@ class DuenoNo(models.Model):
 class Encuestador(models.Model):
     nombre = models.CharField(max_length = 250)
 
+    class Meta:
+        verbose_name = 'Encuestador'
+        verbose_name_plural = 'Encuestadores'
+
+    def __str__(self):
+		return self.nombre
+
 GRUPO_CHOICES = (('Grupo de intervención','Grupo de intervención'),('Grupo de control','Grupo de control'))
+
 class Encuesta(models.Model):
     grupo = models.CharField(max_length = 50,choices = GRUPO_CHOICES)
     encuestador = models.ForeignKey(Encuestador)
@@ -480,7 +495,11 @@ TIERRAS_AGRICOLAS = ((1,'Utilización de las tierras agrícolas está en su ópt
                     (4,'Tierras de cultivo no es apta para la agricultura')
                     )
 
-ESPECIES_INVASORAS = ((1,'algo'),)
+ESPECIES_INVASORAS = ((1,'No existen especies invasoras'),
+                    (2,'Sí hay especies invasoras, los agricultores adoptar contramedidas para reprimirlos'),
+                    (3,'Los agricultores no son conscientes de los riesgos de las especies invasoras'),
+                    (4,'Los agricultores son conscientes de especies invasoras, pero sin tomar medidas para suprimir la proliferación de especies invasoras')
+                    )
 
 class PaisajeSostenible(models.Model):
     encuesta = models.ForeignKey(Encuesta)
@@ -491,3 +510,61 @@ class PaisajeSostenible(models.Model):
 
     class Meta:
         verbose_name_plural = '24. Paisaje sostenible'
+
+CULTIVOS_MIP = (('Cacao','Cacao'),('Café','Café'),('Hortalizas','Hortalizas'))
+
+MATERIAL_CHOICES = ((1,'Material de siembra de buena calidad(libre de plagas y enfermedades)'),
+                    (2,'Uso de variedades tolerantes,variedades mejoradas o criolla seleccionada'),
+                    (3,'Uso de plántulas de calidad (Libre de plagas y enfermedades, vigorosas)'))
+
+PREPARACION_TERRENO = ((1,'Acciones correctivas al suelo (Incorporación de cal o materia orgánica)'),
+                        (2,'Preparación del terreno al menos 21 días antes de la siembra'),
+                        (3,'Siembra con curvas a nivel o desnivel en terrenos con pendiente'),
+                        (4,'Barreras vivas (Establecer Las 15-20 días antes de siembra o transplante)'),
+                        (5,'Siembra en camas altas (mejor crecimiento radicular, absorción)'))
+
+CONTROL_MALEZAS = ((1,'Control o pre germinación de malezas (15 días antes de la siembra o transplante)'),
+                    (2,'Manejo de rondas'))
+
+FERTILIZACION_ADECUADA = ((1,'Plan de fertilización según la demanda del cultivo'),
+                            (2,'Uso de Solución Arrancadora'),
+                            (3,'Fertilización diluida'))
+
+DENSIDAD_SOMBRA = ((1,'Distanciamiento de planta adecuado'),
+                    (2,'Densidad de planta adecuada'))
+
+PLAGAS_ENFERMEDADES = ((1,'Muestreo de plagas de suelo al momento de la preparación del terreno'),
+                        (2,'Control adecuado de plagas del suelo'),
+                        (3,'Uso de insecticidas sistémicos como preventivo'),
+                        (4,'Uso de Agribon en cultivos que lo ameriten'),
+                        (5,'Uso de Trampas amarillas o pegajosas'),
+                        (6,'Eliminación de plantas enfermas'),
+                        (7,'Poda sanitaria en cultivos que así lo ameriten'),
+                        (8,'Trampas olorosas'),
+                        (9,'Uso de ácido salicílico o fosfonatos de potasio (Estimuladores de las defensas de la planta)'),
+                        (10,'Eliminación de fruto dañado (gusanos, picudo)'),
+                        (11,'Desinfección de estacas y mecates de amarres, si son reutilizados. En cultivos que necesiten tutoreo'),
+                        (12,'Muestreo de plagas y enfermedades (AAE)'),
+                        (13,'Uso de plástico de cobertura en cultivos que lo amerite'),
+                        (14,'Control manual de plagas (larvas o huevos)'),
+                        (15,'Utilización de equipos de protección para aplicación de plaguicidas'),
+                        (16,'Utilización de productos coadyugantes (adherente, dispersables, penetrantes)'),
+                        (17,'Calibración del equipo de aplicación'),
+                        (18,'Utilización de productos biológicos'),
+                        (19,'Eliminación inmediata de rastrojo'),
+                        (20,'Rotación de cultivo'),
+                        (21,'Regulación de pH de agua para la aplicación de plaguicidas, con un rango de pH de 5.5-7'),
+                        )
+
+class PracticasMIP(models.Model):
+    encuesta = models.ForeignKey(Encuesta)
+    cultivo = models.CharField(max_length = 50,choices = CULTIVOS_MIP)
+    material_siembra_sano = MultiSelectField(choices = MATERIAL_CHOICES,verbose_name = 'Material de siembra sano')
+    preparacion_terreno = MultiSelectField(choices = PREPARACION_TERRENO,verbose_name = 'Preparación del Terreno')
+    control_malezas = MultiSelectField(choices = CONTROL_MALEZAS,verbose_name = 'Control de malezas')
+    fertilizacion_adecuada = MultiSelectField(choices = FERTILIZACION_ADECUADA,verbose_name = 'Fertilización Adecuada')
+    densidad_siembra = MultiSelectField(choices = DENSIDAD_SOMBRA,verbose_name = 'Densidad de siembra correcta')
+    control_plagas_enfermedades = MultiSelectField(choices = PLAGAS_ENFERMEDADES,verbose_name = 'Control de plagas y enfermedades')
+
+    class Meta:
+        verbose_name_plural = 'VII. Prácticas MIP en la propiedad/finca'

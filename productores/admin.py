@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib import admin
 
 from .models import *
@@ -123,13 +124,23 @@ class Biodiversidad_Inline(NestedStackedInline):
     can_delete = False
     max_num = 1
 
+class PaisajeSostenible_Inline(NestedStackedInline):
+    model = PaisajeSostenible
+    can_delete = False
+    max_num = 1
+
+class PracticasMIP_Inline(NestedStackedInline):
+    model = PracticasMIP
+    can_delete = False
+    max_num = 1
+
 class EncuestaAdmin(NestedModelAdmin):
     inlines = [AreaFinca_Inline,DistribucionFinca_Inline,Certificacion_Inline,TipoCertificacion_Inline,
                 CertificadoEmpresa_Inline,BPA_Inline,Produccion_Inline,DestinoProduccion_Inline,
                 IngresosOtrosCultivos_Inline,IngresosFamilia_Inline,FuenteIngresos_Inline,
                 IngresosActividadesGanaderia_Inline,CondicionesRiegos_Inline,ConservacionSuelo_Inline,
                 UsoEficienteAgua_Inline,GestionRecursosNaturales_Inline,CambioClimatico_Inline,
-                Biodiversidad_Inline]
+                Biodiversidad_Inline,PaisajeSostenible_Inline,PracticasMIP_Inline]
 
     class Media:
 		js = ('js/encuesta-admin.js',)
