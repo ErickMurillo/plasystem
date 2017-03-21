@@ -186,7 +186,7 @@ class BPA(models.Model):
         verbose_name = '11. ¿Si tiene Buenas Prácticas Agrícolas (BPA), indique el tipo de prácticas que implementa'
         verbose_name_plural = '11. ¿Si tiene Buenas Prácticas Agrícolas (BPA), indique el tipo de prácticas que implementa'
 
-UNIDAD_MEDIDA = (('Lb','Lb'),('Unidades','Unidades'),('Docena','Docena'),('Quintal','Quintal'))
+UNIDAD_MEDIDA = (('Libra','Libra'),('Unidad','Unidad'),('Docena','Docena'),('Quintal','Quintal'))
 
 class Cultivo(models.Model):
     nombre = models.CharField(max_length = 250)
@@ -262,8 +262,8 @@ class FuenteIngresos(models.Model):
     fuente_ingreso = models.CharField(max_length = 50,choices = FUENTE_INGRESOS_CHOICES)
     cantidad_mensual = models.IntegerField(verbose_name = 'Cantidad total mensual (Moneda local)')
     cantidad_veces = models.IntegerField(verbose_name = 'Cantidad de veces en el año que recibe esta cantidad')
-    hombres = models.IntegerField(verbose_name = 'Cantidad de miembros hombres de la familia involucrados')
-    mujeres = models.IntegerField(verbose_name = 'Cantidad de miembros mujeres de la familia involucrados')
+    hombres = models.IntegerField(verbose_name = 'Hombres (Cantidad de miembros de la familia involucrados)')
+    mujeres = models.IntegerField(verbose_name = 'Mujeres (Cantidad de miembros de la familia involucrados)')
 
     class Meta:
         verbose_name = 'Fuente de ingreso'
