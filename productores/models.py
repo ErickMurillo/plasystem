@@ -14,7 +14,7 @@ SEXO_CHOICES = (('Mujer','Mujer'),('Hombre','Hombre'))
 class Productor(models.Model):
     nombre = models.CharField(max_length = 200,verbose_name = '1. Nombre y apellido')
     fecha_naciemiento = models.DateField(verbose_name = '2. Fecha de nacimiento')
-    sexo = models.CharField(max_length = 5,choices = SEXO_CHOICES,verbose_name = '3. Sexo')
+    sexo = models.CharField(max_length = 6,choices = SEXO_CHOICES,verbose_name = '3. Sexo')
     organizacion = models.ForeignKey(Organizacion,verbose_name = '4. Organización a la que pertenece')
     anios_vinculacion =  models.FloatField(verbose_name = '6. Años de vinculación')
     pais = models.ForeignKey(Pais)
@@ -26,6 +26,9 @@ class Productor(models.Model):
     class Meta:
         verbose_name = 'Productor'
         verbose_name_plural = 'Productores'
+
+    def __str__(self):
+		return self.nombre
 
 FAMILIA_CHOICES = (('Hombres > 31 años','Hombres > 31 años'),('Mujeres > 31 años','Mujeres > 31 años'),('Ancianos > 64 años','Ancianos > 64 años'),
                     ('Ancianas > 64 años','Ancianas > 64 años'),('Mujer joven de 19 a 30 años','Mujer joven de 19 a 30 años'),('Hombre joven de 19 a 30 años','Hombre joven de 19 a 30 años'),
@@ -80,7 +83,11 @@ class Encuestador(models.Model):
         verbose_name = 'Encuestador'
         verbose_name_plural = 'Encuestadores'
 
+    def __str__(self):
+		return self.nombre
+
 GRUPO_CHOICES = (('Grupo de intervención','Grupo de intervención'),('Grupo de control','Grupo de control'))
+
 class Encuesta(models.Model):
     grupo = models.CharField(max_length = 50,choices = GRUPO_CHOICES)
     encuestador = models.ForeignKey(Encuestador)
