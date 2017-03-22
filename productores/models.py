@@ -93,6 +93,12 @@ class Encuesta(models.Model):
     encuestador = models.ForeignKey(Encuestador)
     productor = models.ForeignKey(Productor)
     fecha = models.DateField()
+    anio = models.IntegerField(editable = False)
+
+    def save(self, *args, **kwargs):
+        self.anio = self.fecha.year
+        super(Encuesta, self).save(*args, **kwargs)
+
 
 class AreaFinca(models.Model):
     encuesta = models.ForeignKey(Encuesta)
