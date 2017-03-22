@@ -4,6 +4,7 @@ from django.utils.encoding import python_2_unicode_compatible
 
 from django.db import models
 from lugar.models import Pais
+from smart_selects.db_fields import ChainedForeignKey
 
 # Create your models here.
 
@@ -31,7 +32,42 @@ class GruposMetas(models.Model):
         verbose_name = 'Grupo meta'
         verbose_name_plural = 'Grupos metas'
 
-CHOICES_MONEDA = ((1,'USD$'),)
+
+@python_2_unicode_compatible
+class Monedas(models.Model):
+    nombre = models.CharField(max_length=250)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = 'Tipo moneda'
+        verbose_name_plural = 'Tipos de monedas'
+
+class TipoCambiosMonedaPais(models.Model):
+    pais = models.ForeignKey(Pais)
+    moneda = models.ForeignKey(Monedas)
+
+    def __str__(self):
+        return '%s' % (self.moneda.nombre)
+
+    class Meta:
+        verbose_name = 'Tipo de cambio moneda por pais'
+        verbose_name_plural = 'Tipos de cambios monedas por pais'
+
+class TasaCambioPaisAnual(models.Model):
+    tipo_cambio = models.ForeignKey(TipoCambiosMonedaPais)
+    anio = models.IntegerField()
+    dolar = models.FloatField(default=0)
+    euro = models.FloatField(default=0)
+
+    def __str__(self):
+        return 'dolar: %s - euro: %s' % (self.dolar,self.euro)
+
+    class Meta:
+        verbose_name = 'Tasa de cambio anual'
+        verbose_name_plural = 'Tasas de cambios anuales'
+
 
 @python_2_unicode_compatible
 class DatosGenerales(models.Model):
@@ -40,7 +76,15 @@ class DatosGenerales(models.Model):
     fecha_finalizacion = models.DateField()
     pais = models.ForeignKey(Pais)
     responsable = models.CharField('Nombre del responsable', max_length=250)
-    moneda = models.IntegerField(choices=CHOICES_MONEDA)
+    #moneda = models.ForeignKey(TipoCambiosMonedaPais)
+    moneda = ChainedForeignKey(
+        TipoCambiosMonedaPais, 
+        chained_field="pais",
+        chained_model_field="pais", 
+        show_all=False, 
+        auto_choose=True,
+        sort=True
+    )
     grupo = models.ManyToManyField(GruposMetas)
 
     def __str__(self):
@@ -139,13 +183,11 @@ CHOICES_MESES = ((1,'Enero'),(2,'Febrero'),
                  (9,'Septiembre'),(10,'Octubre'),
                  (11,'Noviembre'),(12,'Diciembre'),)
 
-CHOICES_ANIOS = ((1,'algo1'),(2,'algo2'),)
-
 @python_2_unicode_compatible
 class RegistroMeses(models.Model):
     registro_anual = models.ForeignKey(RegistroPlanAnual)
     mes = models.IntegerField(choices=CHOICES_MESES)
-    anios = models.IntegerField('Años', choices=CHOICES_ANIOS)
+    anios = models.IntegerField()
     meta = models.FloatField()
     presupuesto = models.FloatField()
     
