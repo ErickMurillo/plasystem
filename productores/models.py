@@ -20,15 +20,15 @@ class Productor(models.Model):
     pais = models.ForeignKey(Pais)
     departamento = ChainedForeignKey(Departamento,chained_field="pais",chained_model_field="pais")
     municipio = ChainedForeignKey(Municipio,chained_field="departamento",chained_model_field="departamento")
-    latitud = models.FloatField()
-    longitud = models.FloatField()
+    latitud = models.FloatField(null = True, blank = True)
+    longitud = models.FloatField(null = True, blank = True)
 
     class Meta:
         verbose_name = 'Productor'
         verbose_name_plural = 'Productores'
 
     def __str__(self):
-		return self.nombre
+        return self.nombre
 
 FAMILIA_CHOICES = (('Hombres > 31 años','Hombres > 31 años'),('Mujeres > 31 años','Mujeres > 31 años'),('Ancianos > 64 años','Ancianos > 64 años'),
                     ('Ancianas > 64 años','Ancianas > 64 años'),('Mujer joven de 19 a 30 años','Mujer joven de 19 a 30 años'),('Hombre joven de 19 a 30 años','Hombre joven de 19 a 30 años'),
