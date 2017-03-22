@@ -93,6 +93,12 @@ class Encuesta(models.Model):
     encuestador = models.ForeignKey(Encuestador)
     productor = models.ForeignKey(Productor)
     fecha = models.DateField()
+    anio = models.IntegerField(editable = False)
+
+    def save(self, *args, **kwargs):
+        self.anio = self.fecha.year
+        super(Encuesta, self).save(*args, **kwargs)
+
 
 class AreaFinca(models.Model):
     encuesta = models.ForeignKey(Encuesta)
@@ -186,7 +192,7 @@ class BPA(models.Model):
         verbose_name = '11. ¿Si tiene Buenas Prácticas Agrícolas (BPA), indique el tipo de prácticas que implementa'
         verbose_name_plural = '11. ¿Si tiene Buenas Prácticas Agrícolas (BPA), indique el tipo de prácticas que implementa'
 
-UNIDAD_MEDIDA = (('Lb','Lb'),('Unidades','Unidades'),('Docena','Docena'),('Quintal','Quintal'))
+UNIDAD_MEDIDA = (('Libra','Libra'),('Unidad','Unidad'),('Docena','Docena'),('Quintal','Quintal'))
 
 class Cultivo(models.Model):
     nombre = models.CharField(max_length = 250)
@@ -213,6 +219,7 @@ class Produccion(models.Model):
     procesamiento = models.FloatField()
     venta = models.FloatField()
     costo_produccion = models.FloatField(verbose_name = 'Costo producción por Mz (Moneda local)')
+    archivo_costo_produccion = models.FileField(verbose_name = 'Archivo costo producción', blank = True, null = True)
     costo_inversion = models.FloatField(verbose_name = 'Costo inversión por Mz (Moneda local)')
 
     class Meta:
@@ -262,8 +269,8 @@ class FuenteIngresos(models.Model):
     fuente_ingreso = models.CharField(max_length = 50,choices = FUENTE_INGRESOS_CHOICES)
     cantidad_mensual = models.IntegerField(verbose_name = 'Cantidad total mensual (Moneda local)')
     cantidad_veces = models.IntegerField(verbose_name = 'Cantidad de veces en el año que recibe esta cantidad')
-    hombres = models.IntegerField(verbose_name = 'Cantidad de miembros hombres de la familia involucrados')
-    mujeres = models.IntegerField(verbose_name = 'Cantidad de miembros mujeres de la familia involucrados')
+    hombres = models.IntegerField(verbose_name = 'Hombres (Cantidad de miembros de la familia involucrados)')
+    mujeres = models.IntegerField(verbose_name = 'Mujeres (Cantidad de miembros de la familia involucrados)')
 
     class Meta:
         verbose_name = 'Fuente de ingreso'
@@ -302,28 +309,28 @@ class CondicionesRiegos(models.Model):
     class Meta:
         verbose_name_plural = 'Condiciones de riegos de la propiedad/finca'
 
-EROSION_CHOICES = ((1,'Ninguna erosión y ninguna compactación del suelo'),
+EROSION_CHOICES = ((3,'Ninguna erosión y ninguna compactación del suelo'),
                     (2,'Erosión del suelo en pequeña escala o compacto con medidas adoptadas'),
-                    (3,'Erosión del suelo a gran escala pero con medidas adoptadas'),
-                    (4,'Erosión del suelo a gran escala pero sin medidas'),
+                    (1,'Erosión del suelo a gran escala pero con medidas adoptadas'),
+                    (0,'Erosión del suelo a gran escala pero sin medidas'),
                     )
 
-SANILIZACION_CHOICES = ((1,'No hay historia de muy alto nivel de salinidad del suelo'),
+SANILIZACION_CHOICES = ((3,'No hay historia de muy alto nivel de salinidad del suelo'),
                         (2,'Algunos casos de la salinidad del suelo, con las medidas adoptadas'),
-                        (3,'Casos frecuentes de la salinidad del suelo, pero con medidas adoptadas'),
-                        (4,'Casos frecuentes de la salinidad del suelo sin medidas adoptadas'),
+                        (1,'Casos frecuentes de la salinidad del suelo, pero con medidas adoptadas'),
+                        (0,'Casos frecuentes de la salinidad del suelo sin medidas adoptadas'),
                         )
 
-CONTAMINACION_CHOICES = ((1,'Niveles aceptables de contaminación (metales pesados, biológicas) en el suelo sobre la base de datos de prueba de suelo'),
+CONTAMINACION_CHOICES = ((3,'Niveles aceptables de contaminación (metales pesados, biológicas) en el suelo sobre la base de datos de prueba de suelo'),
                          (2,'Pocos casos de contaminación adoptando medidas'),
-                         (3,'Casos frecuentes de contaminación, sino adoptan medidas'),
-                         (4,'Casos frecuentes de contaminación sin medidas')
+                         (1,'Casos frecuentes de contaminación, sino adoptan medidas'),
+                         (0,'Casos frecuentes de contaminación sin medidas')
                         )
 
-MATERIA_CHOICES = ((1,'Sin quema, acumulación de materia orgánica del suelo'),
+MATERIA_CHOICES = ((3,'Sin quema, acumulación de materia orgánica del suelo'),
                     (2,'Pocos casos de quema, aumento de la materia orgánica'),
-                    (3,'Frecuentes casos de quema pero han adoptados medidas'),
-                    (4,'Casos frecuentes de quema sin medidas adoptadas')
+                    (1,'Frecuentes casos de quema pero han adoptados medidas'),
+                    (0,'Casos frecuentes de quema sin medidas adoptadas')
                   )
 
 class ConservacionSuelo(models.Model):
@@ -336,28 +343,28 @@ class ConservacionSuelo(models.Model):
     class Meta:
         verbose_name_plural = '19. Conservación de suelo'
 
-GESTION_CHOICES = ((1,'El uso del agua para producir está optimizado'),
+GESTION_CHOICES = ((3,'El uso del agua para producir está optimizado'),
                     (2,'El uso del agua es más eficiente con las medidas adoptadas'),
-                    (3,'El uso de agua no es eficiente, pero han adoptados medidas'),
-                    (4,'Uso ineficiente del agua sin medidas adoptadas')
+                    (1,'El uso de agua no es eficiente, pero han adoptados medidas'),
+                    (0,'Uso ineficiente del agua sin medidas adoptadas')
                     )
 
-RETENCION_CHOICES = ((1,'No hay casos de agua de escorrentía, tiene retención de agua'),
+RETENCION_CHOICES = ((3,'No hay casos de agua de escorrentía, tiene retención de agua'),
                     (2,'Algunos casos de la escorrentía y con las medidas adoptadas'),
-                    (3,'Casos frecuentes de escorrentía sino se toman medidas'),
-                    (4,'Casos frecuentes de escorrentía sin medidas')
+                    (1,'Casos frecuentes de escorrentía sino se toman medidas'),
+                    (0,'Casos frecuentes de escorrentía sin medidas')
                     )
 
-EFICIENCIA_CHOICES = ((1,'El uso del agua en comparación con la salida está optimizado'),
+EFICIENCIA_CHOICES = ((3,'El uso del agua en comparación con la salida está optimizado'),
                         (2,'El uso del agua es más eficiente con las medidas adoptadas'),
-                        (3,'El uso de agua no es eficiente, si no toman medidas'),
-                        (4,'Uso ineficiente del agua sin medidas')
+                        (1,'El uso de agua no es eficiente, si no toman medidas'),
+                        (0,'Uso ineficiente del agua sin medidas')
                         )
 
-CONTAMINACION_AGUA_CHOICES = ((1,'Mínima contaminación de cuerpos de agua naturales (probado con regularidad en la comunidad)'),
+CONTAMINACION_AGUA_CHOICES = ((3,'Mínima contaminación de cuerpos de agua naturales (probado con regularidad en la comunidad)'),
                             (2,'Pocos casos de contaminación y las medidas adoptadas para mejorar las condiciones'),
-                            (3,'Casos frecuentes de contaminación, pero realizan pruebas del agua y toman medidas'),
-                            (4,'Contaminación frecuente, sin agua y sin medidas para mejorar las condiciones')
+                            (1,'Casos frecuentes de contaminación, pero realizan pruebas del agua y toman medidas'),
+                            (0,'Contaminación frecuente, sin agua y sin medidas para mejorar las condiciones')
                             )
 
 class UsoEficienteAgua(models.Model):
@@ -370,51 +377,51 @@ class UsoEficienteAgua(models.Model):
     class Meta:
         verbose_name_plural = '20. El uso eficiente del agua y calidad del agua'
 
-PRUEBAS_CHOICES = ((1,'El análisis del suelo es realizado recientemente en terreno/Granja/FO nivel que sea homogéneo'),
+PRUEBAS_CHOICES = ((3,'El análisis del suelo es realizado recientemente en terreno/Granja/FO nivel que sea homogéneo'),
                     (2,'Se realiza el análisis del suelo, pero los datos son mayores de 5 años y no refleja las condiciones no homogéneos'),
-                    (3,'Los datos de análisis de suelo no está disponible pero se han tomado medidas para obtener datos de suelos'),
-                    (4,'No se dispone de datos de pruebas del suelo y ninguna de las medidas adoptadas para obtener datos')
+                    (1,'Los datos de análisis de suelo no está disponible pero se han tomado medidas para obtener datos de suelos'),
+                    (0,'No se dispone de datos de pruebas del suelo y ninguna de las medidas adoptadas para obtener datos')
                     )
 
-MANEJO_NUTRIENTES = ((1,'Manejo de nutrientes es altamente eficiente'),
+MANEJO_NUTRIENTES = ((3,'Manejo de nutrientes es altamente eficiente'),
                     (2,'Manejo de nutrientes es casi eficiente y toman medidas'),
-                    (3,'Manejo de nutrientes es ineficiente, sino se toman medidas'),
-                    (4,'Manejo de nutrientes es ineficaz sin las medidas adoptadas')
+                    (1,'Manejo de nutrientes es ineficiente, sino se toman medidas'),
+                    (0,'Manejo de nutrientes es ineficaz sin las medidas adoptadas')
                     )
 
-FERTILIZANTE_ORGANICO = ((1,'Se ha optimizado el uso de fertilizantes orgánicos'),
+FERTILIZANTE_ORGANICO = ((3,'Se ha optimizado el uso de fertilizantes orgánicos'),
                         (2,'El uso de fertilizantes orgánicos es casi óptima con las medidas adoptadas'),
-                        (3,'El uso de fertilizantes orgánicos está lejos de ser óptima con las medidas adoptadas'),
-                        (4,'El uso de fertilizantes orgánicos está lejos de optimizar sin las medidas adoptadas')
+                        (1,'El uso de fertilizantes orgánicos está lejos de ser óptima con las medidas adoptadas'),
+                        (0,'El uso de fertilizantes orgánicos está lejos de optimizar sin las medidas adoptadas')
                         )
 
-BALANCE_CHOICES = ((1,'Balance de N y P en la granja se mantiene'),
-                    (2,'N y P fuera de equilibrio con las medidas adoptadas'),
-                    (3,'N y P gravemente desequilibrado, pero tomar contramedidas')
+BALANCE_CHOICES = ((2,'Balance de N y P en la granja se mantiene'),
+                    (1,'N y P fuera de equilibrio con las medidas adoptadas'),
+                    (0,'N y P gravemente desequilibrado, pero tomar contramedidas')
                     )
 
-RESIDUOS_CHOICES = ((1,'Todos los pasos identificados han sido adoptados. No hay signos de botar o derrame'),
+RESIDUOS_CHOICES = ((3,'Todos los pasos identificados han sido adoptados. No hay signos de botar o derrame'),
                     (2,'La gestión de los residuos en el lugar con medidas tomadas para mejorar aún más'),
-                    (3,'Sin la gestión de los residuos , pero las medidas adoptadas'),
-                    (4,'La gestión de residuos y sin ningún tipo de medidas')
+                    (1,'Sin la gestión de los residuos , pero las medidas adoptadas'),
+                    (0,'La gestión de residuos y sin ningún tipo de medidas')
                     )
 
-ENVASES_CHOICES = ((1,'Agricultura orgánica sin dejar residuos, tales como contenedores de nocivos en el medio ambiente'),
+ENVASES_CHOICES = ((3,'Agricultura orgánica sin dejar residuos, tales como contenedores de nocivos en el medio ambiente'),
                     (2,'Aplicación de un sistema para recoger, devolver o la eliminación segura de los envases de agroquímicos'),
-                    (3,'Sin gestión de residuos agroquímicos, pero las medidas adoptadas'),
-                    (4,'Sin gestión de residuos de agroquímicos y sin medidas')
+                    (1,'Sin gestión de residuos agroquímicos, pero las medidas adoptadas'),
+                    (0,'Sin gestión de residuos de agroquímicos y sin medidas')
                     )
 
-PESTICIDA_CHOICES = ((1,'No se utilizan plaguicidas sintéticos'),
+PESTICIDA_CHOICES = ((3,'No se utilizan plaguicidas sintéticos'),
                     (2,'Se aplican los plaguicidas de baja toxicidad y minimizada en consonancia con las Buenas Prácticas Agrícolas (GAP) y el "2017 SAN'),
-                    (3,'Gobierno nacional aprobó los plaguicidas se aplican según sus instrucciones de seguridad'),
-                    (4,'Alta toxicidad o pesticidas ilegales son utilizados en forma no segura')
+                    (1,'Gobierno nacional aprobó los plaguicidas se aplican según sus instrucciones de seguridad'),
+                    (0,'Alta toxicidad o pesticidas ilegales son utilizados en forma no segura')
                     )
 
-MIP_CHOICES = ((1,'MIP es la estrategia para el control de plagas'),
+MIP_CHOICES = ((3,'MIP es la estrategia para el control de plagas'),
                 (2,'MIP está parcialmente aplicada y control químico se combina con al menos dos métodos más'),
-                (3,'MIP no se aplica todavía, pero el control químico es combinada con al menos un método más (biológicas, fisicas)'),
-                (4,'El control de plagas se basa principalmente en el control químico (pesticidas sintéticos)')
+                (1,'MIP no se aplica todavía, pero el control químico es combinada con al menos un método más (biológicas, fisicas)'),
+                (0,'El control de plagas se basa principalmente en el control químico (pesticidas sintéticos)')
                 )
 
 class GestionRecursosNaturales(models.Model):
@@ -431,16 +438,16 @@ class GestionRecursosNaturales(models.Model):
     class Meta:
         verbose_name_plural = '21. Gestión de recursos naturales'
 
-EMISIONES_CARBONO = ((1,'Cero quema de materia orgánica en las granjas'),
+EMISIONES_CARBONO = ((3,'Cero quema de materia orgánica en las granjas'),
                     (2,'Evidencia de baja emisión de carbono y se toman medidas'),
-                    (3,'Altas y bajas emisiones de carbono, pero se han tomado medidas para mejorar'),
-                    (4,'Alta y baja emisión de carbono sin que se tomen medidas')
+                    (1,'Altas y bajas emisiones de carbono, pero se han tomado medidas para mejorar'),
+                    (0,'Alta y baja emisión de carbono sin que se tomen medidas')
                     )
 
-PROCESAMIENTO_TRANSPORTE = ((1,'Productos transformados llegar al mercado con una óptima eficiencia de combustible'),
+PROCESAMIENTO_TRANSPORTE = ((3,'Productos transformados llegar al mercado con una óptima eficiencia de combustible'),
                             (2,'Los productos alcanzan el mercado estimado con alta eficiencia de combustible'),
-                            (3,'Los productos llegan con baja eficiencia de uso de combustible pero adoptan medidas'),
-                            (4,'Los productos llegan baja eficiencia de uso combustible (por vía aérea, ...) y no adoptan medidas')
+                            (1,'Los productos llegan con baja eficiencia de uso de combustible pero adoptan medidas'),
+                            (0,'Los productos llegan baja eficiencia de uso combustible (por vía aérea, ...) y no adoptan medidas')
                             )
 
 class CambioClimatico(models.Model):
@@ -451,21 +458,21 @@ class CambioClimatico(models.Model):
     class Meta:
         verbose_name_plural = '22. Cambio Climático'
 
-DIVERSIDAD_VEGETAL = ((1,'La diversidad de especies vegetales está a un nivel óptimo'),
+DIVERSIDAD_VEGETAL = ((3,'La diversidad de especies vegetales está a un nivel óptimo'),
                         (2,'La diversidad vegetal debajo de una óptima con las medidas adoptadas'),
-                        (3,'La diversidad de las especies vegetales a continuación óptima pero se toman medidas'),
-                        (4,'Planta baja diversidad y ninguna de las medidas adoptadas')
+                        (1,'La diversidad de las especies vegetales a continuación óptima pero se toman medidas'),
+                        (0,'Planta baja diversidad y ninguna de las medidas adoptadas')
                         )
 
-DIVERSIDAD_GENETICA = ((1,'Sin el uso de Organismos genéticamente modificados / Transgénicos. La diversidad genética está aumentando'),
+DIVERSIDAD_GENETICA = ((3,'Sin el uso de Organismos genéticamente modificados / Transgénicos. La diversidad genética está aumentando'),
                         (2,'Sin el uso de Organismos genéticamente modificados / Transgénicos. La diversidad genética en la granja se mantiene y se adopten medidas para incrementar la diversidad'),
-                        (3,'Se toman medidas para reducir el uso de los Organismos genéticamente modificados / Transgénicos. La diversidad genética en las explotaciones agrícolas está disminuyendo, pero se han tomado medidas'),
-                        (4,'Uso intencional de Organismos genéticamente modificados / Transgénicos. No se adoptan medidas para aumentar la diversidad genética')
+                        (1,'Se toman medidas para reducir el uso de los Organismos genéticamente modificados / Transgénicos. La diversidad genética en las explotaciones agrícolas está disminuyendo, pero se han tomado medidas'),
+                        (0,'Uso intencional de Organismos genéticamente modificados / Transgénicos. No se adoptan medidas para aumentar la diversidad genética')
                         )
-USO_TIERRA = ((1,'Ninguna destrucción de ecosistemas de gran valor desde 2014 y la conversión de ecosistemas naturales desde 2015'),
+USO_TIERRA = ((3,'Ninguna destrucción de ecosistemas de gran valor desde 2014 y la conversión de ecosistemas naturales desde 2015'),
                 (2,'No hay ninguna conversión de ecosistemas naturales desde 2015 y la compensación de las medidas adoptadas para la conversión anterior'),
-                (3,'No hay ninguna conversión de ecosistemas naturales desde 2015 y sin compensación de las medidas adoptadas'),
-                (4,'Conversión de ecosistemas naturales desde 2015')
+                (1,'No hay ninguna conversión de ecosistemas naturales desde 2015 y sin compensación de las medidas adoptadas'),
+                (0,'Conversión de ecosistemas naturales desde 2015')
                 )
 
 class Biodiversidad(models.Model):
@@ -477,28 +484,28 @@ class Biodiversidad(models.Model):
     class Meta:
         verbose_name_plural = '23. Biodiversidad'
 
-SALVAGUARDAR_ECOSISTEMAS = ((1,'Los ecosistemas naturales y sus valores de conectividad están aumentando'),
+SALVAGUARDAR_ECOSISTEMAS = ((3,'Los ecosistemas naturales y sus valores de conectividad están aumentando'),
                             (2,'Los ecosistemas naturales están bien documentados y mantenidos. Las medidas adoptadas para mejorar el ecosistema de valores'),
-                            (3,'Los ecosistemas naturales son mantenidas, pero ninguna de las medidas adoptadas para mejorar el ecosistema de valores'),
-                            (4,'Los ecosistemas naturales y sus valores están disminuyendo. Ninguna de las medidas adoptadas para mejorar el ecosistema de valores')
+                            (1,'Los ecosistemas naturales son mantenidas, pero ninguna de las medidas adoptadas para mejorar el ecosistema de valores'),
+                            (0,'Los ecosistemas naturales y sus valores están disminuyendo. Ninguna de las medidas adoptadas para mejorar el ecosistema de valores')
                             )
 
-VIDA_SILVESTRE = ((1,'No hay caza de animales silvestres'),
+VIDA_SILVESTRE = ((3,'No hay caza de animales silvestres'),
                     (2,'Caza legal sostenible a tarifa regulada'),
-                    (3,'Caza legal pero no reglamentada'),
-                    (4,'La caza ilegal o la caza en el ritmo insostenible')
+                    (1,'Caza legal pero no reglamentada'),
+                    (0,'La caza ilegal o la caza en el ritmo insostenible')
                     )
 
-TIERRAS_AGRICOLAS = ((1,'Utilización de las tierras agrícolas está en su óptimo definido localmente'),
+TIERRAS_AGRICOLAS = ((3,'Utilización de las tierras agrícolas está en su óptimo definido localmente'),
                     (2,'Utilización de tierras agrícolas está por debajo de su óptimo definido localmente con las medidas adoptadas'),
-                    (3,'Utilización de tierras agrícolas está por debajo de su óptimo definido localmente sin las medidas adoptadas'),
-                    (4,'Tierras de cultivo no es apta para la agricultura')
+                    (1,'Utilización de tierras agrícolas está por debajo de su óptimo definido localmente sin las medidas adoptadas'),
+                    (0,'Tierras de cultivo no es apta para la agricultura')
                     )
 
-ESPECIES_INVASORAS = ((1,'No existen especies invasoras'),
+ESPECIES_INVASORAS = ((3,'No existen especies invasoras'),
                     (2,'Sí hay especies invasoras, los agricultores adoptar contramedidas para reprimirlos'),
-                    (3,'Los agricultores no son conscientes de los riesgos de las especies invasoras'),
-                    (4,'Los agricultores son conscientes de especies invasoras, pero sin tomar medidas para suprimir la proliferación de especies invasoras')
+                    (1,'Los agricultores no son conscientes de los riesgos de las especies invasoras'),
+                    (0,'Los agricultores son conscientes de especies invasoras, pero sin tomar medidas para suprimir la proliferación de especies invasoras')
                     )
 
 class PaisajeSostenible(models.Model):
