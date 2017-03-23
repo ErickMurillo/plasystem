@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form class="" action="." method="post">{% csrf_token %}
+{{form.anio}}
+{{form.pais}}
+{{form.departamento}}
+{{form.municipio}}
+{{form.organizacion}}
+{{form.sexo}}
+<input type="submit" name="" value="Consultar" class="">
+</form>
+{% endblock %}

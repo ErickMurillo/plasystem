@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from .views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^chaining/', include('smart_selects.urls')),
     url(r'^nested_admin/', include('nested_admin.urls')),
+    url(r'^$', index, name='index'),
+    url(r'^productores/', include('productores.urls')),
 ]

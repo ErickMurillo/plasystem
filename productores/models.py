@@ -6,6 +6,7 @@ from organizaciones.models import *
 from lugar.models import *
 from smart_selects.db_fields import ChainedForeignKey
 from multiselectfield import MultiSelectField
+from datetime import date
 
 # Create your models here.
 SI_NO_CHOICES = (('Si','Si'),('No','No'))
@@ -27,8 +28,15 @@ class Productor(models.Model):
         verbose_name = 'Productor'
         verbose_name_plural = 'Productores'
 
+    def save(self, *args, **kwargs):
+        #calcular edad a partir de fecha nacimiento
+        today = date.today()
+        edad = today.year - self.fecha_naciemiento.year - ((today.month, today.day) < (self.fecha_naciemiento.month, self.fecha_naciemiento.day))
+        super(Productor, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.nombre
+
 
 FAMILIA_CHOICES = (('Hombres > 31 años','Hombres > 31 años'),('Mujeres > 31 años','Mujeres > 31 años'),('Ancianos > 64 años','Ancianos > 64 años'),
                     ('Ancianas > 64 años','Ancianas > 64 años'),('Mujer joven de 19 a 30 años','Mujer joven de 19 a 30 años'),('Hombre joven de 19 a 30 años','Hombre joven de 19 a 30 años'),
