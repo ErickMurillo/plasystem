@@ -107,6 +107,8 @@ class Encuesta(models.Model):
         self.anio = self.fecha.year
         super(Encuesta, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.productor
 
 class AreaFinca(models.Model):
     encuesta = models.ForeignKey(Encuesta)
@@ -153,12 +155,18 @@ class Certificado(models.Model):
         verbose_name = 'Certificado que posee el productor'
         verbose_name_plural = 'Certificados que posee el productor'
 
+    def __str__(self):
+        return self.nombre
+
 class EmpresaCertifica(models.Model):
     nombre = models.CharField(max_length = 250)
 
     class Meta:
         verbose_name = 'Empresa que certifica al productor'
         verbose_name_plural = 'Empresas que certifican al productor'
+
+    def __str__(self):
+        return self.nombre
 
 class CertificadoEmpresa(models.Model):
     encuesta = models.ForeignKey(Encuesta)
