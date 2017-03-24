@@ -107,6 +107,8 @@ class Encuesta(models.Model):
         self.anio = self.fecha.year
         super(Encuesta, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.productor.nombre
 
 class AreaFinca(models.Model):
     encuesta = models.ForeignKey(Encuesta)
@@ -153,12 +155,18 @@ class Certificado(models.Model):
         verbose_name = 'Certificado que posee el productor'
         verbose_name_plural = 'Certificados que posee el productor'
 
+    def __str__(self):
+        return self.nombre
+
 class EmpresaCertifica(models.Model):
     nombre = models.CharField(max_length = 250)
 
     class Meta:
         verbose_name = 'Empresa que certifica al productor'
         verbose_name_plural = 'Empresas que certifican al productor'
+
+    def __str__(self):
+        return self.nombre
 
 class CertificadoEmpresa(models.Model):
     encuesta = models.ForeignKey(Encuesta)
@@ -176,12 +184,18 @@ class EliminacionFocos(models.Model):
         verbose_name = 'Eliminación de focos de contaminación dentro y fuera del cultivo'
         verbose_name_plural = 'Eliminación de focos de contaminación dentro y fuera del cultivo'
 
+    def __str__(self):
+        return self.nombre
+
 class ProteccionFuentes(models.Model):
     nombre = models.CharField(max_length = 250)
 
     class Meta:
         verbose_name = 'Protección de fuentes y calidad de agua (pozos, ríos)'
         verbose_name_plural = 'Protección de fuentes y calidad de agua (pozos, ríos)'
+
+    def __str__(self):
+        return self.nombre
 
 HIGIENE_CHOICES = (('Lavado de manos','Lavado de manos'),('Dispone de letrina','Dispone de letrina'),('Obreros no poseen enfermedades infecciosas','Obreros no poseen enfermedades infecciosas'))
 
