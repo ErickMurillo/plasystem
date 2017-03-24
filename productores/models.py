@@ -107,9 +107,6 @@ class Encuesta(models.Model):
         self.anio = self.fecha.year
         super(Encuesta, self).save(*args, **kwargs)
 
-    def __str__(self):
-        return self.productor
-
 class AreaFinca(models.Model):
     encuesta = models.ForeignKey(Encuesta)
     area = models.FloatField(verbose_name = 'Área',help_text='Mz')
