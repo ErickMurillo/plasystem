@@ -35,7 +35,7 @@ class Productor(models.Model):
         super(Productor, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.nombre
+        return self.nombre.encode('utf-8')
 
 
 FAMILIA_CHOICES = (('Hombres > 31 años','Hombres > 31 años'),('Mujeres > 31 años','Mujeres > 31 años'),('Ancianos > 64 años','Ancianos > 64 años'),
@@ -92,7 +92,7 @@ class Encuestador(models.Model):
         verbose_name_plural = 'Encuestadores'
 
     def __str__(self):
-		return self.nombre
+		return self.nombre.encode('utf-8')
 
 GRUPO_CHOICES = (('Grupo de intervención','Grupo de intervención'),('Grupo de control','Grupo de control'))
 
@@ -108,7 +108,7 @@ class Encuesta(models.Model):
         super(Encuesta, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.productor.nombre
+        return self.productor.nombre.encode('utf-8')
 
 class AreaFinca(models.Model):
     encuesta = models.ForeignKey(Encuesta)
@@ -156,7 +156,7 @@ class Certificado(models.Model):
         verbose_name_plural = 'Certificados que posee el productor'
 
     def __str__(self):
-        return self.nombre
+        return self.nombre.encode('utf-8')
 
 class EmpresaCertifica(models.Model):
     nombre = models.CharField(max_length = 250)
@@ -166,7 +166,7 @@ class EmpresaCertifica(models.Model):
         verbose_name_plural = 'Empresas que certifican al productor'
 
     def __str__(self):
-        return self.nombre
+        return self.nombre.encode('utf-8')
 
 class CertificadoEmpresa(models.Model):
     encuesta = models.ForeignKey(Encuesta)
@@ -185,7 +185,7 @@ class EliminacionFocos(models.Model):
         verbose_name_plural = 'Eliminación de focos de contaminación dentro y fuera del cultivo'
 
     def __str__(self):
-        return self.nombre
+        return self.nombre.encode('utf-8')
 
 class ProteccionFuentes(models.Model):
     nombre = models.CharField(max_length = 250)
@@ -195,7 +195,7 @@ class ProteccionFuentes(models.Model):
         verbose_name_plural = 'Protección de fuentes y calidad de agua (pozos, ríos)'
 
     def __str__(self):
-        return self.nombre
+        return self.nombre.encode('utf-8')
 
 HIGIENE_CHOICES = (('Lavado de manos','Lavado de manos'),('Dispone de letrina','Dispone de letrina'),('Obreros no poseen enfermedades infecciosas','Obreros no poseen enfermedades infecciosas'))
 
@@ -222,7 +222,7 @@ class Cultivo(models.Model):
     hortaliza = models.BooleanField(blank = True)
 
     def __str__(self):
-        return u'%s - %s' % (self.nombre,self.unidad_medida)
+        return u'%s - %s' % (self.nombre.encode('utf-8'),self.unidad_medida)
 
     class Meta:
         verbose_name = 'Cultivo'
