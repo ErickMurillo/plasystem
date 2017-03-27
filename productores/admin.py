@@ -3,6 +3,7 @@ from django.contrib import admin
 
 from .models import *
 from nested_admin import NestedStackedInline,NestedTabularInline,NestedModelAdmin
+from .forms import *
 
 # Register your models here.
 class MiembrosFamilia_Inline(admin.TabularInline):
@@ -66,6 +67,7 @@ class BPA_Inline(NestedTabularInline):
 class Produccion_Inline(NestedTabularInline):
     model = Produccion
     extra = 1
+    form = ProduccionForm
 
 class Mercado_Inline(NestedTabularInline):
     model = Mercado

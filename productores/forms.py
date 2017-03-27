@@ -31,3 +31,18 @@ class ProductoresForm(forms.Form):
         self.fields['organizacion'] = forms.ModelMultipleChoiceField(queryset=organizaciones(),required=False,label='Organización')
         self.fields['sexo'] = forms.ChoiceField(choices=SEXO_CHOICES,required=False,label='Sexo')
         # self.fields['edad'] = forms.ChoiceField(choices=EDAD_CHOICES,required=False,label='Edad')
+
+#validadiones
+class ProduccionForm(forms.ModelForm):
+    class Meta:
+        model = Produccion
+        fields = '__all__'
+
+    def clean(self):
+        cantidad_cosechada = self.cleaned_data.get('cantidad_cosechada')
+        consumo = self.cleaned_data.get('consumo')
+        procesamiento = self.cleaned_data.get('procesamiento')
+        venta = self.cleaned_data.get('venta')
+        sumatoria = consumo + procesamiento + venta
+        if sumatoria > cantidad_cosechada:
+            raise forms.ValidationError("Sumatoria (consumo + procesamiento + venta) es mayor a la cantidad cosechada")

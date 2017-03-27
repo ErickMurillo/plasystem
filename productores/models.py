@@ -278,7 +278,7 @@ class IngresosOtrosCultivos(models.Model):
 
 class IngresosFamilia(models.Model):
     encuesta = models.ForeignKey(Encuesta)
-    respuesta = models.IntegerField(choices = SI_NO_CHOICES)
+    respuesta = models.CharField(max_length = 5,choices = SI_NO_CHOICES)
 
     class Meta:
         verbose_name_plural = '15. ¿La familia percibe otros ingresos diferentes a la actividad agrícola?'
