@@ -164,9 +164,6 @@ class RegistroPlanAnual(models.Model):
     categoria = models.ForeignKey(CategoriaGastos)
     codigo_financiero = models.CharField(max_length=50)
     tipo_actividad = models.IntegerField(choices=CHOICES_TIPO_ACTIVIDAD)
-    indicador = models.ForeignKey(Indicadores)
-    metas_indicador = models.FloatField(editable=False, null=True, blank=True)
-    
 
     def __str__(self):
         return self.proyecto.componente.nombre
@@ -190,7 +187,8 @@ class RegistroMeses(models.Model):
     anios = models.IntegerField()
     meta = models.FloatField()
     presupuesto = models.FloatField()
-    
+    total_metas = models.FloatField(editable=False, null=True, blank=True)
+    total_presupuesto = models.FloatField(editable=False, null=True, blank=True)
 
     def __str__(self):
         return self.registro_anual.actividad.nombre
