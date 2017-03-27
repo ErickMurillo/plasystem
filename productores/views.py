@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import *
 from .forms import *
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def _queryset_filtrado(request):
@@ -34,6 +35,7 @@ def _queryset_filtrado(request):
 
 	return Encuesta.objects.filter(**params)
 
+@login_required
 def consulta_productores(request,template="productores/consulta.html"):
     if request.method == 'POST':
         mensaje = None

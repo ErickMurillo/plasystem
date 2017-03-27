@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <form class="" method="post">{% csrf_token %}
+      {{ form.username }}
+      {{ form.password }}
+      <input type="submit" name="Entrar" value="Entrar" class="">
+      <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+  </body>
+</html>
