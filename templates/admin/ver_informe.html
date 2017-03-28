@@ -26,8 +26,37 @@
 
 {% block content %}
   <div id="content-main">
-   <h2>Registro plan anual ({{informe}})
-   
+   <h2>Registro plan anual ({{componente}})
+   <p></p>
+    <table border="1" width="100%">
+
+      <tr>
+        <th>Actividad</th>
+        <th>Categoria</th>
+        <th>Cod. Financiero</th>
+        <th>Tipo de actividad</th>
+        {% for obj in meses %}
+          <th>{{obj.1}}</th>
+        {% endfor %}
+        <th>Total meta</th>
+        <th>Total presupuesto</th>
+      </tr>
+      {% for data in informe %}
+      <tr>
+        <td>{{data.actividad}}</td>
+        <td>{{data.categoria}}</td>
+        <td>{{data.codigo_financiero}}</td>
+        <td>{{data.get_tipo_actividad_display}}</td>
+        {% for obj in data.registromeses_set.all %}
+          <td>{{obj.meta}} | {{obj.presupuesto}}</td>
+        {% endfor %}
+        <td>{{data.total_metas}}</td>
+        <td>{{data.total_presupuesto}}</td>
+      </tr>
+      {% endfor %}
+
+
+    </table>   
 
   </div>
 {% endblock %}

@@ -165,6 +165,9 @@ class RegistroPlanAnual(models.Model):
     codigo_financiero = models.CharField(max_length=50)
     tipo_actividad = models.IntegerField(choices=CHOICES_TIPO_ACTIVIDAD)
 
+    total_metas = models.FloatField(default=0, editable=True, null=True, blank=True)
+    total_presupuesto = models.FloatField(default=0, editable=True, null=True, blank=True)
+
     def __str__(self):
         return self.proyecto.componente.nombre
 
@@ -187,11 +190,15 @@ class RegistroMeses(models.Model):
     anios = models.IntegerField()
     meta = models.FloatField()
     presupuesto = models.FloatField()
-    total_metas = models.FloatField(editable=False, null=True, blank=True)
-    total_presupuesto = models.FloatField(editable=False, null=True, blank=True)
 
     def __str__(self):
         return self.registro_anual.actividad.nombre
+
+    def save(self, *args, **kwargs):
+        self.registro_anual.total_metas =+ self.meta
+        self.registro_anual.total_presupuesto =+ self.presupuesto
+
+        super(RegistroMeses, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Registro de mes'
