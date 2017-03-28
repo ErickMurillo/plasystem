@@ -1,13 +1,135 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form class="" action="." method="post">{% csrf_token %}
-{{form.anio}}
-{{form.pais}}
-{{form.departamento}}
-{{form.municipio}}
-{{form.organizacion}}
-{{form.sexo}}
-<input type="submit" name="" value="Consultar" class="">
-</form>
+
+<div class="wrapper-page2">
+    <div class="panel panel-color panel-primary panel-pages">
+
+        <div class="panel-body">
+
+            <form class="form-horizontal m-t-20" action="." method="post">{% csrf_token %}
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label class="col-md-6 control-label">Año</label>
+                            <div class="col-md-6">
+                                {{form.anio}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label class="col-md-6 control-label">Sexo</label>
+                            <div class="col-md-6">
+                                {{form.sexo}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label class="col-md-6 control-label">País</label>
+                            <div class="col-md-6">
+                                {{form.pais}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label class="col-md-6 control-label">Edad</label>
+                            <div class="col-md-6">
+                              <select class="form-control">
+                                  <option>Menores 35</option>
+                                  <option>2</option>
+                                  <option>3</option>
+                                  <option>4</option>
+                                  <option>5</option>
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label class="col-md-6 control-label">Departamento</label>
+                            <div class="col-md-6">
+                                {{form.departamento}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label class="col-md-6 control-label">Municipio</label>
+                            <div class="col-md-6">
+                                {{form.municipio}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-612col-lg-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Comunidad</label>
+                            <div class="col-md-9">
+                                <select class="form-control">
+                                    <option>2017</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label class="col-md-6 control-label">Organización</label>
+                            <div class="col-md-6">
+                                {{form.organizacion}}
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label class="col-md-6 control-label">Rubro</label>
+                            <div class="col-md-6">
+                                <select class="form-control">
+                                    <option>2017</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+
+                <div class="form-group text-center m-t-40">
+                    <div class="col-xs-12">
+                        <button class="btn btn-primary pull-right waves-effect waves-light" type="submit">Consultar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#id_anio").addClass("form-control");
+    $("#id_pais").addClass("form-control");
+    $("#id_departamento").addClass("form-control");
+    $("#id_municipio").addClass("form-control");
+    $("#id_organizacion").addClass("form-control");
+    $("#id_sexo").addClass("form-control");
+  });
+</script>
 {% endblock %}
