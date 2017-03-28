@@ -16,22 +16,22 @@ class DatosGeneralesAdmin(NestedModelAdmin):
     inlines = [ObjetivosInline]
 
     class Media:
-    	css = {
+        css = {
             'all': ('css/subSectorAdmin.css',)
         }
 
 
 
 class TasaCambioPaisAnualInline(admin.TabularInline):
-	form = TasaCambioPaisAnualForm
-	model = TasaCambioPaisAnual
-	extra = 1
+    form = TasaCambioPaisAnualForm
+    model = TasaCambioPaisAnual
+    extra = 1
 
 class TipoCambiosMonedaPaisAdmin(admin.ModelAdmin):
-	inlines = [TasaCambioPaisAnualInline]
+    inlines = [TasaCambioPaisAnualInline]
 
 class TasaCambioPaisAnualAdmin(admin.ModelAdmin):
-	form = TasaCambioPaisAnualForm
+    form = TasaCambioPaisAnualForm
 
 # Register your models here.
 admin.site.register(Componentes)
@@ -45,12 +45,22 @@ admin.site.register(TasaCambioPaisAnual,TasaCambioPaisAnualAdmin)
 #register for plan anual
 
 class RegistroMesesInline(admin.TabularInline):
-	form = RegistroMesesForm
-	model = RegistroMeses
-	extra = 1
+    form = RegistroMesesForm
+    model = RegistroMeses
+    extra = 1
+    max_num = 12
 
 class RegistroPlanAnualAdmin(admin.ModelAdmin):
-	inlines = [RegistroMesesInline]
+    inlines = [RegistroMesesInline]
+    list_display = ('proyecto','actividad')
+
+    # def save_model(self, request, obj, form, change):
+    #     print "el save model"
+
+    # def save_formset(self, request, form, formset, change):
+    #     print "save model children"
+    #     formset.save() # this will save the children
+    #     form.instance.save() # form.instance is the parent
 
 
 admin.site.register(Actividades)

@@ -9,18 +9,6 @@ from smart_selects.db_fields import ChainedForeignKey
 # Create your models here.
 
 @python_2_unicode_compatible
-class Componentes(models.Model):
-    nombre = models.CharField(max_length=250)
-
-
-    def __str__(self):
-        return self.nombre
-
-    class Meta:
-        verbose_name = 'Componente'
-        verbose_name_plural = 'Componentes'
-
-@python_2_unicode_compatible
 class GruposMetas(models.Model):
     nombre = models.CharField(max_length=250)
 
@@ -71,7 +59,7 @@ class TasaCambioPaisAnual(models.Model):
 
 @python_2_unicode_compatible
 class DatosGenerales(models.Model):
-    componente = models.ForeignKey(Componentes)
+    nombre = models.CharField(max_length=250)
     fecha_inicio = models.DateField()
     fecha_finalizacion = models.DateField()
     pais = models.ForeignKey(Pais)
@@ -130,19 +118,6 @@ class Indicadores(models.Model):
 #--------- registro de planes anuales --------
 
 @python_2_unicode_compatible
-class Actividades(models.Model):
-    nombre = models.CharField(max_length=250)
-
-
-    def __str__(self):
-        return self.nombre
-
-    class Meta:
-        verbose_name = 'Actividad'
-        verbose_name_plural = 'Actividades'
-
-
-@python_2_unicode_compatible
 class CategoriaGastos(models.Model):
     nombre = models.CharField(max_length=250)
 
@@ -160,11 +135,11 @@ CHOICES_TIPO_ACTIVIDAD = ((1,'Contribuye'),(2,'No contribuye'),)
 @python_2_unicode_compatible
 class RegistroPlanAnual(models.Model):
     proyecto = models.ForeignKey(DatosGenerales)
-    actividad = models.ForeignKey(Actividades)
-    categoria = models.ForeignKey(CategoriaGastos)
+    nombre = models.CharField(max_length=250)
+    categoria = models.ForeignKey('Categoria de gatos', CategoriaGastos)
     codigo_financiero = models.CharField(max_length=50)
-    tipo_actividad = models.IntegerField(choices=CHOICES_TIPO_ACTIVIDAD)
-
+    tipo_actividad = models.IntegerField(choices=CHOICES_TIPO_ACTIVIDAD, 
+                    help_text='Contribuye al dato del indicador')
     total_metas = models.FloatField(default=0, editable=True, null=True, blank=True)
     total_presupuesto = models.FloatField(default=0, editable=True, null=True, blank=True)
 
@@ -195,9 +170,9 @@ class RegistroMeses(models.Model):
         return self.registro_anual.actividad.nombre
 
     def save(self, *args, **kwargs):
-        self.registro_anual.total_metas =+ self.meta
-        self.registro_anual.total_presupuesto =+ self.presupuesto
-
+        self.registro_anual.total_metas += self.meta
+        self.registro_anual.total_presupuesto +=  self.presupuesto
+        print "esto esta en el modelo de registro de meses"
         super(RegistroMeses, self).save(*args, **kwargs)
 
     class Meta:
