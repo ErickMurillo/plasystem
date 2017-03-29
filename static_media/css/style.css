@@ -2998,7 +2998,7 @@ File: Menu
 .topbar .topbar-left {
   background-color: #ffffff;
   float: left;
-  height: 70px;
+  height: 72px;
   position: relative;
   width: 240px;
   z-index: 1;
@@ -3559,8 +3559,18 @@ File: nuevo css
 .navbar-default{
   background: white;
 }
+.navbar-dashboard{
+  background:#2a323c;
+}
 .notification-icon-box {
   border:2px solid rgba(42, 50, 60, 0.5) !important;
+  2px solid rgba(255, 255, 255, 0.5) !important
+}
+.navbar-dashboard .notification-icon-box {
+  border: 2px solid rgba(255, 255, 255, 0.5) !important;
+}
+.navbar-dashboard .nav > li > a{
+  color: #ffffff !important;
 }
 .nav > li > a{
   color: #2a323c !important;
@@ -3599,6 +3609,35 @@ File: nuevo css
 }
 .btn-apps button{
   margin-bottom: 10px
+}
+.nav-pais li{
+    font-size: 14px;
+    padding: 20px 10px;
+}
+.navbar-dashboard .nav-pais li a{
+    font-size: 14px;
+    padding: 5px 10px;
+    border: 1px solid #5cb45b;
+    border-radius: 5px;
+    color: #5cb45b !important;
+}
+.navbar-dashboard .navbar-nav>.active>a{
+    
+    background: #5cb45b;
+    color: white !important;
+}
+.side-cosultar{
+    margin: 20px 60px !important;
+}
+.more-ind{
+    float: right;
+}
+.more-ind a{
+    font-size: 13px;
+    padding: 5px 10px;
+    border: 1px solid #5cb45b;
+    border-radius: 5px;
+    color: #5cb45b;
 }
 /*
 File: Responsive

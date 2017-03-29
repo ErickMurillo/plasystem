@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>WebAdmin - Responsive Admin Dashboard Template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta content="Admin Dashboard" name="description" />
+        <meta content="ThemeDesign" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+        <!--Morris Chart CSS -->
+        <link rel="stylesheet" href="assets/plugins/morris/morris.css">
+
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="assets/css/icons.css" rel="stylesheet" type="text/css">
+        <link href="assets/css/style.css" rel="stylesheet" type="text/css">
+
+    </head>
+
+
+    <body class="fixed-left">
+
+        <!-- Begin page -->
+        <div id="wrapper">
+
+            <!-- Top Bar Start -->
+            <div class="topbar">
+                <!-- LOGO -->
+                <div class="topbar-left">
+                    <div class="text-center">
+                        <a href="index.html" class="logo"><img src="assets/images/nuevo/logoveco.png" alt=""></a>
+                        <!--<a href="index.html" class="logo"><img src="assets/images/logo_white_2.png" height="28"></a>-->
+                        <!--<a href="index.html" class="logo-sm"><img src="assets/images/logo_sm.png" height="36"></a>-->
+                    </div>
+                </div>
+                <!-- Button mobile view to collapse sidebar menu -->
+                <div class="navbar navbar-default navbar-dashboard" role="navigation">
+                    <div class="container">
+                        <div class="">
+                            <div class="pull-left">
+                                <button type="button" class="button-menu-mobile open-left waves-effect waves-light">
+                                    <i class="ion-navicon"></i>
+                                </button>
+                                <span class="clearfix"></span>
+                            </div>
+                            <ul class="nav navbar-nav nav-pais">
+                                <li class="active"><a href="#">Nicaragua</a></li>
+                                <li><a href="#">Honduras</a></li>
+                                <li><a href="#">Guatemala</a></li>
+
+                                
+                            </ul>
+
+                            <ul class="nav navbar-nav navbar-right pull-right">
+
+                                <li class="hidden-xs">
+                                    <a href="#" id="btn-fullscreen" class="waves-effect waves-light notification-icon-box"><i class="mdi mdi-fullscreen"></i></a>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="" class="dropdown-toggle profile waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
+                                        <img src="assets/images/users/avatar-1.jpg" alt="user-img" class="img-circle">
+                                        <span class="profile-username">
+                                            Nombre Completo <br/>
+                                            <small>Gerente</small>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="javascript:void(0)"> Profile</a></li>
+                                        <li><a href="javascript:void(0)"><span class="badge badge-success pull-right">5</span> Settings </a></li>
+                                        <li><a href="javascript:void(0)"> Lock screen</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="javascript:void(0)"> Logout</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--/.nav-collapse -->
+                    </div>
+                </div>
+            </div>
+            <!-- Top Bar End -->
+
+
+            <!-- ========== Left Sidebar Start ========== -->
+
+            <div class="left side-menu">
+                <div class="sidebar-inner slimscrollleft">
+
+                    <div class="user-details">
+                        <div class="text-center">
+                            <img src="assets/images/users/avatar-1.jpg" alt="" class="img-circle">
+                        </div>
+                        <div class="user-info">
+                            <div class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Nombre Completo</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)"> Profile</a></li>
+                                    <li><a href="javascript:void(0)"> Settings</a></li>
+                                    <li><a href="javascript:void(0)"> Lock screen</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="javascript:void(0)"> Logout</a></li>
+                                </ul>
+                            </div>
+
+                            <p class="text-muted m-0"><i class="fa fa-dot-circle-o text-success"></i> Online</p>
+                        </div>
+                    </div>
+                    <!--- Divider -->
+
+
+                    <div id="sidebar-menu">
+                        <ul>
+                            <li>
+                                <a href="javascript:void(0);" class="waves-effect"><span> Año </span> <span class="pull-right"><i class="ion-arrow-down-b"></i></span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="waves-effect"><span> Edad </span> <span class="pull-right"><i class="ion-arrow-down-b"></i></span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="waves-effect"><span> sexo </span> <span class="pull-right"><i class="ion-arrow-down-b"></i></span></a>
+
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="waves-effect"><span> País </span> <span class="pull-right"><i class="ion-arrow-down-b"></i></span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="waves-effect"><span> Departamento </span> <span class="pull-right"><i class="ion-arrow-down-b"></i></span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="waves-effect"><span> Municipio </span> <span class="pull-right"><i class="ion-arrow-down-b"></i></span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="waves-effect"><span> Comunidad </span> <span class="pull-right"><i class="ion-arrow-down-b"></i></span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="waves-effect"><span> Organización </span> <span class="pull-right"><i class="ion-arrow-down-b"></i></span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="waves-effect"><span> Rubro </span> <span class="pull-right"><i class="ion-arrow-down-b"></i></span></a>
+                            </li>
+                            <li class="side-cosultar">
+                              <button class="btn btn-primary waves-effect waves-light" type="submit">Consulta</button>
+                            </li>
+                            
+
+
+                            <!--<li class="has_sub">
+                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-album"></i> <span> User Interface </span> <span class="pull-right"><i class="mdi mdi-plus"></i></span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="ui-buttons.html">Buttons</a></li>
+                                    <li><a href="ui-panels.html">Panels</a></li>
+                                    <li><a href="ui-tabs-accordions.html">Tabs &amp; Accordions</a></li>
+                                    <li><a href="ui-modals.html">Modals</a></li>
+                                    <li><a href="ui-components.html">Components</a></li>
+                                    <li><a href="ui-progressbars.html">Progress Bars</a></li>
+                                    <li><a href="ui-alerts.html">Alerts</a></li>
+                                    <li><a href="ui-sweet-alert.html">Sweet-Alert</a></li>
+                                    <li><a href="ui-grid.html">Grid</a></li>
+                                </ul>
+                            </li>-->
+
+
+
+
+                            <!--<li class="has_sub">-->
+                                <!--<a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-share-variant"></i><span>Multi Menu </span><span class="pull-right"><i class="mdi mdi-plus"></i></span></a>-->
+                                <!--<ul>-->
+                                    <!--<li class="has_sub">-->
+                                        <!--<a href="javascript:void(0);" class="waves-effect"><span>Menu Item 1.1</span> <span class="pull-right"><i class="mdi mdi-plus"></i></span></a>-->
+                                        <!--<ul style="">-->
+                                            <!--<li><a href="javascript:void(0);"><span>Menu Item 2.1</span></a></li>-->
+                                            <!--<li><a href="javascript:void(0);"><span>Menu Item 2.2</span></a></li>-->
+                                        <!--</ul>-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--<a href="javascript:void(0);"><span>Menu Item 1.2</span></a>-->
+                                    <!--</li>-->
+                                <!--</ul>-->
+                            <!--</li>-->
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </div> <!-- end sidebarinner -->
+            </div>
+            <!-- Left Sidebar End -->
+
+            <!-- Start right Content here -->
+
+            <div class="content-page">
+                <!-- Start content -->
+                <div class="content">
+
+                    <div class="">
+                        <div class="page-header-title">
+                            <h4 class="page-title">Dashboard</h4>
+                        </div>
+                    </div>
+
+                    <div class="page-content-wrapper ">
+
+                        <div class="container">
+
+                            <div class="row">
+                                <div class="col-sm-4 col-lg-2">
+                                    <div class="panel text-center">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title text-muted font-light"><b>Familias</b></h4>
+                                        </div>
+                                        <div class="panel-body p-t-10">
+                                            <h2 class="m-t-0 m-b-15"><b>1500</b></h2>
+                                            <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-lg-2">
+                                    <div class="panel text-center">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title text-muted font-light"><b>Hombres</b></h4>
+                                        </div>
+                                        <div class="panel-body p-t-10">
+                                            <h2 class="m-t-0 m-b-15"><b>800</b></h2>
+                                            <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 col-lg-2">
+                                    <div class="panel text-center">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title text-muted font-light"><b>Mujeres</b></h4>
+                                        </div>
+                                        <div class="panel-body p-t-10">
+                                            <h2 class="m-t-0 m-b-15"><b>700</b></h2>
+                                            <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-lg-2">
+                                    <div class="panel text-center">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title text-muted font-light"><b>Menires de 35</b></h4>
+                                        </div>
+                                        <div class="panel-body p-t-10">
+                                            <h2 class="m-t-0 m-b-15"><b>80</b></h2>
+                                            <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-lg-2">
+                                    <div class="panel text-center">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title text-muted font-light"><b>Hectareas</b></h4>
+                                        </div>
+                                        <div class="panel-body p-t-10">
+                                            <h2 class="m-t-0 m-b-15"><b>75</b></h2>
+                                            <p class="text-muted m-b-0 m-t-20"><b>Promedio</b></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-lg-2">
+                                    <div class="panel text-center">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title text-muted font-light"><b>Certificación</b></h4>
+                                        </div>
+                                        <div class="panel-body p-t-10">
+                                            <h2 class="m-t-0 m-b-15"><b>500</b></h2>
+                                            <p class="text-muted m-b-0 m-t-20"><b>Productores</b></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-body">
+                                            <h4 class="m-t-0">Ingreso del productor por cultivo <span class="mdi mdi-help-circle"></span><span class="more-ind"> <a href="">+indicadores</a> </span></h4> 
+
+                                            <div id="morris-bar-example" style="height: 300px"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-body">
+                                            <h4 class="m-t-0">Distribución del área <span class="mdi mdi-help-circle"></span><span class="more-ind"> <a href="">+indicadores</a> </span></h4> 
+
+
+                                            <div id="morris-area-example" style="height: 300px"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end row -->
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-body">
+                                            <h4 class="m-t-0">Ventas de productos sanos al mercado <span class="mdi mdi-help-circle"></span></h4> 
+
+                                            <div id="morris-bar-example" style="height: 300px"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-body">
+                                            <h4 class="m-t-0">Aumento del índice de producción sustentable <span class="mdi mdi-help-circle"></span></h4> 
+
+
+                                            <div id="morris-area-example" style="height: 300px"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end row -->
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-body">
+                                            <h4 class="m-t-0">Incremento del margen bruto <span class="mdi mdi-help-circle"></span></h4> 
+
+                                            <div id="morris-bar-example" style="height: 300px"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-body">
+                                            <h4 class="m-t-0">Aumento del índice de manejo de plaga <span class="mdi mdi-help-circle"></span></h4> 
+
+
+                                            <div id="morris-area-example" style="height: 300px"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end row -->
+
+                            
+
+
+                        </div><!-- container -->
+
+
+                    </div> <!-- Page content Wrapper -->
+
+                </div> <!-- content -->
+
+                <div class="footer3">
+            Desarrollado por <a href="">SIMAS</a>
+        </div>
+
+            </div>
+            <!-- End Right content here -->
+
+        </div>
+        <!-- END wrapper -->
+        
+
+        <!-- jQuery  -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/modernizr.min.js"></script>
+        <script src="assets/js/detect.js"></script>
+        <script src="assets/js/fastclick.js"></script>
+        <script src="assets/js/jquery.slimscroll.js"></script>
+        <script src="assets/js/jquery.blockUI.js"></script>
+        <script src="assets/js/waves.js"></script>
+        <script src="assets/js/wow.min.js"></script>
+        <script src="assets/js/jquery.nicescroll.js"></script>
+        <script src="assets/js/jquery.scrollTo.min.js"></script>
+
+        <!--Morris Chart-->
+        <script src="assets/plugins/morris/morris.min.js"></script>
+        <script src="assets/plugins/raphael/raphael-min.js"></script>
+
+        <script src="assets/pages/dashborad.js"></script>
+
+        <script src="assets/js/app.js"></script>
+
+    </body>
+</html>
