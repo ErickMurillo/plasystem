@@ -137,6 +137,11 @@ class PracticasMIP_Inline(NestedStackedInline):
     max_num = 1
 
 class EncuestaAdmin(NestedModelAdmin):
+    list_display = ('productor','encuestador','grupo','fecha')
+    search_fields = ['productor__nombre','encuestador__nombre']
+    list_filter = ('grupo',)
+    date_hierarchy = 'fecha'
+
     inlines = [AreaFinca_Inline,DistribucionFinca_Inline,Certificacion_Inline,TipoCertificacion_Inline,
                 CertificadoEmpresa_Inline,BPA_Inline,Produccion_Inline,DestinoProduccion_Inline,
                 IngresosOtrosCultivos_Inline,IngresosFamilia_Inline,FuenteIngresos_Inline,
