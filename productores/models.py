@@ -6,6 +6,7 @@ from organizaciones.models import *
 from lugar.models import *
 from smart_selects.db_fields import ChainedForeignKey
 from multiselectfield import MultiSelectField
+from datetime import date
 
 # Create your models here.
 SI_NO_CHOICES = (('Si','Si'),('No','No'))
@@ -20,15 +21,22 @@ class Productor(models.Model):
     pais = models.ForeignKey(Pais)
     departamento = ChainedForeignKey(Departamento,chained_field="pais",chained_model_field="pais")
     municipio = ChainedForeignKey(Municipio,chained_field="departamento",chained_model_field="departamento")
-    latitud = models.FloatField()
-    longitud = models.FloatField()
+    latitud = models.FloatField(null = True, blank = True)
+    longitud = models.FloatField(null = True, blank = True)
 
     class Meta:
         verbose_name = 'Productor'
         verbose_name_plural = 'Productores'
 
+    def save(self, *args, **kwargs):
+        #calcular edad a partir de fecha nacimiento
+        today = date.today()
+        edad = today.year - self.fecha_naciemiento.year - ((today.month, today.day) < (self.fecha_naciemiento.month, self.fecha_naciemiento.day))
+        super(Productor, self).save(*args, **kwargs)
+
     def __str__(self):
-		return self.nombre
+        return self.nombre.encode('utf-8')
+
 
 FAMILIA_CHOICES = (('Hombres > 31 años','Hombres > 31 años'),('Mujeres > 31 años','Mujeres > 31 años'),('Ancianos > 64 años','Ancianos > 64 años'),
                     ('Ancianas > 64 años','Ancianas > 64 años'),('Mujer joven de 19 a 30 años','Mujer joven de 19 a 30 años'),('Hombre joven de 19 a 30 años','Hombre joven de 19 a 30 años'),
@@ -84,7 +92,7 @@ class Encuestador(models.Model):
         verbose_name_plural = 'Encuestadores'
 
     def __str__(self):
-		return self.nombre
+		return self.nombre.encode('utf-8')
 
 GRUPO_CHOICES = (('Grupo de intervención','Grupo de intervención'),('Grupo de control','Grupo de control'))
 
@@ -99,6 +107,8 @@ class Encuesta(models.Model):
         self.anio = self.fecha.year
         super(Encuesta, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.productor.nombre.encode('utf-8')
 
 class AreaFinca(models.Model):
     encuesta = models.ForeignKey(Encuesta)
@@ -145,12 +155,18 @@ class Certificado(models.Model):
         verbose_name = 'Certificado que posee el productor'
         verbose_name_plural = 'Certificados que posee el productor'
 
+    def __str__(self):
+        return self.nombre.encode('utf-8')
+
 class EmpresaCertifica(models.Model):
     nombre = models.CharField(max_length = 250)
 
     class Meta:
         verbose_name = 'Empresa que certifica al productor'
         verbose_name_plural = 'Empresas que certifican al productor'
+
+    def __str__(self):
+        return self.nombre.encode('utf-8')
 
 class CertificadoEmpresa(models.Model):
     encuesta = models.ForeignKey(Encuesta)
@@ -168,12 +184,18 @@ class EliminacionFocos(models.Model):
         verbose_name = 'Eliminación de focos de contaminación dentro y fuera del cultivo'
         verbose_name_plural = 'Eliminación de focos de contaminación dentro y fuera del cultivo'
 
+    def __str__(self):
+        return self.nombre.encode('utf-8')
+
 class ProteccionFuentes(models.Model):
     nombre = models.CharField(max_length = 250)
 
     class Meta:
         verbose_name = 'Protección de fuentes y calidad de agua (pozos, ríos)'
         verbose_name_plural = 'Protección de fuentes y calidad de agua (pozos, ríos)'
+
+    def __str__(self):
+        return self.nombre.encode('utf-8')
 
 HIGIENE_CHOICES = (('Lavado de manos','Lavado de manos'),('Dispone de letrina','Dispone de letrina'),('Obreros no poseen enfermedades infecciosas','Obreros no poseen enfermedades infecciosas'))
 
@@ -200,7 +222,7 @@ class Cultivo(models.Model):
     hortaliza = models.BooleanField(blank = True)
 
     def __str__(self):
-        return u'%s - %s' % (self.nombre,self.unidad_medida)
+        return u'%s - %s' % (self.nombre.encode('utf-8'),self.unidad_medida)
 
     class Meta:
         verbose_name = 'Cultivo'
@@ -256,7 +278,7 @@ class IngresosOtrosCultivos(models.Model):
 
 class IngresosFamilia(models.Model):
     encuesta = models.ForeignKey(Encuesta)
-    respuesta = models.IntegerField(choices = SI_NO_CHOICES)
+    respuesta = models.CharField(max_length = 5,choices = SI_NO_CHOICES)
 
     class Meta:
         verbose_name_plural = '15. ¿La familia percibe otros ingresos diferentes a la actividad agrícola?'

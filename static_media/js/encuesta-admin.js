@@ -1,6 +1,8 @@
 (function($){
 	$(document).ready( function()
 	{
+		$('#id_productor').select2();
+		$('#id_encuestador').select2();
     valor = $('.field-certificacion select').val();
     if (valor == 'Si') {
       $('#tipocertificacion_set-group').show();

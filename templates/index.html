@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+        <div id="gmaps-markers" class="gmaps"></div>
+
+        <ul class="leyenda">
+            <li>
+                <span> <img src="/static/nuevo/m2.png" height="52" width="53" alt=""></span>
+                Productores
+            </li>
+            <li>
+                <span> <img src="/static/nuevo/m1.png" height="52" width="53" alt=""></span>
+                Organizaciones
+            </li>
+
+        </ul>
+
+    </div>
+    <div class="col-xs-12 col-sm412 col-md-5 col-lg-5">
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <p>VECOMA  es un programa regional de Vredeseilanden en Mesoamérica y tiene presencia desde los años ochenta en nicaragua y desde el 2007 en Honduras. Desde los años 80, VECOMA ha estado apoyando proyectos de agricultura familiar en Nicaragua y a partir de 2007 en Honduras.</p>
+
+                <p>Desarrollamos sostenibilidad e inclusividad en los subsectores de cacao, cafe, hortalizas, para mejorar la calidad de vida de pequeños productores a través de una  producción resiliente, sostenible y un abastecimiento de alimentos sanos y de calidad a los mercados nacionales e internacionales.</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row apps">
+    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="row">
+                    <h4>Subsectores  </h4>
+                    <div class="row descripcion">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                            <img class="center-block apps-img" src="/static/nuevo/Subsectores.png" alt="">
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+                            Actores de hortaliza, cacao y café alinean sus politicas y estrategias hacia la sostenibilidad e inclusiva.
+                        </div>
+                    </div>
+                </div>
+                <div class="row btn-apps">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <button class="btn btn-primary waves-effect waves-light" type="submit">Dashboard</button>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <button class="btn btn-primary waves-effect waves-light" type="submit">Consulta</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="row">
+                    <h4>Productores </h4>
+                    <div class="row descripcion">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                            <img class="center-block apps-img" src="/static/nuevo/Productores.png" alt="">
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+                            Cacao fino y cafés especiales posicionados en mercados nichos a través de Modelos de Negocios Inclusivos con perspectiva de género y jóvenes.
+                        </div>
+                    </div>
+                </div>
+                <div class="row btn-apps">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <button class="btn btn-primary waves-effect waves-light" type="submit">Dashboard</button>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <a href="/productores/"class="btn btn-primary waves-effect waves-light">Consulta</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="row">
+                    <h4>Organización  </h4>
+                    <div class="row descripcion">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                            <img class="center-block apps-img" src="/static/nuevo/Organización.png" alt="">
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+                            Pequeños productores incrementan el volumen, calidad e inocuidad de sus productores ofertados a los mercados incluisivos en los rubros de hortaliza, cacao y café.
+                        </div>
+                    </div>
+                </div>
+                <div class="row btn-apps">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <button class="btn btn-primary waves-effect waves-light" type="submit">Dashboard</button>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <button class="btn btn-primary waves-effect waves-light" type="submit">Consulta</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="row">
+                    <h4>Financiero  </h4>
+                    <div class="row descripcion">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                            <img class="center-block apps-img" src="/static/nuevo/Financiero.png" alt="">
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+                            Es crucial que los actores de cada subsector compartan la visión, construyan la agenda común y contribuir con sus propios recursos para garantizar la sostenibilidad financiera.
+                        </div>
+                    </div>
+                </div>
+                <div class="row btn-apps">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <button class="btn btn-primary waves-effect waves-light" type="submit">Dashboard</button>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <button class="btn btn-primary waves-effect waves-light" type="submit">Consulta</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

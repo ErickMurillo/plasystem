@@ -3,6 +3,7 @@ from django.contrib import admin
 
 from .models import *
 from nested_admin import NestedStackedInline,NestedTabularInline,NestedModelAdmin
+from .forms import *
 
 # Register your models here.
 class MiembrosFamilia_Inline(admin.TabularInline):
@@ -66,6 +67,7 @@ class BPA_Inline(NestedTabularInline):
 class Produccion_Inline(NestedTabularInline):
     model = Produccion
     extra = 1
+    form = ProduccionForm
 
 class Mercado_Inline(NestedTabularInline):
     model = Mercado
@@ -135,6 +137,11 @@ class PracticasMIP_Inline(NestedStackedInline):
     max_num = 1
 
 class EncuestaAdmin(NestedModelAdmin):
+    list_display = ('productor','encuestador','grupo','fecha')
+    search_fields = ['productor__nombre','encuestador__nombre']
+    list_filter = ('grupo',)
+    date_hierarchy = 'fecha'
+
     inlines = [AreaFinca_Inline,DistribucionFinca_Inline,Certificacion_Inline,TipoCertificacion_Inline,
                 CertificadoEmpresa_Inline,BPA_Inline,Produccion_Inline,DestinoProduccion_Inline,
                 IngresosOtrosCultivos_Inline,IngresosFamilia_Inline,FuenteIngresos_Inline,
@@ -143,8 +150,8 @@ class EncuestaAdmin(NestedModelAdmin):
                 Biodiversidad_Inline,PaisajeSostenible_Inline,PracticasMIP_Inline]
 
     class Media:
-        css = {'all': ('css/admin-encuesta.css',)}
-        js = ('js/encuesta-admin.js',)
+        css = {'all': ('css/admin-encuesta.css','css/select2.min.css')}
+        js = ('js/jquery.min.js','js/select2.min.js','js/encuesta-admin.js')
 
 admin.site.register(Encuesta,EncuestaAdmin)
 admin.site.register(Encuestador)
