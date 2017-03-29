@@ -145,8 +145,8 @@ class EncuestaAdmin(NestedModelAdmin):
                 Biodiversidad_Inline,PaisajeSostenible_Inline,PracticasMIP_Inline]
 
     class Media:
-        css = {'all': ('css/admin-encuesta.css',)}
-        js = ('js/encuesta-admin.js',)
+        css = {'all': ('css/admin-encuesta.css','css/select2.min.css')}
+        js = ('js/jquery.min.js','js/select2.min.js','js/encuesta-admin.js')
 
 admin.site.register(Encuesta,EncuestaAdmin)
 admin.site.register(Encuestador)
