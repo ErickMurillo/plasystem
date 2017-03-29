@@ -14,12 +14,15 @@ class ObjetivosInline(NestedTabularInline):
 
 class DatosGeneralesAdmin(NestedModelAdmin):
     inlines = [ObjetivosInline]
+    list_display = ('nombre','fecha_inicio','fecha_finalizacion','pais','responsable')
+    search_fields = ('nombre','responsable')
+    list_filter = ('pais',)
+    date_hierarchy = 'fecha_finalizacion'
 
     class Media:
         css = {
             'all': ('css/subSectorAdmin.css',)
         }
-
 
 
 class TasaCambioPaisAnualInline(admin.TabularInline):
@@ -34,7 +37,6 @@ class TasaCambioPaisAnualAdmin(admin.ModelAdmin):
     form = TasaCambioPaisAnualForm
 
 # Register your models here.
-admin.site.register(Componentes)
 admin.site.register(GruposMetas)
 admin.site.register(DatosGenerales, DatosGeneralesAdmin)
 admin.site.register(ObjetivosResultados)
@@ -52,7 +54,7 @@ class RegistroMesesInline(admin.TabularInline):
 
 class RegistroPlanAnualAdmin(admin.ModelAdmin):
     inlines = [RegistroMesesInline]
-    list_display = ('proyecto','actividad')
+    list_display = ('proyecto','nombre')
 
     # def save_model(self, request, obj, form, change):
     #     print "el save model"
@@ -62,8 +64,6 @@ class RegistroPlanAnualAdmin(admin.ModelAdmin):
     #     formset.save() # this will save the children
     #     form.instance.save() # form.instance is the parent
 
-
-admin.site.register(Actividades)
 admin.site.register(CategoriaGastos)
 admin.site.register(RegistroPlanAnual, RegistroPlanAnualAdmin)
 admin.site.register(RegistroMeses)

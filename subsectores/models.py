@@ -76,7 +76,7 @@ class DatosGenerales(models.Model):
     grupo = models.ManyToManyField(GruposMetas)
 
     def __str__(self):
-        return self.componente.nombre
+        return '%s - %s' % (self.nombre, self.pais.nombre)
 
     class Meta:
         verbose_name = 'Dato General (proyecto)'
@@ -86,7 +86,7 @@ class DatosGenerales(models.Model):
 @python_2_unicode_compatible
 class ObjetivosResultados(models.Model):
     proyecto = models.ForeignKey(DatosGenerales)
-    objetivo_corto = models.CharField(max_length=25)
+    objetivo_corto = models.CharField(max_length=25, help_text='25 caracteres maximo')
     objetivo_completo = models.TextField()
 
     def __str__(self):
@@ -100,7 +100,7 @@ class ObjetivosResultados(models.Model):
 @python_2_unicode_compatible
 class Indicadores(models.Model):
     objetivo = models.ForeignKey(ObjetivosResultados)
-    descripcion_corto = models.CharField(max_length=25)
+    descripcion_corto = models.CharField(max_length=25, help_text='25 caracteres maximo')
     descripcion_completo = models.TextField()
     codigo = models.CharField(max_length=50)
     programatico_mayor = models.FloatField()
@@ -135,20 +135,30 @@ CHOICES_TIPO_ACTIVIDAD = ((1,'Contribuye'),(2,'No contribuye'),)
 @python_2_unicode_compatible
 class RegistroPlanAnual(models.Model):
     proyecto = models.ForeignKey(DatosGenerales)
-    nombre = models.CharField(max_length=250)
-    categoria = models.ForeignKey('Categoria de gatos', CategoriaGastos)
+    #indicador = models.ForeignKey(Indicadores)
+    indicador = ChainedForeignKey(
+        Indicadores, 
+        chained_field="proyecto",
+        chained_model_field="objetivo", 
+        show_all=False, 
+        auto_choose=True,
+        sort=True
+    )
+    nombre = models.CharField('Nombre de la actividad', max_length=250, help_text='Nombre completo de la actividad')
+    categoria = models.ForeignKey(CategoriaGastos, verbose_name='Categoria de gatos')
     codigo_financiero = models.CharField(max_length=50)
     tipo_actividad = models.IntegerField(choices=CHOICES_TIPO_ACTIVIDAD, 
-                    help_text='Contribuye al dato del indicador')
+                    help_text='Contribuye al dato del indicador',
+                    verbose_name='Esta actividad contribuye')
     total_metas = models.FloatField(default=0, editable=True, null=True, blank=True)
     total_presupuesto = models.FloatField(default=0, editable=True, null=True, blank=True)
 
     def __str__(self):
-        return self.proyecto.componente.nombre
+        return self.proyecto.nombre
 
     class Meta:
-        verbose_name = 'Registro plan anual'
-        verbose_name_plural = 'Registros planes anuales'
+        verbose_name = 'Registro plan de actividad anual'
+        verbose_name_plural = 'Registros planes de actividades anuales'
 
 
 CHOICES_MESES = ((1,'Enero'),(2,'Febrero'),
@@ -162,12 +172,12 @@ CHOICES_MESES = ((1,'Enero'),(2,'Febrero'),
 class RegistroMeses(models.Model):
     registro_anual = models.ForeignKey(RegistroPlanAnual)
     mes = models.IntegerField(choices=CHOICES_MESES)
-    anios = models.IntegerField()
+    anios = models.IntegerField('años')
     meta = models.FloatField()
     presupuesto = models.FloatField()
 
     def __str__(self):
-        return self.registro_anual.actividad.nombre
+        return self.registro_anual.nombre
 
     def save(self, *args, **kwargs):
         self.registro_anual.total_metas += self.meta
