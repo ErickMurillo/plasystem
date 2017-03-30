@@ -98,7 +98,7 @@ def get_munis(request):
         for id in lista:
             try:
                 depto = Departamento.objects.get(id = id)
-                municipios = Municipio.objects.filter(depto__id = depto.id).order_by('nombre')
+                municipios = Municipio.objects.filter(departamento__id = depto.id).order_by('nombre')
                 lista1 = []
                 for municipio in municipios:
                     muni = {}
