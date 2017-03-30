@@ -3639,6 +3639,10 @@ File: nuevo css
     border-radius: 5px;
     color: #5cb45b;
 }
+.nav.nav-tabs + .tab-content {
+  margin-bottom: 0;
+  padding: 0px;
+}
 /*
 File: Responsive
 */
