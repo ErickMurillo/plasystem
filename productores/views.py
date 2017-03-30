@@ -70,3 +70,7 @@ def consulta_productores(request,template="productores/consulta.html"):
             pass
 
     return render(request, template, locals())
+
+@login_required
+def dashboard_productores(request,template="productores/dashboard.html"):
+    return render(request, template, locals())
