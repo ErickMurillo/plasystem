@@ -5,6 +5,10 @@
 {% endblock %}
 <link rel="stylesheet" href="static/css/bootstrap-multiselect.css">
 {% block content %}
+<style type="text/css">
+  .footer3 {background-color: #2a323c;color: white;padding: 20px;width: 100%;position: absolute;bottom: 0px;}
+  .footer3 a{color: white;}
+</style>
 
 <div class="wrapper-page2">
     <div class="panel panel-color panel-primary panel-pages">
@@ -86,10 +90,10 @@
                     </div>
                 </div>-->
                 <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="form-group">
-                            <label class="col-md-6 control-label">Organización</label>
-                            <div class="col-md-6">
+                            <label class="col-md-3 control-label">Organización</label>
+                            <div class="col-md-9">
                                 {{form.organizacion}}
                             </div>
                         </div>
