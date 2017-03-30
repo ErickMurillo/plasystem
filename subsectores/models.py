@@ -153,6 +153,17 @@ class RegistroPlanAnual(models.Model):
     total_metas = models.FloatField(default=0, editable=True, null=True, blank=True)
     total_presupuesto = models.FloatField(default=0, editable=True, null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+        total_meta = 0
+        total_presupuesto = 0
+        for item in self.registromeses_set.all():
+            total_meta = total_meta + item.meta
+            total_presupuesto = total_presupuesto + item.presupuesto
+
+        self.total_metas = total_meta
+        self.total_presupuesto =  total_presupuesto
+        super(RegistroPlanAnual, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.proyecto.nombre
 
@@ -178,12 +189,6 @@ class RegistroMeses(models.Model):
 
     def __str__(self):
         return self.registro_anual.nombre
-
-    def save(self, *args, **kwargs):
-        self.registro_anual.total_metas += self.meta
-        self.registro_anual.total_presupuesto +=  self.presupuesto
-        print "esto esta en el modelo de registro de meses"
-        super(RegistroMeses, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Registro de mes'
