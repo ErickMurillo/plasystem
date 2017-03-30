@@ -2,6 +2,8 @@ from django.shortcuts import render
 from .models import *
 from .forms import *
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect
+import json as simplejson
 
 # Create your views here.
 def _queryset_filtrado(request):
@@ -74,3 +76,39 @@ def consulta_productores(request,template="productores/consulta.html"):
 @login_required
 def dashboard_productores(request,template="productores/dashboard.html"):
     return render(request, template, locals())
+
+#ajax
+def get_deptos(request):
+    ids = request.GET.get('ids', '')
+    if ids:
+        lista = ids.split(',')
+    results = []
+
+    foo = Encuesta.objects.filter(productor__pais__in = lista).order_by('producto__pais__nombre').distinct().values_list('productor__pais__id', flat=True)
+    paises = Departamento.objects.filter(id__in = foo).order_by('nombre').values('id', 'nombre')
+
+    return HttpResponse(simplejson.dumps(list(paises)), content_type = 'application/json')
+
+def get_munis(request):
+    ids = request.GET.get('ids', '')
+    dicc = {}
+    resultado = []
+    if ids:
+        lista = ids.split(',')
+        for id in lista:
+            try:
+                depto = Departamento.objects.get(id = id)
+                municipios = Municipio.objects.filter(depto__id = depto.id).order_by('nombre')
+                lista1 = []
+                for municipio in municipios:
+                    muni = {}
+                    muni['id'] = municipio.id
+                    muni['nombre'] = municipio.nombre
+                    lista1.append(muni)
+                    dicc[depto.nombre] = lista1
+            except:
+                pass
+
+    resultado.append(dicc)
+
+    return HttpResponse(simplejson.dumps(resultado), content_type = 'application/json')
