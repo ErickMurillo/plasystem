@@ -11,6 +11,7 @@ from datetime import date
 # Create your models here.
 SI_NO_CHOICES = (('Si','Si'),('No','No'))
 SEXO_CHOICES = (('Mujer','Mujer'),('Hombre','Hombre'))
+EDAD_CHOICES = ((1,'Menor 35'),(2,'Mayor 35'))
 
 class Productor(models.Model):
     nombre = models.CharField(max_length = 200,verbose_name = '1. Nombre y apellido')
@@ -23,6 +24,7 @@ class Productor(models.Model):
     municipio = ChainedForeignKey(Municipio,chained_field="departamento",chained_model_field="departamento")
     latitud = models.FloatField(null = True, blank = True)
     longitud = models.FloatField(null = True, blank = True)
+    edad = models.IntegerField(editable = False,choices = EDAD_CHOICES)
 
     class Meta:
         verbose_name = 'Productor'
@@ -32,6 +34,10 @@ class Productor(models.Model):
         #calcular edad a partir de fecha nacimiento
         today = date.today()
         edad = today.year - self.fecha_naciemiento.year - ((today.month, today.day) < (self.fecha_naciemiento.month, self.fecha_naciemiento.day))
+        if edad < 35:
+            self.edad = 1
+        else:
+            self.edad = 2
         super(Productor, self).save(*args, **kwargs)
 
     def __str__(self):

@@ -47,10 +47,7 @@
                         <div class="form-group">
                             <label class="col-md-6 control-label">Edad</label>
                             <div class="col-md-6">
-                              <select class="form-control">
-                                  <option>Menores 35</option>
-                                  <option>Mayores 35</option>
-                              </select>
+                              {{form.edad}}
                             </div>
                         </div>
                     </div>
@@ -130,6 +127,7 @@
 <script src="/static/js/bootstrap-multiselect.js"></script>
 <script type="text/javascript">
   $(document).ready(function(){
+    $("#id_edad").addClass("form-control")
     $("#id_anio").addClass("form-control").multiselect({
       buttonWidth: '100%',
       includeSelectAllOption: true,

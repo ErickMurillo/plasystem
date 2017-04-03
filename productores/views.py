@@ -27,6 +27,9 @@ def _queryset_filtrado(request):
     if request.session['sexo']:
         params['productor__sexo'] = request.session['sexo']
 
+    if request.session['edad']:
+        params['productor__edad'] = request.session['edad']
+
 	unvalid_keys = []
 	for key in params:
 		if not params[key]:
@@ -49,11 +52,13 @@ def consulta_productores(request,template="productores/consulta.html"):
             request.session['municipio'] = form.cleaned_data['municipio']
             request.session['organizacion'] = form.cleaned_data['organizacion']
             request.session['sexo'] = form.cleaned_data['sexo']
-            # request.session['edad'] = form.cleaned_data['edad']
+            request.session['edad'] = form.cleaned_data['edad']
 
             mensaje = "Todas las variables estan correctamente :)"
             request.session['activo'] = True
             centinela = 1
+
+            return HttpResponseRedirect('/productores/dashboard/')
         else:
             centinela = 0
 
@@ -67,7 +72,7 @@ def consulta_productores(request,template="productores/consulta.html"):
             del request.session['municipio']
             del request.session['organizacion']
             del request.session['sexo']
-            # del request.session['edad']
+            del request.session['edad']
         except:
             pass
 

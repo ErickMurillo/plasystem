@@ -30,7 +30,7 @@ class ProductoresForm(forms.Form):
         self.fields['municipio'] = forms.ModelMultipleChoiceField(queryset=Municipio.objects.all(),required=False,label='Municipio')
         self.fields['organizacion'] = forms.ModelMultipleChoiceField(queryset=organizaciones(),required=False,label='Organización')
         self.fields['sexo'] = forms.ChoiceField(choices=SEXO_CHOICES,required=False,label='Sexo')
-        # self.fields['edad'] = forms.ChoiceField(choices=EDAD_CHOICES,required=False,label='Edad')
+        self.fields['edad'] = forms.ChoiceField(choices=EDAD_CHOICES,required=False,label='Edad')
 
 #validadiones
 class ProduccionForm(forms.ModelForm):
