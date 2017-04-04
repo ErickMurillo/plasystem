@@ -276,7 +276,7 @@
                                 <div class="col-sm-6">
                                     <div class="panel panel-primary">
                                         <div class="panel-body">
-                                            <h4 class="m-t-0">Ingreso del productor por cultivo <span class="mdi mdi-help-circle"></span><span class="more-ind"> <a href="">+indicadores</a> </span></h4>
+                                            <h4 class="m-t-0">Ingresos del productor por cultivo <span class="mdi mdi-help-circle"></span><span class="more-ind"> <a href="">+indicadores</a> </span></h4>
 
                                             <div id="grafico1"></div>
                                         </div>
@@ -305,10 +305,14 @@
                                                 <!-- Tab panes -->
                                                 <div class="tab-content">
                                                     <div role="tabpanel" class="tab-pane active" id="café">
-                                                        <div id="grafico2" width:'100' style="height: 350px;"></div>
+                                                        <div id="grafico2" width:'100%' style="height: 350px;"></div>
                                                     </div>
-                                                    <div role="tabpanel" class="tab-pane" id="cacao">...</div>
-                                                    <div role="tabpanel" class="tab-pane" id="hortaliza">...</div>
+                                                    <div role="tabpanel" class="tab-pane" id="cacao">
+                                                        <div id="grafico2-1" width:'100%' style="height: 350px;"></div>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane" id="hortaliza">
+                                                        <div id="grafico2-2" width:'100%' style="height: 350px;"></div>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -321,70 +325,39 @@
                             </div>
                             <!-- end row -->
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-12">
                                     <div class="panel panel-primary">
                                         <div class="panel-body">
                                             <h4 class="m-t-0">Ventas de productos sanos al mercado <span class="mdi mdi-help-circle"></span></h4>
-                                            <div role="tabpanel tabs-grafico">
-                                                <!-- Nav tabs -->
-                                                <ul class="nav nav-tabs" role="tablist">
-                                                    <li role="presentation" class="active">
-                                                        <a href="#cafe2" aria-controls="cafe2" role="tab" data-toggle="tab">café</a>
-                                                    </li>
-                                                    <li role="presentation">
-                                                        <a href="#cacao2" aria-controls="cacao2" role="tab" data-toggle="tab">Cacao</a>
-                                                    </li>
-                                                    <li role="presentation">
-                                                        <a href="#hortaliza2" aria-controls="hortaliza2" role="tab" data-toggle="tab">Hortaliza</a>
-                                                    </li>
-                                                </ul>
-                                            
-                                                <!-- Tab panes -->
-                                                <div class="tab-content">
-                                                    <div role="tabpanel" class="tab-pane active" id="cafe2">
-                                                        <div id="grafico3" width:'100' style="height: 350px;"></div>
-                                                    </div>
-                                                    <div role="tabpanel" class="tab-pane" id="cacao2">...</div>
-                                                    <div role="tabpanel" class="tab-pane" id="hortaliza2">...</div>
-                                                </div>
-                                            </div>
+                                            <div id="grafico3" width:'100%' style="height: 350px;"></div>
                                            
                                         </div>
                                     </div>
                                 </div>
 
+                                
+
+                            </div>
+                            <!-- end row -->
+                           
+
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="panel panel-primary">
                                         <div class="panel-body">
                                             <h4 class="m-t-0">Aumento del índice de producción sustentable <span class="mdi mdi-help-circle"></span></h4>
 
-                                            <div id="grafico4"></div>
+                                            <div id="grafico4" width:'100%' style="height: 350px;"></div>
                                            
                                         </div>
                                     </div>
                                 </div>
-
-                            </div>
-                            <!-- end row -->
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-body">
-                                            <h4 class="m-t-0">Incremento del margen bruto <span class="mdi mdi-help-circle"></span></h4>
-                                            <div id="grafico5" style="height: 200px;"></div>
-                                            <div id="grafico6" style="height: 200px;"></div>
-                                            <div id="grafico7" style="height: 200px;"></div>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="col-sm-6">
                                     <div class="panel panel-primary">
                                         <div class="panel-body">
                                             <h4 class="m-t-0">Aumento del índice de manejo de plaga <span class="mdi mdi-help-circle"></span></h4>
 
-                                            <div id="grafico8"></div>
+                                            <div id="grafico8" width:'100%' style="height: 350px;"></div>
                                            
                                         </div>
                                     </div>
@@ -392,7 +365,20 @@
 
                             </div>
                             <!-- end row -->
-
+                             <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-body">
+                                            <h4 class="m-t-0">Incremento del margen bruto <span class="mdi mdi-help-circle"></span></h4>
+                                            <div id="grafico5" style="height: 150px;"></div>
+                                            <div id="grafico6" style="height: 150px;"></div>
+                                            <div id="grafico7" style="height: 150px;"></div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end row -->
 
 
 
@@ -439,16 +425,13 @@
             Highcharts.chart('grafico1', {
 
                 title: {
-                    text: 'Solar Employment Growth by Sector, 2010-2016'
+                    text: ''
                 },
 
-                subtitle: {
-                    text: 'Source: thesolarfoundation.com'
-                },
 
                 yAxis: {
                     title: {
-                        text: 'Number of Employees'
+                        text: 'Dólares'
                     }
                 },
                 legend: {
@@ -459,40 +442,33 @@
 
                 plotOptions: {
                     series: {
-                        pointStart: 2010
+                        pointStart: 2016
                     }
                 },
 
                 series: [{
-                    name: 'Installation',
+                    name: 'Café',
                     data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
                 }, {
-                    name: 'Manufacturing',
+                    name: 'Cacao',
                     data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
                 }, {
-                    name: 'Sales & Distribution',
-                    data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-                }, {
-                    name: 'Project Development',
-                    data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-                }, {
-                    name: 'Other',
-                    data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+                    name: 'Hortalizas',
+                    data: [5850, 6988, 7988, 12169, 15112, 22452, 34400, 34227]
                 }]
 
             });
+
             Highcharts.chart('grafico2', {
                 chart: {
                     type: 'bar'
                 },
                 title: {
-                    text: 'Historic World Population by Region'
+                    text: ''
                 },
-                subtitle: {
-                    text: 'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
-                },
+
                 xAxis: {
-                    categories: ['Africa', 'America', 'Asia', 'Europe'],
+                    categories: ['2016', '2017', '2018', '2019', '2020'],
                     title: {
                         text: null
                     }
@@ -500,7 +476,7 @@
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Population (millions)',
+                        text: 'Héctareas',
                         align: 'high'
                     },
                     labels: {
@@ -508,7 +484,7 @@
                     }
                 },
                 tooltip: {
-                    valueSuffix: ' millions'
+                    valueSuffix: 'ha'
                 },
                 plotOptions: {
                     bar: {
@@ -532,188 +508,260 @@
                     enabled: false
                 },
                 series: [{
-                    name: 'Year 1800',
-                    data: [107, 31, 635, 203]
+                    name: 'Producción de café',
+                    data: [5, 8, 10, 11, 16]
                 }, {
-                    name: 'Year 1900',
-                    data: [133, 156, 947, 408]
-                }, {
-                    name: 'Year 2012',
-                    data: [1052, 954, 4250, 740]
+                    name: 'Área total',
+                    data: [8, 10, 12, 15, 20]
                 }]
             });
-            Highcharts.chart('grafico3', {
+            Highcharts.chart('grafico2-1', {
                 chart: {
-                    type: 'column'
+                    type: 'bar'
                 },
                 title: {
-                    text: 'Monthly Average Rainfall'
+                    text: ''
                 },
-                subtitle: {
-                    text: 'Source: WorldClimate.com'
-                },
+
                 xAxis: {
-                    categories: [
-                        'Jan',
-                        'Feb',
-                        'Mar',
-                        'Apr',
-                        'May',
-                        'Jun',
-                        'Jul',
-                        'Aug',
-                        'Sep',
-                        'Oct',
-                        'Nov',
-                        'Dec'
-                    ],
-                    crosshair: true
+                    categories: ['2016', '2017', '2018', '2019', '2020'],
+                    title: {
+                        text: null
+                    }
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Rainfall (mm)'
+                        text: 'Héctareas',
+                        align: 'high'
+                    },
+                    labels: {
+                        overflow: 'justify'
                     }
                 },
                 tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                        '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
+                    valueSuffix: 'ha'
                 },
                 plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
                     }
                 },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -40,
+                    y: 80,
+                    floating: true,
+                    borderWidth: 1,
+                    backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                    shadow: true
+                },
+                credits: {
+                    enabled: false
+                },
                 series: [{
-                    name: 'Tokyo',
-                    data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-
+                    name: 'Producción de cacao',
+                    data: [5, 8, 10, 11, 16]
                 }, {
-                    name: 'New York',
-                    data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+                    name: 'Área total',
+                    data: [8, 10, 12, 15, 20]
+                }]
+            });
+            Highcharts.chart('grafico2-2', {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: ''
+                },
 
+                xAxis: {
+                    categories: ['2016', '2017', '2018', '2019', '2020'],
+                    title: {
+                        text: null
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Héctareas',
+                        align: 'high'
+                    },
+                    labels: {
+                        overflow: 'justify'
+                    }
+                },
+                tooltip: {
+                    valueSuffix: 'ha'
+                },
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -40,
+                    y: 80,
+                    floating: true,
+                    borderWidth: 1,
+                    backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                    shadow: true
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: 'Producción de hortalizas',
+                    data: [5, 8, 10, 11, 16]
+                }, {
+                    name: 'Área total',
+                    data: [8, 10, 12, 15, 20]
+                }]
+            });
+
+            Highcharts.chart('grafico3', {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: ''
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    categories: ['Productores con<br>producción sustentable', 'Productores que<br>realizan MIP', 'Productores que<br>realizan BPA'],
+                    title: {
+                        text: null
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '',
+                        align: 'high'
+                    },
+                    labels: {
+                        overflow: 'justify'
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ''
+                },
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                legend: {
+                   align: 'center',
+                   verticalAlign: 'bottom',
+                   layout: 'horizontal'
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: 'Year 2016',
+                    data: [20, 31, 45]
+                }, {
+                    name: 'Year 2017',
+                    data: [10, 25, 32]
+                }, {
+                    name: 'Year 2018',
+                    data: [15, 24, 35]
+                }, {
+                    name: 'Year 2019',
+                    data: [10, 35, 40]
+                }, {
+                    name: 'Year 2020',
+                    data: [15, 34, 45]
                 }]
             });
 
             Highcharts.chart('grafico4', {
 
-                chart: {
-                    polar: true,
-                    type: 'line'
-                },
+               chart: {
+                   polar: true,
+                   type: 'line'
+               },
 
-                title: {
-                    text: 'Budget vs spending',
-                    x: -80
-                },
+               title: {
+                   text: '',
+                   x: -80
+               },
 
-                pane: {
-                    size: '80%'
-                },
+               pane: {
+                   size: '80%'
+               },
 
-                xAxis: {
-                    categories: ['Sales', 'Marketing', 'Development', 'Customer Support',
-                            'Information Technology', 'Administration'],
-                    tickmarkPlacement: 'on',
-                    lineWidth: 0
-                },
+               xAxis: {
+                   categories: ['Conservación de suelos', 'Manejo landscape', 'Biodiversidad', 'Cambios climáticos',
+                           'Manejo de <br/>recursos naturales', 'Manejo de aguas'],
+                   tickmarkPlacement: 'on',
+                   lineWidth: 0
+               },
 
-                yAxis: {
-                    gridLineInterpolation: 'polygon',
-                    lineWidth: 0,
-                    min: 0
-                },
+               yAxis: {
+                   gridLineInterpolation: 'circle',
+                   lineWidth: 0,
+                   min: 0
+               },
 
-                tooltip: {
-                    shared: true,
-                    pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
-                },
+               tooltip: {
+                   shared: true,
+                   pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
+               },
 
-                legend: {
-                    align: 'right',
-                    verticalAlign: 'top',
-                    y: 70,
-                    layout: 'vertical'
-                },
+               legend: {
+                  align: 'center',
+                  verticalAlign: 'bottom',
+                  layout: 'horizontal'
+              },
 
-                series: [{
-                    name: 'Allocated Budget',
-                    data: [43000, 19000, 60000, 35000, 17000, 10000],
-                    pointPlacement: 'on'
+               series: [{
+                   name: '2016',
+                   data: [100,105, 110, 115, 120, 150],
+                   pointPlacement: 'on'
+               }, {
+                   name: '2017',
+                   data: [200, 215, 225, 235, 245, 250],
+                   pointPlacement: 'on'
+               }, {
+                   name: '2018',
+                   data: [300, 320, 340, 360, 350, 360],
+                   pointPlacement: 'on'
                 }, {
-                    name: 'Actual Spending',
-                    data: [50000, 39000, 42000, 31000, 26000, 14000],
-                    pointPlacement: 'on'
-                }]
+                   name: '2019',
+                   data: [400, 420, 425, 440, 460, 465],
+                   pointPlacement: 'on'
+                }, {
+                   name: '2020',
+                   data: [600, 640, 650, 680, 695, 700],
+                   pointPlacement: 'on'
+               }]
 
             });
-            Highcharts.chart('grafico8', {
 
-                chart: {
-                    polar: true,
-                    type: 'line'
-                },
-
-                title: {
-                    text: 'Budget vs spending',
-                    x: -80
-                },
-
-                pane: {
-                    size: '80%'
-                },
-
-                xAxis: {
-                    categories: ['Sales', 'Marketing', 'Development', 'Customer Support',
-                            'Information Technology', 'Administration'],
-                    tickmarkPlacement: 'on',
-                    lineWidth: 0
-                },
-
-                yAxis: {
-                    gridLineInterpolation: 'polygon',
-                    lineWidth: 0,
-                    min: 0
-                },
-
-                tooltip: {
-                    shared: true,
-                    pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
-                },
-
-                legend: {
-                    align: 'right',
-                    verticalAlign: 'top',
-                    y: 70,
-                    layout: 'vertical'
-                },
-
-                series: [{
-                    name: 'Allocated Budget',
-                    data: [43000, 19000, 60000, 35000, 17000, 10000],
-                    pointPlacement: 'on'
-                }, {
-                    name: 'Actual Spending',
-                    data: [50000, 39000, 42000, 31000, 26000, 14000],
-                    pointPlacement: 'on'
-                }]
-
-            });
             Highcharts.chart('grafico5', {
                 chart: {
                     type: 'spline'
                 },
                 title: {
-                    text: 'Snow depth at Vikjafjellet, Norway'
+                    text: ''
                 },
-                subtitle: {
-                    text: 'Irregular time data in Highcharts JS'
-                },
+                
                 xAxis: {
                     type: 'datetime',
                     dateTimeLabelFormats: { // don't display the dummy year
@@ -775,11 +823,9 @@
                     type: 'spline'
                 },
                 title: {
-                    text: 'Snow depth at Vikjafjellet, Norway'
+                    text: ''
                 },
-                subtitle: {
-                    text: 'Irregular time data in Highcharts JS'
-                },
+                
                 xAxis: {
                     type: 'datetime',
                     dateTimeLabelFormats: { // don't display the dummy year
@@ -841,11 +887,9 @@
                     type: 'spline'
                 },
                 title: {
-                    text: 'Snow depth at Vikjafjellet, Norway'
+                    text: ''
                 },
-                subtitle: {
-                    text: 'Irregular time data in Highcharts JS'
-                },
+                
                 xAxis: {
                     type: 'datetime',
                     dateTimeLabelFormats: { // don't display the dummy year
@@ -901,6 +945,71 @@
                         [Date.UTC(1971, 5, 3), 0]
                     ]
                 }]
+            });
+
+
+            Highcharts.chart('grafico8', {
+
+               chart: {
+                   polar: true,
+                   type: 'line'
+               },
+
+               title: {
+                   text: '',
+                   x: -80
+               },
+
+               pane: {
+                   size: '80%'
+               },
+
+               xAxis: {
+                   categories: ['Material de siembra sano', 'Preparación del terreno', 'Control de plagas y enfermedades', 'Densidad del sistema correcto',
+                           'Fertilización adecuada', 'Control de malezas'],
+                   tickmarkPlacement: 'on',
+                   lineWidth: 0
+               },
+
+               yAxis: {
+                   gridLineInterpolation: 'circle',
+                   lineWidth: 0,
+                   min: 0
+               },
+
+               tooltip: {
+                   shared: true,
+                   pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
+               },
+
+               legend: {
+                  align: 'center',
+                  verticalAlign: 'bottom',
+                  layout: 'horizontal'
+              },
+
+               series: [{
+                   name: '2016',
+                   data: [100,105, 110, 115, 120, 150],
+                   pointPlacement: 'on'
+               }, {
+                   name: '2017',
+                   data: [200, 215, 225, 235, 245, 250],
+                   pointPlacement: 'on'
+               }, {
+                   name: '2018',
+                   data: [300, 320, 340, 360, 350, 360],
+                   pointPlacement: 'on'
+                }, {
+                   name: '2019',
+                   data: [400, 420, 425, 440, 460, 465],
+                   pointPlacement: 'on'
+                }, {
+                   name: '2020',
+                   data: [600, 640, 650, 680, 695, 700],
+                   pointPlacement: 'on'
+               }]
+
             });
            
         </script>
