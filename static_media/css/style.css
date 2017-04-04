@@ -3207,7 +3207,7 @@ body.fixed-left .side-menu.left {
   list-style: none;
   margin: 0;
   padding: 0;
-  position: relative;
+  /*position: relative;*/
   text-decoration: none;
 }
 .notification-icon-box {
@@ -3597,7 +3597,7 @@ File: nuevo css
   text-align: center;
   padding-bottom: 10px;
 }
-.apps .descripcion{  
+.apps .descripcion{
   min-height: 160px;
 }
 .apps-img{
@@ -3622,7 +3622,7 @@ File: nuevo css
     color: #5cb45b !important;
 }
 .navbar-dashboard .navbar-nav>.active>a{
-    
+
     background: #5cb45b;
     color: white !important;
 }
@@ -3729,4 +3729,3 @@ File: Responsive
     display: none !important;
   }
 }
-
