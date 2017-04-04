@@ -38,7 +38,7 @@ def _queryset_filtrado(request):
 	for key in unvalid_keys:
 		del params[key]
 
-	return Encuesta.objects.filter(**params)
+    return Encuesta.objects.filter(**params)
 
 @login_required
 def consulta_productores(request,template="productores/consulta.html"):
@@ -80,7 +80,11 @@ def consulta_productores(request,template="productores/consulta.html"):
 
 @login_required
 def dashboard_productores(request,template="productores/dashboard.html"):
-    # filtro = _queryset_filtrado(request)
+    if 'anio' not in request.session:
+        filtro = Encuesta.objects.all()
+    else:
+        filtro = _queryset_filtrado(request)
+
     return render(request, template, locals())
 
 #ajax
