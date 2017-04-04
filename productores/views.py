@@ -80,6 +80,9 @@ def consulta_productores(request,template="productores/consulta.html"):
 
 @login_required
 def dashboard_productores(request,template="productores/dashboard.html"):
+    filtro = _queryset_filtrado(request)
+    print filtro
+    print request.session['departamento']
     return render(request, template, locals())
 
 #ajax
