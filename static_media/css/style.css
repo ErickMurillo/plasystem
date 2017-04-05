@@ -3650,6 +3650,9 @@ File: nuevo css
     height: 0;
     overflow-y: hidden;
 }
+.n-dash{
+  font-size: 20px;
+}
 /*
 File: Responsive
 */
