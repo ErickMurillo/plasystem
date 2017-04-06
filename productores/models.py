@@ -7,12 +7,14 @@ from lugar.models import *
 from smart_selects.db_fields import ChainedForeignKey
 from multiselectfield import MultiSelectField
 from datetime import date
+from django.utils.encoding import python_2_unicode_compatible
 
 # Create your models here.
 SI_NO_CHOICES = (('Si','Si'),('No','No'))
 SEXO_CHOICES = (('Mujer','Mujer'),('Hombre','Hombre'))
 EDAD_CHOICES = ((1,'Menor 35'),(2,'Mayor 35'))
 
+@python_2_unicode_compatible
 class Productor(models.Model):
     nombre = models.CharField(max_length = 200,verbose_name = '1. Nombre y apellido')
     fecha_naciemiento = models.DateField(verbose_name = '2. Fecha de nacimiento')
@@ -41,7 +43,7 @@ class Productor(models.Model):
         super(Productor, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.nombre.encode('utf-8')
+        return self.nombre
 
 
 FAMILIA_CHOICES = (('Hombres > 31 años','Hombres > 31 años'),('Mujeres > 31 años','Mujeres > 31 años'),('Ancianos > 64 años','Ancianos > 64 años'),
@@ -154,6 +156,8 @@ class TipoCertificacion(models.Model):
         verbose_name = '10.1_En el caso SI, indique si la certificación es'
         verbose_name_plural = '10.1_En el caso SI, indique si la certificación es'
 
+
+@python_2_unicode_compatible
 class Certificado(models.Model):
     nombre = models.CharField(max_length = 250)
 
@@ -162,8 +166,9 @@ class Certificado(models.Model):
         verbose_name_plural = 'Certificados que posee el productor'
 
     def __str__(self):
-        return self.nombre.encode('utf-8')
+        return self.nombre
 
+@python_2_unicode_compatible
 class EmpresaCertifica(models.Model):
     nombre = models.CharField(max_length = 250)
 
@@ -172,7 +177,7 @@ class EmpresaCertifica(models.Model):
         verbose_name_plural = 'Empresas que certifican al productor'
 
     def __str__(self):
-        return self.nombre.encode('utf-8')
+        return self.nombre
 
 class CertificadoEmpresa(models.Model):
     encuesta = models.ForeignKey(Encuesta)
@@ -183,6 +188,7 @@ class CertificadoEmpresa(models.Model):
         verbose_name = '10.2_En el caso SI, indique el tipo de certificación y nombre de la empresa'
         verbose_name_plural = '10.2_En el caso SI, indique el tipo de certificación y nombre de la empresa'
 
+@python_2_unicode_compatible
 class EliminacionFocos(models.Model):
     nombre = models.CharField(max_length = 250)
 
@@ -191,8 +197,9 @@ class EliminacionFocos(models.Model):
         verbose_name_plural = 'Eliminación de focos de contaminación dentro y fuera del cultivo'
 
     def __str__(self):
-        return self.nombre.encode('utf-8')
+        return self.nombre
 
+@python_2_unicode_compatible
 class ProteccionFuentes(models.Model):
     nombre = models.CharField(max_length = 250)
 
@@ -201,7 +208,7 @@ class ProteccionFuentes(models.Model):
         verbose_name_plural = 'Protección de fuentes y calidad de agua (pozos, ríos)'
 
     def __str__(self):
-        return self.nombre.encode('utf-8')
+        return self.nombre
 
 HIGIENE_CHOICES = (('Lavado de manos','Lavado de manos'),('Dispone de letrina','Dispone de letrina'),('Obreros no poseen enfermedades infecciosas','Obreros no poseen enfermedades infecciosas'))
 
@@ -222,10 +229,13 @@ class BPA(models.Model):
 
 UNIDAD_MEDIDA = (('Libra','Libra'),('Unidad','Unidad'),('Docena','Docena'),('Quintal','Quintal'))
 
+CULTIVO_CHOICES = ((1,'Café'),(2,'Cacao'),(3,'Hortaliza'))
+
 class Cultivo(models.Model):
     nombre = models.CharField(max_length = 250)
     unidad_medida = models.CharField(max_length = 50,choices = UNIDAD_MEDIDA)
-    hortaliza = models.BooleanField(blank = True)
+    # hortaliza = models.BooleanField(blank = True)
+    tipo = models.IntegerField(choices = CULTIVO_CHOICES)
 
     def __str__(self):
         return u'%s - %s' % (self.nombre.encode('utf-8'),self.unidad_medida)

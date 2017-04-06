@@ -44,13 +44,17 @@
                                 </button>
                                 <span class="clearfix"></span>
                             </div>
-                            <ul class="nav navbar-nav nav-pais">
-                                <li class="active"><a href="#">Nicaragua</a></li>
-                                <li><a href="#">Honduras</a></li>
-                                <li><a href="#">Guatemala</a></li>
 
+                              <ul class="nav navbar-nav nav-pais">
+                              {% if not request.session.anio %}
+                                <li {% if request.path == '/productores/dashboard/nicaragua' %}class="active"{% endif %}><a href="/productores/dashboard/nicaragua">Nicaragua</a></li>
+                                <li {% if request.path == '/productores/dashboard/honduras' %}class="active"{% endif %}><a href="/productores/dashboard/honduras">Honduras</a></li>
+                                <li {% if request.path == '/productores/dashboard/guatemala' %}class="active"{% endif %}><a href="/productores/dashboard/guatemala">Guatemala</a></li>
+                              {% else %}
+                                <li class="active"><a href="#">{{request.session.pais}}</a></li>
+                              {% endif %}
+                              </ul>
 
-                            </ul>
 
                             <ul class="nav navbar-nav navbar-right pull-right">
 
@@ -108,14 +112,16 @@
                     </div>
                     <!--- Divider -->
 
-
+                    <form class="form-horizontal m-t-20" action="." method="post">{% csrf_token %}
                     <div id="sidebar-menu">
                         <ul>
                             <li>
                                 <a href="javascript:void(0);" class="waves-effect"><span> Año </span> <span class="pull-right"><i class="ion-arrow-down-b"></i></span></a>
+                                {{form.anio}}
                             </li>
                             <li>
                                 <a href="javascript:void(0);" class="waves-effect"><span> Edad </span> <span class="pull-right"><i class="ion-arrow-down-b"></i></span></a>
+                                {{form.edad}}
                             </li>
                             <li>
                                 <a href="javascript:void(0);" class="waves-effect"><span> sexo </span> <span class="pull-right"><i class="ion-arrow-down-b"></i></span></a>
@@ -123,6 +129,7 @@
                             </li>
                             <li>
                                 <a href="javascript:void(0);" class="waves-effect"><span> País </span> <span class="pull-right"><i class="ion-arrow-down-b"></i></span></a>
+                                {{form.pais}}
                             </li>
                             <li>
                                 <a href="javascript:void(0);" class="waves-effect"><span> Departamento </span> <span class="pull-right"><i class="ion-arrow-down-b"></i></span></a>
@@ -180,6 +187,7 @@
                             <!--</li>-->
                         </ul>
                     </div>
+                  </form>
                     <div class="clearfix"></div>
                 </div> <!-- end sidebarinner -->
             </div>
@@ -208,7 +216,7 @@
                                             <h4 class="panel-title text-muted font-light"><b>Familias</b></h4>
                                         </div>
                                         <div class="panel-body p-t-10">
-                                            <h2 class="m-t-0 m-b-15"><b>1500</b></h2>
+                                            <h2 class="m-t-0 m-b-15"><b>{{familias}}</b></h2>
                                             <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
                                         </div>
                                     </div>
@@ -220,7 +228,7 @@
                                             <h4 class="panel-title text-muted font-light"><b>Hombres</b></h4>
                                         </div>
                                         <div class="panel-body p-t-10">
-                                            <h2 class="m-t-0 m-b-15"><b>800</b></h2>
+                                            <h2 class="m-t-0 m-b-15"><b>{{hombres}}</b></h2>
                                             <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
                                         </div>
                                     </div>
@@ -232,7 +240,7 @@
                                             <h4 class="panel-title text-muted font-light"><b>Mujeres</b></h4>
                                         </div>
                                         <div class="panel-body p-t-10">
-                                            <h2 class="m-t-0 m-b-15"><b>700</b></h2>
+                                            <h2 class="m-t-0 m-b-15"><b>{{mujeres}}</b></h2>
                                             <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
                                         </div>
                                     </div>
@@ -243,7 +251,7 @@
                                             <h4 class="panel-title text-muted font-light"><b>Menores de 35</b></h4>
                                         </div>
                                         <div class="panel-body p-t-10">
-                                            <h2 class="m-t-0 m-b-15"><b>80</b></h2>
+                                            <h2 class="m-t-0 m-b-15"><b>{{menores_35}}</b></h2>
                                             <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
                                         </div>
                                     </div>
@@ -254,7 +262,7 @@
                                             <h4 class="panel-title text-muted font-light"><b>Hectareas</b></h4>
                                         </div>
                                         <div class="panel-body p-t-10">
-                                            <h2 class="m-t-0 m-b-15"><b>75</b></h2>
+                                            <h2 class="m-t-0 m-b-15"><b>{{hectareas}}</b></h2>
                                             <p class="text-muted m-b-0 m-t-20"><b>Promedio</b></p>
                                         </div>
                                     </div>
@@ -265,7 +273,7 @@
                                             <h4 class="panel-title text-muted font-light"><b>Certificación</b></h4>
                                         </div>
                                         <div class="panel-body p-t-10">
-                                            <h2 class="m-t-0 m-b-15"><b>500</b></h2>
+                                            <h2 class="m-t-0 m-b-15"><b>{{certificacion}}</b></h2>
                                             <p class="text-muted m-b-0 m-t-20"><b>Productores</b></p>
                                         </div>
                                     </div>
@@ -460,19 +468,19 @@
 
                 plotOptions: {
                     series: {
-                        pointStart: 2016
+                        pointStart: {% for k in anios.keys %}{% if forloop.first%}{{k}}{% endif %}{% endfor %}
                     }
                 },
 
                 series: [{
                     name: 'Café',
-                    data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+                    data: [{% for v in anios.values %}{{v.0|default:'0'}},{% endfor %}]
                 }, {
                     name: 'Cacao',
-                    data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+                    data: [{% for v in anios.values %}{{v.1|default:'0'}},{% endfor %}]
                 }, {
                     name: 'Hortalizas',
-                    data: [5850, 6988, 7988, 12169, 15112, 22452, 34400, 34227]
+                    data: [{% for v in anios.values %}{{v.2|default:'0'}},{% endfor %}]
                 }]
 
             });

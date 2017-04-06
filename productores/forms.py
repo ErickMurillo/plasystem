@@ -25,7 +25,7 @@ class ProductoresForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(ProductoresForm, self).__init__(*args, **kwargs)
         self.fields['anio'] = forms.MultipleChoiceField(choices=fecha_choice(),required=True,label='Año')
-        self.fields['pais'] = forms.ModelMultipleChoiceField(queryset=pais(), required=True,label='País')
+        self.fields['pais'] = forms.ModelChoiceField(queryset=pais(), required=True,label='País')
         self.fields['departamento'] = forms.ModelMultipleChoiceField(queryset=Departamento.objects.all(),required=False,label='Departamento')
         self.fields['municipio'] = forms.ModelMultipleChoiceField(queryset=Municipio.objects.all(),required=False,label='Municipio')
         self.fields['organizacion'] = forms.ModelMultipleChoiceField(queryset=organizaciones(),required=False,label='Organización')
