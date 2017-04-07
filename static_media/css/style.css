@@ -3653,6 +3653,23 @@ File: nuevo css
 .n-dash{
   font-size: 20px;
 }
+#wrapper.enlarged .left.side-menu .form-group{
+  display: none;
+}
+#wrapper.enlarged .left.side-menu .btn-primary {
+  display: none;
+}
+#wrapper.enlarged .topbar .topbar-left{
+      width: 0px !important;
+}
+#wrapper.enlarged .left.side-menu {
+    padding-top: 0;
+    width: 0px;
+    z-index: 5;
+}
+#wrapper.enlarged .content-page{
+      margin-left: 0px;
+}
 /*
 File: Responsive
 */
