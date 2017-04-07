@@ -198,6 +198,7 @@ def dashboard_productores_nicaragua(request,template="productores/dashboard.html
         hortalizas = filtro.filter(destinoproduccion__cultivo__tipo = 3, anio = year[0]).aggregate(
                 sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
 
+        #
         anios[year[0]] = (cafe,cacao,hortalizas)
 
     print anios
@@ -252,6 +253,23 @@ def dashboard_productores_honduras(request,template="productores/dashboard.html"
     hectareas = manzanas * hectarea
     certificacion = filtro.filter(certificacion__certificacion = 'Si').count()
 
+    #graficas
+    years = fecha_choice()
+    anios = collections.OrderedDict()
+    for year in years:
+        #ingresos
+        cafe = filtro.filter(destinoproduccion__cultivo__tipo = 1, anio = year[0]).aggregate(
+                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
+
+        cacao = filtro.filter(destinoproduccion__cultivo__tipo = 2, anio = year[0]).aggregate(
+                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
+
+        hortalizas = filtro.filter(destinoproduccion__cultivo__tipo = 3, anio = year[0]).aggregate(
+                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
+
+        #
+        anios[year[0]] = (cafe,cacao,hortalizas)
+
     return render(request, template, locals())
 
 @login_required
@@ -304,6 +322,23 @@ def dashboard_productores_guatemala(request,template="productores/dashboard.html
         hectareas = 0
 
     certificacion = filtro.filter(certificacion__certificacion = 'Si').count()
+
+    #graficas
+    years = fecha_choice()
+    anios = collections.OrderedDict()
+    for year in years:
+        #ingresos
+        cafe = filtro.filter(destinoproduccion__cultivo__tipo = 1, anio = year[0]).aggregate(
+                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
+
+        cacao = filtro.filter(destinoproduccion__cultivo__tipo = 2, anio = year[0]).aggregate(
+                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
+
+        hortalizas = filtro.filter(destinoproduccion__cultivo__tipo = 3, anio = year[0]).aggregate(
+                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
+
+        #
+        anios[year[0]] = (cafe,cacao,hortalizas)
 
     return render(request, template, locals())
 
