@@ -145,8 +145,14 @@ def dashboard_productores_filtrado(request,template="productores/dashboard.html"
         hortalizas = filtro.filter(destinoproduccion__cultivo__tipo = 3, anio = year).aggregate(
                 sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
 
-        #
-        anios[year[0]] = (cafe,cacao,hortalizas)
+        #indice de produccio sustentable
+        #conservacion suelo
+        conservacion_suelo = ((filtro.filter(anio = year).aggregate(total = Avg(F('conservacionsuelo__erosion')
+                                + F('conservacionsuelo__sanilizacion')
+                                + F('conservacionsuelo__contaminacion_suelo')
+                                + F('conservacionsuelo__materia_organica')))['total']) / 12) * 100
+                                
+        anios[year] = (cafe,cacao,hortalizas,conservacion_suelo)
 
     return render(request, template, locals())
 
