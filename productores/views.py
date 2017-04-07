@@ -103,16 +103,16 @@ def dashboard_productores_filtrado(request,template="productores/dashboard.html"
     else:
         form = ProductoresForm()
         mensaje = "Existen alguno errores"
-        try:
-            del request.session['anio']
-            del request.session['pais']
-            del request.session['departamento']
-            del request.session['municipio']
-            del request.session['organizacion']
-            del request.session['sexo']
-            del request.session['edad']
-        except:
-            pass
+    #     try:
+    #         del request.session['anio']
+    #         del request.session['pais']
+    #         del request.session['departamento']
+    #         del request.session['municipio']
+    #         del request.session['organizacion']
+    #         del request.session['sexo']
+    #         del request.session['edad']
+    #     except:
+    #         pass
 
     filtro = _queryset_filtrado(request)
 
@@ -130,6 +130,23 @@ def dashboard_productores_filtrado(request,template="productores/dashboard.html"
         hectareas = 0
 
     certificacion = filtro.filter(certificacion__certificacion = 'Si').count()
+
+    #graficas
+    years = request.session['anio']
+    anios = collections.OrderedDict()
+    for year in years:
+        #ingresos
+        cafe = filtro.filter(destinoproduccion__cultivo__tipo = 1, anio = year).aggregate(
+                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
+
+        cacao = filtro.filter(destinoproduccion__cultivo__tipo = 2, anio = year).aggregate(
+                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
+
+        hortalizas = filtro.filter(destinoproduccion__cultivo__tipo = 3, anio = year).aggregate(
+                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
+
+        #
+        anios[year[0]] = (cafe,cacao,hortalizas)
 
     return render(request, template, locals())
 
@@ -200,9 +217,6 @@ def dashboard_productores_nicaragua(request,template="productores/dashboard.html
 
         #
         anios[year[0]] = (cafe,cacao,hortalizas)
-
-    print anios
-
 
     return render(request, template, locals())
 
