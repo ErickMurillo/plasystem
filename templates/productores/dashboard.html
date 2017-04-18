@@ -307,7 +307,7 @@
 
                                             <div id="grafico4" width:'100%' style="height: 350px;"></div>
                                             <br>
-                                            <h4 class="m-t-0 text-center">Indice total <span class="n-dash">80</span> año 2020</h4>
+                                            <h4 class="m-t-0 text-center">Indice total <span class="n-dash">{{indice|floatformat:'0'}}</span> año {{last_year}}</h4>
 
                                         </div>
                                     </div>
@@ -682,8 +682,8 @@
                },
 
                xAxis: {
-                   categories: ['Conservación de suelos', 'Manejo landscape', 'Biodiversidad', 'Cambios climáticos',
-                           'Manejo de <br/>recursos naturales', 'Manejo de aguas'],
+                   categories: ['Conservación de suelos', 'Manejo de aguas','Manejo de <br/>recursos naturales',
+                                'Cambios climáticos', 'Biodiversidad', 'Manejo landscape'],
                    tickmarkPlacement: 'on',
                    lineWidth: 0
                },
@@ -696,7 +696,7 @@
 
                tooltip: {
                    shared: true,
-                   pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+                   pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y}</b><br/>'
                },
 
                legend: {
@@ -709,8 +709,8 @@
                  {% for k,v in anios.items %}
                  {
                    name: '{{k}}',
-                   data: [{{v.3|floatformat:"2"}},{{v.4|floatformat:"2"}}, {{v.5|floatformat:"2"}},
-                          {{v.6|floatformat:"2"}}, {{v.7|floatformat:"2"}}, {{v.8|floatformat:"2"}}],
+                   data: [{{v.3|floatformat:"0"}},{{v.4|floatformat:"0"}}, {{v.5|floatformat:"0"}},
+                          {{v.6|floatformat:"0"}}, {{v.7|floatformat:"0"}}, {{v.8|floatformat:"0"}}],
                    pointPlacement: 'on'
                },
                  {% endfor %}

@@ -66,10 +66,10 @@ class DatosGenerales(models.Model):
     responsable = models.CharField('Nombre del responsable', max_length=250)
     #moneda = models.ForeignKey(TipoCambiosMonedaPais)
     moneda = ChainedForeignKey(
-        TipoCambiosMonedaPais, 
+        TipoCambiosMonedaPais,
         chained_field="pais",
-        chained_model_field="pais", 
-        show_all=False, 
+        chained_model_field="pais",
+        show_all=False,
         auto_choose=True,
         sort=True
     )
@@ -107,7 +107,7 @@ class Indicadores(models.Model):
     programatico_menor = models.FloatField()
     ejecucion_mayor = models.FloatField()
     ejecucion_menor = models.FloatField()
-    
+
     def __str__(self):
         return self.descripcion_corto
 
@@ -137,17 +137,17 @@ class RegistroPlanAnual(models.Model):
     proyecto = models.ForeignKey(DatosGenerales)
     #indicador = models.ForeignKey(Indicadores)
     indicador = ChainedForeignKey(
-        Indicadores, 
+        Indicadores,
         chained_field="proyecto",
-        chained_model_field="objetivo", 
-        show_all=False, 
+        chained_model_field="objetivo",
+        show_all=False,
         auto_choose=True,
         sort=True
     )
     nombre = models.CharField('Nombre de la actividad', max_length=250, help_text='Nombre completo de la actividad')
     categoria = models.ForeignKey(CategoriaGastos, verbose_name='Categoria de gatos')
     codigo_financiero = models.CharField(max_length=50)
-    tipo_actividad = models.IntegerField(choices=CHOICES_TIPO_ACTIVIDAD, 
+    tipo_actividad = models.IntegerField(choices=CHOICES_TIPO_ACTIVIDAD,
                     help_text='Contribuye al dato del indicador',
                     verbose_name='Esta actividad contribuye')
     total_metas = models.FloatField(default=0, editable=True, null=True, blank=True)
@@ -193,4 +193,3 @@ class RegistroMeses(models.Model):
     class Meta:
         verbose_name = 'Registro de mes'
         verbose_name_plural = 'Registro de meses'
-
