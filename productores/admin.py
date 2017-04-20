@@ -59,6 +59,11 @@ class CertificadoEmpresa_Inline(NestedTabularInline):
     can_delete = False
     max_num = 1
 
+class BPAPregunta_Inline(NestedTabularInline):
+    model = BPAPregunta
+    can_delete = False
+    max_num = 1
+
 class BPA_Inline(NestedTabularInline):
     model = BPA
     can_delete = False
@@ -143,7 +148,7 @@ class EncuestaAdmin(NestedModelAdmin):
     date_hierarchy = 'fecha'
 
     inlines = [AreaFinca_Inline,DistribucionFinca_Inline,Certificacion_Inline,TipoCertificacion_Inline,
-                CertificadoEmpresa_Inline,BPA_Inline,Produccion_Inline,DestinoProduccion_Inline,
+                CertificadoEmpresa_Inline,BPAPregunta_Inline,BPA_Inline,Produccion_Inline,DestinoProduccion_Inline,
                 IngresosOtrosCultivos_Inline,IngresosFamilia_Inline,FuenteIngresos_Inline,
                 IngresosActividadesGanaderia_Inline,CondicionesRiegos_Inline,ConservacionSuelo_Inline,
                 UsoEficienteAgua_Inline,GestionRecursosNaturales_Inline,CambioClimatico_Inline,
@@ -161,3 +166,13 @@ admin.site.register(EliminacionFocos)
 admin.site.register(ProteccionFuentes)
 admin.site.register(Cultivo)
 admin.site.register(TipoSistemaRiego)
+
+class Promedio_Inline(admin.TabularInline):
+    model = Promedio
+    extra = 1
+    form = PromedioForm
+
+class PromedioNacionalAdmin(admin.ModelAdmin):
+    inlines = [Promedio_Inline,]
+
+admin.site.register(PromedioNacional,PromedioNacionalAdmin)

@@ -2,6 +2,7 @@
 from django.db import models
 from .models import *
 from django import forms
+import datetime
 
 def fecha_choice():
     years = []
@@ -46,3 +47,23 @@ class ProduccionForm(forms.ModelForm):
         sumatoria = consumo + procesamiento + venta
         if sumatoria > cantidad_cosechada:
             raise forms.ValidationError("Sumatoria (consumo + procesamiento + venta) es mayor a la cantidad cosechada")
+
+ANIO_ACTUAL = datetime.datetime.today().year
+
+def anio_choice():
+    years = []
+    for en in range(int(ANIO_ACTUAL),int(ANIO_ACTUAL)+5):
+        years.append((en,en))
+    return sorted(list(set(years)))
+
+class CustomChoiceField(forms.ChoiceField):
+
+    def __init__(self, *args, **kwargs):
+        super(CustomChoiceField, self).__init__(*args, **kwargs)
+        self.choices.insert(0, (None , '--------'))
+
+class PromedioForm(forms.ModelForm):
+    anio = CustomChoiceField(choices=anio_choice())
+    class Meta:
+        model = Promedio
+        fields = '__all__'

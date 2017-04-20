@@ -210,6 +210,13 @@ class ProteccionFuentes(models.Model):
     def __str__(self):
         return self.nombre
 
+class BPAPregunta(models.Model):
+    encuesta = models.ForeignKey(Encuesta)
+    respuesta =  models.CharField(max_length = 5,choices = SI_NO_CHOICES)
+
+    class Meta:
+        verbose_name_plural = '11. ¿Aplica Buenas Prácticas Agrícolas (BPA)?'
+
 HIGIENE_CHOICES = (('Lavado de manos','Lavado de manos'),('Dispone de letrina','Dispone de letrina'),('Obreros no poseen enfermedades infecciosas','Obreros no poseen enfermedades infecciosas'))
 
 SUSTANCIAS_CHOICES = (('Bodega de plaguicidas e insumos','Bodega de plaguicidas e insumos'),('Área de preparación y mezclado de plaguicidas','Área de preparación y mezclado de plaguicidas'),
@@ -613,3 +620,19 @@ class PracticasMIP(models.Model):
 
     class Meta:
         verbose_name_plural = 'VII. Prácticas MIP en la propiedad/finca'
+
+class PromedioNacional(models.Model):
+    pais = models.ForeignKey(Pais)
+    cultivo = models.IntegerField(choices = CULTIVO_CHOICES)
+
+    class Meta:
+        verbose_name = 'Promedio Nacional'
+        verbose_name_plural = 'Promedios Nacionales'
+
+class Promedio(models.Model):
+    promedio_nacional = models.ForeignKey(PromedioNacional)
+    anio = models.IntegerField()
+    precio_promedio = models.FloatField()
+    costo_promedio = models.FloatField()
+    rendimiento_promedio = models.FloatField()
+    ingreso_promedio = models.FloatField()
