@@ -1,974 +1,985 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Plasystem</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <meta content="Admin Dashboard" name="description" />
-        <meta content="ThemeDesign" name="author" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+{% extends "productores/base_dashboard.html" %}
+{% load l10n %}
 
-        <link rel="shortcut icon" href="/static/images/favicon.ico">
+{% block content %}
+<div class="content">
+  <div class="">
+    <div class="page-header-title">
+      <h4 class="page-title">Dashboard</h4>
+    </div>
+  </div>
 
+  <div class="page-content-wrapper ">
 
+    <div class="container">
 
-        <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-        <link href="/static/css/icons.css" rel="stylesheet" type="text/css">
-        <link href="/static/css/style.css" rel="stylesheet" type="text/css">
-        <link href="/static/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css">
-
-    </head>
-
-
-    <body class="fixed-left">
-
-        <!-- Begin page -->
-        <div id="wrapper">
-
-            <!-- Top Bar Start -->
-            <div class="topbar">
-                <!-- LOGO -->
-                <div class="topbar-left">
-                    <div class="text-center">
-                        <a href="index.html" class="logo"><img src="/static/nuevo/logoveco.png" alt=""></a>
-                        <!--<a href="index.html" class="logo"><img src="/static/images/logo_white_2.png" height="28"></a>-->
-                        <!--<a href="index.html" class="logo-sm"><img src="/static/images/logo_sm.png" height="36"></a>-->
-                    </div>
-                </div>
-                <!-- Button mobile view to collapse sidebar menu -->
-                <div class="navbar navbar-default navbar-dashboard" role="navigation">
-                    <div class="container">
-                        <div class="">
-                            <div class="pull-left">
-                                <button type="button" class="button-menu-mobile open-left waves-effect waves-light">
-                                    <i class="ion-navicon"></i>
-                                </button>
-                                <span class="clearfix"></span>
-                            </div>
-
-                              <ul class="nav navbar-nav nav-pais">
-                              {% if not request.session.anio %}
-                                <li {% if request.path == '/productores/dashboard/nicaragua' %}class="active"{% endif %}><a href="/productores/dashboard/nicaragua">Nicaragua</a></li>
-                                <li {% if request.path == '/productores/dashboard/honduras' %}class="active"{% endif %}><a href="/productores/dashboard/honduras">Honduras</a></li>
-                                <li {% if request.path == '/productores/dashboard/guatemala' %}class="active"{% endif %}><a href="/productores/dashboard/guatemala">Guatemala</a></li>
-                              {% else %}
-                                <li class="active"><a href="#">{{request.session.pais}}</a></li>
-                              {% endif %}
-                              </ul>
-
-
-                            <ul class="nav navbar-nav navbar-right pull-right">
-
-                                <li class="hidden-xs">
-                                    <a href="#" id="btn-fullscreen" class="waves-effect waves-light notification-icon-box"><i class="mdi mdi-fullscreen"></i></a>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="" class="dropdown-toggle profile waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
-                                        <img src="/static/nuevo/avatar-1.jpg" alt="user-img" class="img-circle">
-                                        <span class="profile-username">
-                                            {% if user.get_full_name %}{{user.get_full_name}}{% else %}{{ user.username }}{% endif %} <br>
-                                            <small>Gerente</small>
-                                        </span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="javascript:void(0)"> Profile</a></li>
-                                        <li><a href="javascript:void(0)"><span class="badge badge-success pull-right">5</span> Settings </a></li>
-                                        <li><a href="javascript:void(0)"> Lock screen</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="javascript:void(0)"> Logout</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <!--/.nav-collapse -->
-                    </div>
-                </div>
+      <div class="row">
+        <div class="col-sm-4 col-lg-2">
+          <div class="panel text-center">
+            <div class="panel-heading">
+              <h4 class="panel-title text-muted font-light"><b>Familias</b></h4>
             </div>
-            <!-- Top Bar End -->
-
-
-            <!-- ========== Left Sidebar Start ========== -->
-
-            <div class="left side-menu">
-                <div class="sidebar-inner slimscrollleft">
-
-                    <div class="user-details">
-
-                        <div class="user-info">
-                            <h4>Consultar</h4>
-
-
-                        </div>
-                    </div>
-                    <!--- Divider -->
-
-
-                    <div id="sidebar-menu">
-                        <form class="container-fluid" action="." method="post">{% csrf_token %}
-                            <div class="form-group">
-                                <label class="control-label">Año</label>
-                                {{form.anio}}
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">Edad</label>
-                                {{form.edad}}
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">Sexo</label>
-                                {{form.sexo}}
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">País</label>
-                                {{form.pais}}
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">Departamento</label>
-                                {{form.departamento}}
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">Municipio</label>
-                                {{form.municipio}}
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">Organización</label>
-                                {{form.organizacion}}
-                            </div>
-
-                            <button class="btn btn-primary waves-effect waves-light" type="submit">Consulta</button>
-                         </form>
-                    </div>
-
-                    <div class="clearfix"></div>
-                </div> <!-- end sidebarinner -->
+            <div class="panel-body p-t-10">
+              <h2 class="m-t-0 m-b-15"><b>{{familias}}</b></h2>
+              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
             </div>
-            <!-- Left Sidebar End -->
-
-            <!-- Start right Content here -->
-
-            <div class="content-page">
-                <!-- Start content -->
-                <div class="content">
-
-                    <div class="">
-                        <div class="page-header-title">
-                            <h4 class="page-title">Dashboard</h4>
-                        </div>
-                    </div>
-
-                    <div class="page-content-wrapper ">
-
-                        <div class="container">
-
-                            <div class="row">
-                                <div class="col-sm-4 col-lg-2">
-                                    <div class="panel text-center">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title text-muted font-light"><b>Familias</b></h4>
-                                        </div>
-                                        <div class="panel-body p-t-10">
-                                            <h2 class="m-t-0 m-b-15"><b>{{familias}}</b></h2>
-                                            <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-4 col-lg-2">
-                                    <div class="panel text-center">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title text-muted font-light"><b>Hombres</b></h4>
-                                        </div>
-                                        <div class="panel-body p-t-10">
-                                            <h2 class="m-t-0 m-b-15"><b>{{hombres}}</b></h2>
-                                            <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-4 col-lg-2">
-                                    <div class="panel text-center">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title text-muted font-light"><b>Mujeres</b></h4>
-                                        </div>
-                                        <div class="panel-body p-t-10">
-                                            <h2 class="m-t-0 m-b-15"><b>{{mujeres}}</b></h2>
-                                            <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 col-lg-2">
-                                    <div class="panel text-center">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title text-muted font-light"><b>Menores de 35</b></h4>
-                                        </div>
-                                        <div class="panel-body p-t-10">
-                                            <h2 class="m-t-0 m-b-15"><b>{{menores_35}}</b></h2>
-                                            <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 col-lg-2">
-                                    <div class="panel text-center">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title text-muted font-light"><b>Hectareas</b></h4>
-                                        </div>
-                                        <div class="panel-body p-t-10">
-                                            <h2 class="m-t-0 m-b-15"><b>{{hectareas}}</b></h2>
-                                            <p class="text-muted m-b-0 m-t-20"><b>Promedio</b></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 col-lg-2">
-                                    <div class="panel text-center">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title text-muted font-light"><b>Certificación</b></h4>
-                                        </div>
-                                        <div class="panel-body p-t-10">
-                                            <h2 class="m-t-0 m-b-15"><b>{{certificacion}}</b></h2>
-                                            <p class="text-muted m-b-0 m-t-20"><b>Productores</b></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-body">
-                                            <h4 class="m-t-0">Ingresos del productor por cultivo <span class="mdi mdi-help-circle"></span><span class="more-ind"> <a href="">+indicadores</a> </span></h4>
-
-                                            <div id="grafico1"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-body">
-                                            <h4 class="m-t-0">Distribución del área <span class="mdi mdi-help-circle"></span><span class="more-ind"> <a href="">+indicadores</a> </span></h4>
-
-                                            <div role="tabpanel tabs-grafico">
-                                                <!-- Nav tabs -->
-                                                <ul class="nav nav-tabs" role="tablist">
-                                                    <li role="presentation" class="active">
-                                                        <a href="#café" aria-controls="café" role="tab" data-toggle="tab">café</a>
-                                                    </li>
-                                                    <li role="presentation">
-                                                        <a href="#cacao" aria-controls="cacao" role="tab" data-toggle="tab">Cacao</a>
-                                                    </li>
-                                                    <li role="presentation">
-                                                        <a href="#hortaliza" aria-controls="hortaliza" role="tab" data-toggle="tab">Hortaliza</a>
-                                                    </li>
-                                                </ul>
-
-                                                <!-- Tab panes -->
-                                                <div class="tab-content">
-                                                    <div role="tabpanel" class="tab-pane active" id="café">
-                                                        <div id="grafico2" width:'100%' style="height: 350px;"></div>
-                                                    </div>
-                                                    <div role="tabpanel" class="tab-pane" id="cacao">
-                                                        <div id="grafico2-1" width:'100%' style="height: 350px;"></div>
-                                                    </div>
-                                                    <div role="tabpanel" class="tab-pane" id="hortaliza">
-                                                        <div id="grafico2-2" width:'100%' style="height: 350px;"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <!-- end row -->
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-body">
-                                            <h4 class="m-t-0">Cantidad de porductores con producción sustentable, practicas MIP y BPA <span class="mdi mdi-help-circle"></span></h4>
-                                            <div id="grafico3" width:'100%' style="height: 350px;"></div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                            </div>
-                            <!-- end row -->
-
-
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-body">
-                                            <h4 class="m-t-0">Aumento del índice de producción sustentable <span class="mdi mdi-help-circle"></span></h4>
-
-                                            <div id="grafico4" width:'100%' style="height: 350px;"></div>
-                                            <br>
-                                            <h4 class="m-t-0 text-center">Indice total <span class="n-dash">{{indice|floatformat:'0'}}</span> año {{last_year}}</h4>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-body">
-                                            <h4 class="m-t-0">Aumento del índice de manejo de plaga <span class="mdi mdi-help-circle"></span></h4>
-
-                                            <div id="grafico8" width:'100%' style="height: 350px;"></div>
-                                            <br>
-                                            <h4 class="m-t-0 text-center">Indice total <span class="n-dash">40</span> año 2020</h4>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <!-- end row -->
-                             <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-body">
-                                            <h4 class="m-t-0">Incremento del margen bruto <span class="mdi mdi-help-circle"></span></h4>
-                                            <div id="grafico5" style="height: 150px;"></div>
-                                            <div id="grafico6" style="height: 150px;"></div>
-                                            <div id="grafico7" style="height: 150px;"></div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end row -->
-
-                            <!-- end row -->
-                             <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-body">
-                                            <h4 class="m-t-0">Rendimiento promedio <span class="mdi mdi-help-circle"></span></h4>
-                                            <div id="grafico9" width:'100%' style="height: 350px;"></div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end row -->
-
-
-
-                        </div><!-- container -->
-
-
-                    </div> <!-- Page content Wrapper -->
-
-                </div> <!-- content -->
-
-                <div class="footer3">
-            Desarrollado por <a href="">SIMAS</a>
+          </div>
         </div>
 
+        <div class="col-sm-4 col-lg-2">
+          <div class="panel text-center">
+            <div class="panel-heading">
+              <h4 class="panel-title text-muted font-light"><b>Hombres</b></h4>
             </div>
-            <!-- End Right content here -->
-
+            <div class="panel-body p-t-10">
+              <h2 class="m-t-0 m-b-15"><b>{{hombres}}</b></h2>
+              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+            </div>
+          </div>
         </div>
-        <!-- END wrapper -->
+
+        <div class="col-sm-4 col-lg-2">
+          <div class="panel text-center">
+            <div class="panel-heading">
+              <h4 class="panel-title text-muted font-light"><b>Mujeres</b></h4>
+            </div>
+            <div class="panel-body p-t-10">
+              <h2 class="m-t-0 m-b-15"><b>{{mujeres}}</b></h2>
+              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-lg-2">
+          <div class="panel text-center">
+            <div class="panel-heading">
+              <h4 class="panel-title text-muted font-light"><b>Menores de 35</b></h4>
+            </div>
+            <div class="panel-body p-t-10">
+              <h2 class="m-t-0 m-b-15"><b>{{menores_35}}</b></h2>
+              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-lg-2">
+          <div class="panel text-center">
+            <div class="panel-heading">
+              <h4 class="panel-title text-muted font-light"><b>Hectareas</b></h4>
+            </div>
+            <div class="panel-body p-t-10">
+              <h2 class="m-t-0 m-b-15"><b>{{hectareas}}</b></h2>
+              <p class="text-muted m-b-0 m-t-20"><b>Promedio</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-lg-2">
+          <div class="panel text-center">
+            <div class="panel-heading">
+              <h4 class="panel-title text-muted font-light"><b>Certificación</b></h4>
+            </div>
+            <div class="panel-body p-t-10">
+              <h2 class="m-t-0 m-b-15"><b>{{certificacion}}</b></h2>
+              <p class="text-muted m-b-0 m-t-20"><b>Productores</b></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <h4 class="m-t-0">Ingresos del productor por cultivo <span class="mdi mdi-help-circle"></span><span class="more-ind"> <a href="">+indicadores</a> </span></h4>
+
+              <div id="grafico1"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <h4 class="m-t-0">Distribución de áreas sembradas y cosechadas por cultivo <span class="mdi mdi-help-circle"></span><span class="more-ind"> <a href="">+indicadores</a> </span></h4>
+
+              <div role="tabpanel tabs-grafico">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                  <li role="presentation" class="active">
+                    <a href="#café" aria-controls="café" role="tab" data-toggle="tab">Café</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#cacao" aria-controls="cacao" role="tab" data-toggle="tab">Cacao</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#hortaliza" aria-controls="hortaliza" role="tab" data-toggle="tab">Hortalizas</a>
+                  </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="café">
+                    <div id="grafico2" width:'100%' style="height: 350px;"></div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="cacao">
+                    <div id="grafico2-1" width:'100%' style="height: 350px;"></div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="hortaliza">
+                    <div id="grafico2-2" width:'100%' style="height: 350px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- end row -->
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <h4 class="m-t-0">Cantidad de productores con producción sustentable, practicas MIP y BPA <span class="mdi mdi-help-circle"></span></h4>
+              <div id="grafico3" width:'100%' style="height: 350px;"></div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- end row -->
 
 
-        <!-- jQuery  -->
-        <script src="/static/js/jquery.min.js"></script>
-        <script src="/static/js/bootstrap.min.js"></script>
-        <script src="/static/js/modernizr.min.js"></script>
-        <script src="/static/js/detect.js"></script>
-        <script src="/static/js/fastclick.js"></script>
-        <script src="/static/js/jquery.slimscroll.js"></script>
-        <script src="/static/js/jquery.blockUI.js"></script>
-        <script src="/static/js/waves.js"></script>
-        <script src="/static/js/wow.min.js"></script>
-        <script src="/static/js/jquery.nicescroll.js"></script>
-        <script src="/static/js/jquery.scrollTo.min.js"></script>
-        <script src="/static/js/app.js"></script>
-        <script src="http://code.highcharts.com/highcharts.js"></script>
-        <script src="https://code.highcharts.com/highcharts-more.js"></script>
-        <script src="https://code.highcharts.com/modules/exporting.js"></script>
-        <script type="text/javascript">
-            Highcharts.chart('grafico1', {
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <h4 class="m-t-0">Aumento del índice de producción sustentable <span class="mdi mdi-help-circle"></span></h4>
 
-                title: {
-                    text: ''
-                },
+              <div id="grafico4" width:'100%' style="height: 350px;"></div>
+              <br>
+              <h4 class="m-t-0 text-center">Indice total <span class="n-dash">{{indice|floatformat:'0'}}</span> en el año {{last_year}}</h4>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <h4 class="m-t-0">Aumento del índice de manejo de plaga <span class="mdi mdi-help-circle"></span></h4>
+              <div role="tabpanel tabs-grafico">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                  <li role="presentation" class="active">
+                    <a href="#café-2" aria-controls="café-2" role="tab" data-toggle="tab">Café</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#cacao-2" aria-controls="cacao-2" role="tab" data-toggle="tab">Cacao</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#hortaliza-2" aria-controls="hortaliza-2" role="tab" data-toggle="tab">Hortalizas</a>
+                  </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="café-2">
+                    <div id="grafico8-1" width:'100%' style="height: 350px;"></div>
+                    <br>
+                    {% for k,v in dicc_indice.items %}
+                    {% if k == 'Cacao' %}
+                    <h4 class="m-t-0 text-center">Indice total <span class="n-dash">{{v.0|floatformat:'0'}}</span> en el año {{v.1}}</h4>
+                    {% endif %}
+                    {% endfor %}
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="cacao-2">
+                    <div id="grafico8-2" width:'100%' style="height: 350px;"></div>
+                    <br>
+                    {% for k,v in dicc_indice.items %}
+                    {% if k == 'Café' %}
+                    <h4 class="m-t-0 text-center">Indice total <span class="n-dash">{{v.0|floatformat:'0'}}</span> en el año {{v.1}}</h4>
+                    {% endif %}
+                    {% endfor %}
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="hortaliza-2">
+                    <div id="grafico8-3" width:'100%' style="height: 350px;"></div>
+                    <br>
+                    {% for k,v in dicc_indice.items %}
+                    {% if k == 'Hortalizas' %}
+                    <h4 class="m-t-0 text-center">Indice total <span class="n-dash">{{v.0|floatformat:'0'}}</span> en el año {{v.1}}</h4>
+                    {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- end row -->
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <h4 class="m-t-0">Incremento del margen bruto <span class="mdi mdi-help-circle"></span></h4>
+              <div id="grafico5" style="height: 150px;"></div>
+              <div id="grafico6" style="height: 150px;"></div>
+              <div id="grafico7" style="height: 150px;"></div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end row -->
+
+      <!-- end row -->
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <h4 class="m-t-0">Rendimiento promedio <span class="mdi mdi-help-circle"></span></h4>
+              <div id="grafico9" width:'100%' style="height: 350px;"></div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end row -->
 
 
-                yAxis: {
-                    title: {
-                        text: 'Córdobas'
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle'
-                },
 
-                xAxis: {
-                  allowDecimals: false,
-                },
+    </div><!-- container -->
 
-                plotOptions: {
-                    series: {
-                        pointStart: {% for k in anios.keys %}{% if forloop.first%}{{k}}{% endif %}{% endfor %}
-                    }
-                },
 
-                series: [{
-                    name: 'Café',
-                    data: [{% for v in anios.values %}{{v.0|default:'0'}},{% endfor %}]
-                }, {
-                    name: 'Cacao',
-                    data: [{% for v in anios.values %}{{v.1|default:'0'}},{% endfor %}]
-                }, {
-                    name: 'Hortalizas',
-                    data: [{% for v in anios.values %}{{v.2|default:'0'}},{% endfor %}]
-                }]
+  </div> <!-- Page content Wrapper -->
 
-            });
+</div> <!-- content -->
 
-            Highcharts.chart('grafico2', {
-                chart: {
-                    type: 'bar'
-                },
-                title: {
-                    text: ''
-                },
+{% endblock %}
+<!-- Start content -->
 
-                xAxis: {
-                    categories: ['2016', '2017', '2018', '2019', '2020'],
-                    title: {
-                        text: null
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Héctareas',
-                        align: 'high'
-                    },
-                    labels: {
-                        overflow: 'justify'
-                    }
-                },
-                tooltip: {
-                    valueSuffix: 'ha'
-                },
-                plotOptions: {
-                    bar: {
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'top',
-                    x: -40,
-                    y: 80,
-                    floating: true,
-                    borderWidth: 1,
-                    backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-                    shadow: true
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [{
-                    name: 'Producción de café',
-                    data: [5, 8, 10, 11, 16]
-                }, {
-                    name: 'Área total',
-                    data: [8, 10, 12, 15, 20]
-                }]
-            });
-            Highcharts.chart('grafico2-1', {
-                chart: {
-                    type: 'bar'
-                },
-                title: {
-                    text: ''
-                },
+{% block extra_js %}
+<script type="text/javascript">
+Highcharts.chart('grafico1', {
 
-                xAxis: {
-                    categories: ['2016', '2017', '2018', '2019', '2020'],
-                    title: {
-                        text: null
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Héctareas',
-                        align: 'high'
-                    },
-                    labels: {
-                        overflow: 'justify'
-                    }
-                },
-                tooltip: {
-                    valueSuffix: 'ha'
-                },
-                plotOptions: {
-                    bar: {
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'top',
-                    x: -40,
-                    y: 80,
-                    floating: true,
-                    borderWidth: 1,
-                    backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-                    shadow: true
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [{
-                    name: 'Producción de cacao',
-                    data: [5, 8, 10, 11, 16]
-                }, {
-                    name: 'Área total',
-                    data: [8, 10, 12, 15, 20]
-                }]
-            });
-            Highcharts.chart('grafico2-2', {
-                chart: {
-                    type: 'bar'
-                },
-                title: {
-                    text: ''
-                },
+  title: {
+    text: ''
+  },
 
-                xAxis: {
-                    categories: ['2016', '2017', '2018', '2019', '2020'],
-                    title: {
-                        text: null
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Héctareas',
-                        align: 'high'
-                    },
-                    labels: {
-                        overflow: 'justify'
-                    }
-                },
-                tooltip: {
-                    valueSuffix: 'ha'
-                },
-                plotOptions: {
-                    bar: {
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'top',
-                    x: -40,
-                    y: 80,
-                    floating: true,
-                    borderWidth: 1,
-                    backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-                    shadow: true
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [{
-                    name: 'Producción de hortalizas',
-                    data: [5, 8, 10, 11, 16]
-                }, {
-                    name: 'Área total',
-                    data: [8, 10, 12, 15, 20]
-                }]
+
+  yAxis: {
+    title: {
+      text: 'Córdobas'
+    }
+  },
+  legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'middle'
+  },
+
+  xAxis: {
+    allowDecimals: false,
+  },
+
+  plotOptions: {
+    series: {
+      pointStart: {% for k in anios.keys %}{% if forloop.first%}{{k}}{% endif %}{% endfor %}
+    }
+  },
+
+  series: [{
+    name: 'Café',
+    data: [{% for v in anios.values %}{{v.0|default:'0'}},{% endfor %}]
+  }, {
+    name: 'Cacao',
+    data: [{% for v in anios.values %}{{v.1|default:'0'}},{% endfor %}]
+  }, {
+    name: 'Hortalizas',
+    data: [{% for v in anios.values %}{{v.2|default:'0'}},{% endfor %}]
+  }]
+
+});
+
+Highcharts.chart('grafico2', {
+  chart: {
+    type: 'bar'
+  },
+  title: {
+    text: ''
+  },
+
+  xAxis: {
+    categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}],
+    title: {
+      text: null
+    }
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: 'Héctareas',
+      align: 'high'
+    },
+    labels: {
+      overflow: 'justify'
+    }
+  },
+  tooltip: {
+    valueSuffix: 'ha'
+  },
+  plotOptions: {
+    bar: {
+      dataLabels: {
+        enabled: true
+      }
+    }
+  },
+  legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'top',
+    x: -40,
+    y: 80,
+    floating: true,
+    borderWidth: 1,
+    backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+    shadow: true
+  },
+  credits: {
+    enabled: false
+  },
+  series: [{
+    name: 'Área sembrada',
+    data: [{% for values in anios.values %}
+      {% for k,v in values.10.items %}
+      {% if k == 'Café' %}
+      {{v.0|default:'0'|unlocalize}},
+      {% endif %}
+      {% endfor %}
+      {% endfor %}]
+    }, {
+      name: 'Área cosechada',
+      data: [{% for values in anios.values %}
+        {% for k,v in values.10.items %}
+        {% if k == 'Café' %}
+        {{v.1|default:'0'|unlocalize}},
+        {% endif %}
+        {% endfor %}
+        {% endfor %}]
+      }]
+    });
+
+    Highcharts.chart('grafico2-1', {
+      chart: {
+        type: 'bar'
+      },
+      title: {
+        text: ''
+      },
+
+      xAxis: {
+        categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}],
+        title: {
+          text: null
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Héctareas',
+          align: 'high'
+        },
+        labels: {
+          overflow: 'justify'
+        }
+      },
+      tooltip: {
+        valueSuffix: 'ha'
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+        shadow: true
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        name: 'Área sembrada',
+        data: [{% for values in anios.values %}
+          {% for k,v in values.10.items %}
+          {% if k == 'Cacao' %}
+          {{v.0|default:'0'|unlocalize}},
+          {% endif %}
+          {% endfor %}
+          {% endfor %}]
+        }, {
+          name: 'Área cosechada',
+          data: [{% for values in anios.values %}
+            {% for k,v in values.10.items %}
+            {% if k == 'Cacao' %}
+            {{v.1|default:'0'|unlocalize}},
+            {% endif %}
+            {% endfor %}
+            {% endfor %}]
+          }]
+        });
+        Highcharts.chart('grafico2-2', {
+          chart: {
+            type: 'bar'
+          },
+          title: {
+            text: ''
+          },
+
+          xAxis: {
+            categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}],
+            title: {
+              text: null
+            }
+          },
+          yAxis: {
+            min: 0,
+            title: {
+              text: 'Héctareas',
+              align: 'high'
+            },
+            labels: {
+              overflow: 'justify'
+            }
+          },
+          tooltip: {
+            valueSuffix: 'ha'
+          },
+          plotOptions: {
+            bar: {
+              dataLabels: {
+                enabled: true
+              }
+            }
+          },
+          legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -40,
+            y: 80,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true
+          },
+          credits: {
+            enabled: false
+          },
+          series: [{
+            name: 'Área sembrada',
+            data: [{% for values in anios.values %}
+              {% for k,v in values.10.items %}
+              {% if k == 'Hortaliza' %}
+              {{v.0|default:'0'|unlocalize}},
+              {% endif %}
+              {% endfor %}
+              {% endfor %}]
+            }, {
+              name: 'Área cosechada',
+              data: [{% for values in anios.values %}
+                {% for k,v in values.10.items %}
+                {% if k == 'Hortaliza' %}
+                {{v.1|default:'0'|unlocalize}},
+                {% endif %}
+                {% endfor %}
+                {% endfor %}]
+              }]
             });
 
             Highcharts.chart('grafico3', {
-                chart: {
-                    type: 'bar'
-                },
+              chart: {
+                type: 'bar'
+              },
+              title: {
+                text: ''
+              },
+              subtitle: {
+                text: ''
+              },
+              xAxis: {
+                categories: ['Productores con<br>producción sustentable', 'Productores que<br>realizan MIP', 'Productores que<br>realizan BPA'],
                 title: {
-                    text: ''
+                  text: null
+                }
+              },
+              yAxis: {
+                min: 0,
+                title: {
+                  text: '',
+                  align: 'high'
                 },
-                subtitle: {
-                    text: ''
-                },
-                xAxis: {
-                    categories: ['Productores con<br>producción sustentable', 'Productores que<br>realizan MIP', 'Productores que<br>realizan BPA'],
-                    title: {
-                        text: null
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: '',
-                        align: 'high'
-                    },
-                    labels: {
-                        overflow: 'justify'
-                    }
-                },
-                tooltip: {
-                    valueSuffix: ''
-                },
-                plotOptions: {
-                    bar: {
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
-                },
-                legend: {
-                   align: 'center',
-                   verticalAlign: 'bottom',
-                   layout: 'horizontal'
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [{
-                    name: '2016',
-                    data: [500, 1000, 1500]
-                }, {
-                    name: '2017',
-                    data: [500, 1000, 1500]
-                }, {
-                    name: '2018',
-                    data: [500, 1000, 1500]
-                }, {
-                    name: '2019',
-                    data: [500, 1000, 1500]
-                }, {
-                    name: '2020',
-                    data: [500, 1000, 1500]
-                }]
+                labels: {
+                  overflow: 'justify'
+                }
+              },
+              tooltip: {
+                valueSuffix: ''
+              },
+              plotOptions: {
+                bar: {
+                  dataLabels: {
+                    enabled: true
+                  }
+                }
+              },
+              legend: {
+                align: 'center',
+                verticalAlign: 'bottom',
+                layout: 'horizontal'
+              },
+              credits: {
+                enabled: false
+              },
+              series: [{
+                name: '2016',
+                data: [500, 1000, 1500]
+              }, {
+                name: '2017',
+                data: [500, 1000, 1500]
+              }, {
+                name: '2018',
+                data: [500, 1000, 1500]
+              }, {
+                name: '2019',
+                data: [500, 1000, 1500]
+              }, {
+                name: '2020',
+                data: [500, 1000, 1500]
+              }]
             });
 
             Highcharts.chart('grafico4', {
 
-               chart: {
-                   polar: true,
-                   type: 'line'
-               },
-
-               title: {
-                   text: '',
-                   x: -80
-               },
-
-               pane: {
-                   size: '80%'
-               },
-
-               xAxis: {
-                   categories: ['Conservación de suelos', 'Manejo de aguas','Manejo de <br/>recursos naturales',
-                                'Cambios climáticos', 'Biodiversidad', 'Manejo landscape'],
-                   tickmarkPlacement: 'on',
-                   lineWidth: 0
-               },
-
-               yAxis: {
-                   gridLineInterpolation: 'circle',
-                   lineWidth: 0,
-                   min: 0
-               },
-
-               tooltip: {
-                   shared: true,
-                   pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y}</b><br/>'
-               },
-
-               legend: {
-                  align: 'center',
-                  verticalAlign: 'bottom',
-                  layout: 'horizontal'
+              chart: {
+                polar: true,
+                type: 'line'
               },
 
-               series: [
-                 {% for k,v in anios.items %}
-                 {
-                   name: '{{k}}',
-                   data: [{{v.3|floatformat:"0"}},{{v.4|floatformat:"0"}}, {{v.5|floatformat:"0"}},
-                          {{v.6|floatformat:"0"}}, {{v.7|floatformat:"0"}}, {{v.8|floatformat:"0"}}],
-                   pointPlacement: 'on'
-               },
-                 {% endfor %}
-               ]
+              title: {
+                text: '',
+                x: -80
+              },
+
+              pane: {
+                size: '80%'
+              },
+
+              xAxis: {
+                categories: ['Conservación de suelos', 'Manejo de aguas','Manejo de <br/>recursos naturales',
+                'Cambios climáticos', 'Biodiversidad', 'Manejo landscape'],
+                tickmarkPlacement: 'on',
+                lineWidth: 0
+              },
+
+              yAxis: {
+                gridLineInterpolation: 'circle',
+                lineWidth: 0,
+                min: 0
+              },
+
+              tooltip: {
+                shared: true,
+                pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y}</b><br/>'
+              },
+
+              legend: {
+                align: 'center',
+                verticalAlign: 'bottom',
+                layout: 'horizontal'
+              },
+
+              series: [
+                {% for k,v in anios.items %}
+                {
+                  name: '{{k}}',
+                  data: [{{v.3|floatformat:"0"}},{{v.4|floatformat:"0"}}, {{v.5|floatformat:"0"}},
+                  {{v.6|floatformat:"0"}}, {{v.7|floatformat:"0"}}, {{v.8|floatformat:"0"}}],
+                  pointPlacement: 'on'
+                },
+                {% endfor %}
+              ]
 
             });
 
             Highcharts.chart('grafico5', {
+              title: {
+                text: ''
+              },
+              subtitle: {
+                text: ''
+              },
+              yAxis: {
                 title: {
-                    text: ''
+                  text: 'Córdobas'
                 },
-                subtitle: {
-                    text: ''
-                },
-                yAxis: {
-                    title: {
-                        text: 'Córdobas'
-                    },
-                },
-                xAxis: {
-                  allowDecimals: false,
-                },
-               plotOptions: {
-                    series: {
-                        pointStart: 2016
-                    }
-                },
+              },
+              xAxis: {
+                allowDecimals: false,
+              },
+              plotOptions: {
+                series: {
+                  pointStart: 2016
+                }
+              },
 
-                series: [{
-                    name: 'Margen bruto',
-                    data: [43934, 52503, 57177, 69658, 97031]
-                }]
+              series: [{
+                name: 'Margen bruto',
+                data: [43934, 52503, 57177, 69658, 97031]
+              }]
             });
 
             Highcharts.chart('grafico6', {
               title: {
-                  text: ''
+                text: ''
               },
               subtitle: {
-                  text: ''
+                text: ''
               },
               yAxis: {
-                  title: {
-                      text: 'Córdobas'
-                  },
-              },
-              xAxis: {
-                allowDecimals: false,
-              },
-             plotOptions: {
-                  series: {
-                      pointStart: 2016
-                  }
-              },
-
-              series: [{
-                  name: 'Ingreso promedio del productor',
-                  data: [43934, 52503, 57177, 69658, 97031],
-                  color: '#f7a35c'
+                title: {
+                  text: 'Córdobas'
                 },
-                {
-                    name: 'Ingreso promedio nacional',
-                    data: [48000, 59000, 68000, 80000, 108000],
-                    color: '#050f2c'
-                  },
-              ]
-            });
-
-            Highcharts.chart('grafico7', {
-              title: {
-                  text: ''
-              },
-              subtitle: {
-                  text: ''
-              },
-              yAxis: {
-                  title: {
-                      text: 'Córdobas'
-                  },
               },
               xAxis: {
                 allowDecimals: false,
               },
-             plotOptions: {
-                  series: {
-                      pointStart: 2016
-                  }
-              },
-              series: [{
-                  name: 'Costos promedio del productor',
-                  data: [43934, 52503, 57177, 69658, 97031],
-                  color: '#90ed7d'
-              },{
-                  name: 'Costos promedio nacional',
-                  data: [48000, 59000, 68000, 80000, 108000],
-                  color: '#050f2c'
-
-              }]
-            });
-
-
-            Highcharts.chart('grafico8', {
-
-               chart: {
-                   polar: true,
-                   type: 'line'
-               },
-
-               title: {
-                   text: '',
-                   x: -80
-               },
-
-               pane: {
-                   size: '80%'
-               },
-
-               xAxis: {
-                   categories: ['Material de siembra sano', 'Preparación del terreno', 'Control de plagas y enfermedades', 'Densidad del sistema correcto',
-                           'Fertilización adecuada', 'Control de malezas'],
-                   tickmarkPlacement: 'on',
-                   lineWidth: 0
-               },
-
-               yAxis: {
-                   gridLineInterpolation: 'circle',
-                   lineWidth: 0,
-                   min: 0
-               },
-
-               tooltip: {
-                   shared: true,
-                   pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
-               },
-
-               legend: {
-                  align: 'center',
-                  verticalAlign: 'bottom',
-                  layout: 'horizontal'
+              plotOptions: {
+                series: {
+                  pointStart: 2016
+                }
               },
 
               series: [{
-                  name: '2016',
-                  data: [0,5, 10, 20, 25, 30],
-                  pointPlacement: 'on'
-              }, {
-                  name: '2017',
-                  data: [35, 40, 45, 50, 55, 60],
-                  pointPlacement: 'on'
-              }, {
-                  name: '2018',
-                  data: [62, 65, 68, 70, 73, 76],
-                  pointPlacement: 'on'
-               }, {
-                  name: '2019',
-                  data: [80, 82, 85, 87, 89, 90],
-                  pointPlacement: 'on'
-               }, {
-                  name: '2020',
-                  data: [91, 93, 94, 96, 98, 100],
-                  pointPlacement: 'on'
-              }]
-
-            });
-
-            Highcharts.chart('grafico9', {
-              chart: {
-                  type: 'column'
+                name: 'Ingreso promedio del productor',
+                data: [43934, 52503, 57177, 69658, 97031],
+                color: '#f7a35c'
               },
-              title: {
-                  text: ''
+              {
+                name: 'Ingreso promedio nacional',
+                data: [48000, 59000, 68000, 80000, 108000],
+                color: '#050f2c'
               },
-              xAxis: {
-                  categories: ['Rendimiento QQ',]
-              },
-              yAxis: {
-                  title: {
-                      text: 'QQ'
-                  },
-              },
-              credits: {
-                  enabled: false
-              },
-              series: [{
-                  name: '2016',
-                  data: [80,],
-                  dataLabels: {
-                      enabled: true,
-                      rotation: 0,
-                      align: 'center',
-                      x: -3,
-                      y: 0,
-                          formatter: function() {
-                              return this.y;
-                                                },
-                              }
-              }, {
-                  name: '2017',
-                  data: [90,],
-                  dataLabels: {
-                      enabled: true,
-                      rotation: 0,
-                      align: 'center',
-                      x: -3,
-                      y: 0,
-                          formatter: function() {
-                              return this.y;
-                                                },
-                              }
-
-              }, {
-                  name: '2018',
-                  data: [100,],
-                  dataLabels: {
-                      enabled: true,
-                      rotation: 0,
-                      align: 'center',
-                      x: -3,
-                      y: 0,
-                          formatter: function() {
-                              return this.y;
-                                                },
-                              }
-
-              }, {
-                  name: '2019',
-                  data: [110,],
-                  dataLabels: {
-                      enabled: true,
-                      rotation: 0,
-                      align: 'center',
-                      x: -3,
-                      y: 0,
-                          formatter: function() {
-                              return this.y;
-                                                },
-                              }
-
-              }, {
-                  name: '2020',
-                  data: [120,],
-                  dataLabels: {
-                      enabled: true,
-                      rotation: 0,
-                      align: 'center',
-                      x: -3,
-                      y: 0,
-                          formatter: function() {
-                              return this.y;
-                                                },
-                              }
-
-              }]
+            ]
           });
 
-        </script>
-        <script src="/static/js/bootstrap-multiselect.js"></script>
-        <script type="text/javascript">
+          Highcharts.chart('grafico7', {
+            title: {
+              text: ''
+            },
+            subtitle: {
+              text: ''
+            },
+            yAxis: {
+              title: {
+                text: 'Córdobas'
+              },
+            },
+            xAxis: {
+              allowDecimals: false,
+            },
+            plotOptions: {
+              series: {
+                pointStart: 2016
+              }
+            },
+            series: [{
+              name: 'Costos promedio del productor',
+              data: [43934, 52503, 57177, 69658, 97031],
+              color: '#90ed7d'
+            },{
+              name: 'Costos promedio nacional',
+              data: [48000, 59000, 68000, 80000, 108000],
+              color: '#050f2c'
+
+            }]
+          });
+
+
+          Highcharts.chart('grafico8-1', {
+
+            chart: {
+              polar: true,
+              type: 'line'
+            },
+
+            title: {
+              text: '',
+              x: -80
+            },
+
+            pane: {
+              size: '80%'
+            },
+
+            xAxis: {
+              categories: ['Material de siembra sano', 'Preparación del terreno', 'Control de plagas y enfermedades', 'Densidad del sistema correcto',
+              'Fertilización adecuada', 'Control de malezas'],
+              tickmarkPlacement: 'on',
+              lineWidth: 0
+            },
+
+            yAxis: {
+              gridLineInterpolation: 'circle',
+              lineWidth: 0,
+              min: 0
+            },
+
+            tooltip: {
+              shared: true,
+              pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+            },
+
+            legend: {
+              align: 'center',
+              verticalAlign: 'bottom',
+              layout: 'horizontal'
+            },
+
+            series: [
+              {% for key,value in anios.items %}
+              {% for k,v in value.9.items %}
+              {% if  k == 'Cacao' %}
+              {
+                name: '{{key}}',
+                data: [{{v.0|floatformat:"0"}},{{v.1|floatformat:"0"}},{{v.2|floatformat:"0"}},
+                {{v.3|floatformat:"0"}},{{v.4|floatformat:"0"}},{{v.5|floatformat:"0"}}],
+                pointPlacement: 'on'
+              },
+              {% endif %}
+              {% endfor %}
+              {% endfor %}
+            ]
+
+          });
+
+          Highcharts.chart('grafico8-2', {
+
+            chart: {
+              polar: true,
+              type: 'line'
+            },
+
+            title: {
+              text: '',
+              x: -80
+            },
+
+            pane: {
+              size: '80%'
+            },
+
+            xAxis: {
+              categories: ['Material de siembra sano', 'Preparación del terreno', 'Control de plagas y enfermedades', 'Densidad del sistema correcto',
+              'Fertilización adecuada', 'Control de malezas'],
+              tickmarkPlacement: 'on',
+              lineWidth: 0
+            },
+
+            yAxis: {
+              gridLineInterpolation: 'circle',
+              lineWidth: 0,
+              min: 0
+            },
+
+            tooltip: {
+              shared: true,
+              pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+            },
+
+            legend: {
+              align: 'center',
+              verticalAlign: 'bottom',
+              layout: 'horizontal'
+            },
+
+            series: [
+              {% for key,value in anios.items %}
+              {% for k,v in value.9.items %}
+              {% if  k == 'Café' %}
+              {
+                name: '{{key}}',
+                data: [{{v.0|floatformat:"0"}},{{v.1|floatformat:"0"}},{{v.2|floatformat:"0"}},
+                {{v.3|floatformat:"0"}},{{v.4|floatformat:"0"}},{{v.5|floatformat:"0"}}],
+                pointPlacement: 'on'
+              },
+              {% endif %}
+              {% endfor %}
+              {% endfor %}
+            ]
+
+          });
+
+          Highcharts.chart('grafico8-3', {
+
+            chart: {
+              polar: true,
+              type: 'line'
+            },
+
+            title: {
+              text: '',
+              x: -80
+            },
+
+            pane: {
+              size: '80%'
+            },
+
+            xAxis: {
+              categories: ['Material de siembra sano', 'Preparación del terreno', 'Control de plagas y enfermedades', 'Densidad del sistema correcto',
+              'Fertilización adecuada', 'Control de malezas'],
+              tickmarkPlacement: 'on',
+              lineWidth: 0
+            },
+
+            yAxis: {
+              gridLineInterpolation: 'circle',
+              lineWidth: 0,
+              min: 0
+            },
+
+            tooltip: {
+              shared: true,
+              pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+            },
+
+            legend: {
+              align: 'center',
+              verticalAlign: 'bottom',
+              layout: 'horizontal'
+            },
+
+            series: [
+              {% for key,value in anios.items %}
+              {% for k,v in value.9.items %}
+              {% if  k == 'Hortalizas' %}
+              {
+                name: '{{key}}',
+                data: [{{v.0|floatformat:"0"}},{{v.1|floatformat:"0"}},{{v.2|floatformat:"0"}},
+                {{v.3|floatformat:"0"}},{{v.4|floatformat:"0"}},{{v.5|floatformat:"0"}}],
+                pointPlacement: 'on'
+              },
+              {% endif %}
+              {% endfor %}
+              {% endfor %}
+            ]
+
+          });
+
+          Highcharts.chart('grafico9', {
+            chart: {
+              type: 'column'
+            },
+            title: {
+              text: ''
+            },
+            xAxis: {
+              categories: ['Rendimiento QQ',]
+            },
+            yAxis: {
+              title: {
+                text: 'QQ'
+              },
+            },
+            credits: {
+              enabled: false
+            },
+            series: [{
+              name: '2016',
+              data: [80,],
+              dataLabels: {
+                enabled: true,
+                rotation: 0,
+                align: 'center',
+                x: -3,
+                y: 0,
+                formatter: function() {
+                  return this.y;
+                },
+              }
+            }, {
+              name: '2017',
+              data: [90,],
+              dataLabels: {
+                enabled: true,
+                rotation: 0,
+                align: 'center',
+                x: -3,
+                y: 0,
+                formatter: function() {
+                  return this.y;
+                },
+              }
+
+            }, {
+              name: '2018',
+              data: [100,],
+              dataLabels: {
+                enabled: true,
+                rotation: 0,
+                align: 'center',
+                x: -3,
+                y: 0,
+                formatter: function() {
+                  return this.y;
+                },
+              }
+
+            }, {
+              name: '2019',
+              data: [110,],
+              dataLabels: {
+                enabled: true,
+                rotation: 0,
+                align: 'center',
+                x: -3,
+                y: 0,
+                formatter: function() {
+                  return this.y;
+                },
+              }
+
+            }, {
+              name: '2020',
+              data: [120,],
+              dataLabels: {
+                enabled: true,
+                rotation: 0,
+                align: 'center',
+                x: -3,
+                y: 0,
+                formatter: function() {
+                  return this.y;
+                },
+              }
+
+            }]
+          });
+
+          </script>
+          <script src="/static/js/bootstrap-multiselect.js"></script>
+          <script type="text/javascript">
           $(document).ready(function(){
             $("#id_edad").addClass("form-control")
             $("#id_anio").addClass("form-control").multiselect({
@@ -1150,7 +1161,5 @@
             });
 
           });
-        </script>
-
-    </body>
-</html>
+          </script>
+          {% endblock %}
