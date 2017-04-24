@@ -89,7 +89,6 @@
           <div class="panel panel-primary">
             <div class="panel-body">
               <h4 class="m-t-0">Ingresos del productor por cultivo <span class="mdi mdi-help-circle"></span><span class="more-ind"> <a href="">+indicadores</a> </span></h4>
-
               <div id="grafico1"></div>
             </div>
           </div>
@@ -98,7 +97,8 @@
         <div class="col-sm-6">
           <div class="panel panel-primary">
             <div class="panel-body">
-              <h4 class="m-t-0">Distribución de áreas sembradas y cosechadas por cultivo <span class="mdi mdi-help-circle"></span><span class="more-ind"> <a href="">+indicadores</a> </span></h4>
+              <h4 class="m-t-0">Distribución de áreas sembradas y cosechadas por cultivo <span class="mdi mdi-help-circle"></span>
+                  <span class="more-ind"> <a href="{% if '/productores/dashboard/?pais=' in request.get_full_path %}/productores/dashboard/distribucion/?pais={{id_pais}}{% else %}/productores/dashboard/distribucion/{% endif %}">+indicadores</a> </span></h4>
 
               <div role="tabpanel tabs-grafico">
                 <!-- Nav tabs -->
@@ -290,13 +290,13 @@ Highcharts.chart('grafico1', {
 
   series: [{
     name: 'Café',
-    data: [{% for v in anios.values %}{{v.0|default:'0'}},{% endfor %}]
+    data: [{% for v in anios.values %}{{v.0|default:'0'|unlocalize}},{% endfor %}]
   }, {
     name: 'Cacao',
-    data: [{% for v in anios.values %}{{v.1|default:'0'}},{% endfor %}]
+    data: [{% for v in anios.values %}{{v.1|default:'0'|unlocalize}},{% endfor %}]
   }, {
     name: 'Hortalizas',
-    data: [{% for v in anios.values %}{{v.2|default:'0'}},{% endfor %}]
+    data: [{% for v in anios.values %}{{v.2|default:'0'|unlocalize}},{% endfor %}]
   }]
 
 });
@@ -335,17 +335,7 @@ Highcharts.chart('grafico2', {
       }
     }
   },
-  legend: {
-    layout: 'vertical',
-    align: 'right',
-    verticalAlign: 'top',
-    x: -40,
-    y: 80,
-    floating: true,
-    borderWidth: 1,
-    backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-    shadow: true
-  },
+
   credits: {
     enabled: false
   },
@@ -551,22 +541,14 @@ Highcharts.chart('grafico2', {
               credits: {
                 enabled: false
               },
-              series: [{
-                name: '2016',
-                data: [500, 1000, 1500]
-              }, {
-                name: '2017',
-                data: [500, 1000, 1500]
-              }, {
-                name: '2018',
-                data: [500, 1000, 1500]
-              }, {
-                name: '2019',
-                data: [500, 1000, 1500]
-              }, {
-                name: '2020',
-                data: [500, 1000, 1500]
-              }]
+              series: [
+              {%for k,v in anios.items %}
+                {
+                  name: '{{k}}',
+                  data: [{{v.11}}, {{v.12}}, {{v.13}}]
+                },
+              {% endfor %}
+              ]
             });
 
             Highcharts.chart('grafico4', {
@@ -977,189 +959,5 @@ Highcharts.chart('grafico2', {
             }]
           });
 
-          </script>
-          <script src="/static/js/bootstrap-multiselect.js"></script>
-          <script type="text/javascript">
-          $(document).ready(function(){
-            $("#id_edad").addClass("form-control")
-            $("#id_anio").addClass("form-control").multiselect({
-              buttonWidth: '100%',
-              includeSelectAllOption: true,
-              selectAllText: "Seleccionar todos",
-              buttonText: function(options, select) {
-                if (options.length === 0) {
-                  return "Sin selección ...";
-                }
-                else if (options.length > 3) {
-                  return "Varias opciones seleccionadas!";
-                }
-                else {
-                  var labels = [];
-                  options.each(function() {
-                    if ($(this).attr('label') !== undefined) {
-                      labels.push($(this).attr('label'));
-                    }
-                    else {
-                      labels.push($(this).html());
-                    }
-                  });
-                  return labels.join(', ') + '';
-                }
-              }
-            });
-            $("#id_pais").addClass("form-control").multiselect({
-              buttonWidth: '100%',
-              includeSelectAllOption: true,
-              selectAllText: "Seleccionar todos",
-              buttonText: function(options, select) {
-                if (options.length === 0) {
-                  return "Sin selección ...";
-                }
-                else if (options.length > 3) {
-                  return "Varias opciones seleccionadas!";
-                }
-                else {
-                  var labels = [];
-                  options.each(function() {
-                    if ($(this).attr('label') !== undefined) {
-                      labels.push($(this).attr('label'));
-                    }
-                    else {
-                      labels.push($(this).html());
-                    }
-                  });
-                  return labels.join(', ') + '';
-                }
-              }
-            });
-            $("#id_departamento").addClass("form-control").multiselect({
-              buttonWidth: '100%',
-              includeSelectAllOption: true,
-              selectAllText: "Seleccionar todos",
-              buttonText: function(options, select) {
-                if (options.length === 0) {
-                  return "Sin selección ...";
-                }
-                else if (options.length > 3) {
-                  return "Varias opciones seleccionadas!";
-                }
-                else {
-                  var labels = [];
-                  options.each(function() {
-                    if ($(this).attr('label') !== undefined) {
-                      labels.push($(this).attr('label'));
-                    }
-                    else {
-                      labels.push($(this).html());
-                    }
-                  });
-                  return labels.join(', ') + '';
-                }
-              }
-            });
-            $("#id_municipio").addClass("form-control").multiselect({
-              buttonWidth: '100%',
-              includeSelectAllOption: true,
-              selectAllText: "Seleccionar todos",
-              buttonText: function(options, select) {
-                if (options.length === 0) {
-                  return "Sin selección ...";
-                }
-                else if (options.length > 3) {
-                  return "Varias opciones seleccionadas!";
-                }
-                else {
-                  var labels = [];
-                  options.each(function() {
-                    if ($(this).attr('label') !== undefined) {
-                      labels.push($(this).attr('label'));
-                    }
-                    else {
-                      labels.push($(this).html());
-                    }
-                  });
-                  return labels.join(', ') + '';
-                }
-              }
-            });
-            $("#id_organizacion").addClass("form-control").multiselect({
-              buttonWidth: '100%',
-              includeSelectAllOption: true,
-              selectAllText: "Seleccionar todos",
-              buttonText: function(options, select) {
-                if (options.length === 0) {
-                  return "Sin selección ...";
-                }
-                else if (options.length > 3) {
-                  return "Varias opciones seleccionadas!";
-                }
-                else {
-                  var labels = [];
-                  options.each(function() {
-                    if ($(this).attr('label') !== undefined) {
-                      labels.push($(this).attr('label'));
-                    }
-                    else {
-                      labels.push($(this).html());
-                    }
-                  });
-                  return labels.join(', ') + '';
-                }
-              }
-            });
-            $("#id_sexo").addClass("form-control");
-
-            $("#id_departamento").multiselect('disable');
-            $("#id_municipio").multiselect('disable');
-
-            // deptos
-            var deptos = [];
-            $(document).on('change','#id_pais',function(){
-              $('#id_pais :selected').each(function(i, selected){
-                deptos[i] = $(selected).val();
-                $('#id_departamento').multiselect('rebuild');
-              });
-              $.getJSON('/productores/ajax/deptos/?ids='+deptos.join(","), function(data){
-                $('#id_departamento').html('');
-                $("#id_departamento").multiselect('enable');
-                $("#id_departamento").multiselect('refresh');
-                if(data){
-                  $.each(data, function(i, item){
-                    $('#id_departamento').append($('<option></option>').val(item.id).html(item.nombre));
-                  });
-                  $('#id_departamento').multiselect('rebuild');
-                }
-              });
-
-            });
-
-            //municipios
-            var foo = [];
-            $(document).on('change','#id_departamento',function(){
-              $('#id_departamento :selected').each(function(i, selected){
-                foo[i] = $(selected).val();
-                $('#id_municipio').multiselect('rebuild');
-              });
-              $.getJSON('/productores/ajax/municipios/?ids='+foo.join(","), function(data){
-                $('#id_municipio').html('');
-                $('#id_municipio').multiselect('enable');
-                $("#id_municipio").multiselect('refresh');
-                var municipio = $('#id_municipio');
-                if(data){
-                  $.each(data, function(i, item){
-                    $.each(item, function(j, item2){
-                      var group = $('<optgroup></optgroup>').attr('label', j);
-                      $.each(item2, function(k, item3){
-                        group.append($('<option></option>').val(item3.id).html(item3.nombre));
-                      });
-                      group.appendTo(municipio);
-                      $('#id_municipio').multiselect('rebuild');
-                    });
-                  });
-                }
-              });
-            });
-
-          });
           </script>
           {% endblock %}

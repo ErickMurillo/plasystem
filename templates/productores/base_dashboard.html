@@ -41,9 +41,9 @@
 
             <ul class="nav navbar-nav nav-pais">
               {% if not request.session.anio %}
-              <li {% if request.path == '/productores/dashboard/nicaragua' %}class="active"{% endif %}><a href="/productores/dashboard/nicaragua">Nicaragua</a></li>
-              <li {% if request.path == '/productores/dashboard/honduras' %}class="active"{% endif %}><a href="/productores/dashboard/honduras">Honduras</a></li>
-              <li {% if request.path == '/productores/dashboard/guatemala' %}class="active"{% endif %}><a href="/productores/dashboard/guatemala">Guatemala</a></li>
+              <li {% if '?pais=1' in request.get_full_path %}class="active"{% endif %}><a href="/productores/dashboard/?pais=1">Nicaragua</a></li>
+              <li {% if '?pais=2' in request.get_full_path  %}class="active"{% endif %}><a href="/productores/dashboard/?pais=2">Honduras</a></li>
+              <li {% if '?pais=3' in request.get_full_path  %}class="active"{% endif %}><a href="/productores/dashboard/?pais=3">Guatemala</a></li>
               {% else %}
               <li class="active"><a href="#">{{request.session.pais}}</a></li>
               {% endif %}
@@ -169,6 +169,190 @@
   <script src="http://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/highcharts-more.js"></script>
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="/static/js/bootstrap-multiselect.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $("#id_edad").addClass("form-control")
+    $("#id_anio").addClass("form-control").multiselect({
+      buttonWidth: '100%',
+      includeSelectAllOption: true,
+      selectAllText: "Seleccionar todos",
+      buttonText: function(options, select) {
+        if (options.length === 0) {
+          return "Sin selección ...";
+        }
+        else if (options.length > 3) {
+          return "Varias opciones seleccionadas!";
+        }
+        else {
+          var labels = [];
+          options.each(function() {
+            if ($(this).attr('label') !== undefined) {
+              labels.push($(this).attr('label'));
+            }
+            else {
+              labels.push($(this).html());
+            }
+          });
+          return labels.join(', ') + '';
+        }
+      }
+    });
+    $("#id_pais").addClass("form-control").multiselect({
+      buttonWidth: '100%',
+      includeSelectAllOption: true,
+      selectAllText: "Seleccionar todos",
+      buttonText: function(options, select) {
+        if (options.length === 0) {
+          return "Sin selección ...";
+        }
+        else if (options.length > 3) {
+          return "Varias opciones seleccionadas!";
+        }
+        else {
+          var labels = [];
+          options.each(function() {
+            if ($(this).attr('label') !== undefined) {
+              labels.push($(this).attr('label'));
+            }
+            else {
+              labels.push($(this).html());
+            }
+          });
+          return labels.join(', ') + '';
+        }
+      }
+    });
+    $("#id_departamento").addClass("form-control").multiselect({
+      buttonWidth: '100%',
+      includeSelectAllOption: true,
+      selectAllText: "Seleccionar todos",
+      buttonText: function(options, select) {
+        if (options.length === 0) {
+          return "Sin selección ...";
+        }
+        else if (options.length > 3) {
+          return "Varias opciones seleccionadas!";
+        }
+        else {
+          var labels = [];
+          options.each(function() {
+            if ($(this).attr('label') !== undefined) {
+              labels.push($(this).attr('label'));
+            }
+            else {
+              labels.push($(this).html());
+            }
+          });
+          return labels.join(', ') + '';
+        }
+      }
+    });
+    $("#id_municipio").addClass("form-control").multiselect({
+      buttonWidth: '100%',
+      includeSelectAllOption: true,
+      selectAllText: "Seleccionar todos",
+      buttonText: function(options, select) {
+        if (options.length === 0) {
+          return "Sin selección ...";
+        }
+        else if (options.length > 3) {
+          return "Varias opciones seleccionadas!";
+        }
+        else {
+          var labels = [];
+          options.each(function() {
+            if ($(this).attr('label') !== undefined) {
+              labels.push($(this).attr('label'));
+            }
+            else {
+              labels.push($(this).html());
+            }
+          });
+          return labels.join(', ') + '';
+        }
+      }
+    });
+    $("#id_organizacion").addClass("form-control").multiselect({
+      buttonWidth: '100%',
+      includeSelectAllOption: true,
+      selectAllText: "Seleccionar todos",
+      buttonText: function(options, select) {
+        if (options.length === 0) {
+          return "Sin selección ...";
+        }
+        else if (options.length > 3) {
+          return "Varias opciones seleccionadas!";
+        }
+        else {
+          var labels = [];
+          options.each(function() {
+            if ($(this).attr('label') !== undefined) {
+              labels.push($(this).attr('label'));
+            }
+            else {
+              labels.push($(this).html());
+            }
+          });
+          return labels.join(', ') + '';
+        }
+      }
+    });
+    $("#id_sexo").addClass("form-control");
+
+    $("#id_departamento").multiselect('disable');
+    $("#id_municipio").multiselect('disable');
+
+    // deptos
+    var deptos = [];
+    $(document).on('change','#id_pais',function(){
+      $('#id_pais :selected').each(function(i, selected){
+        deptos[i] = $(selected).val();
+        $('#id_departamento').multiselect('rebuild');
+      });
+      $.getJSON('/productores/ajax/deptos/?ids='+deptos.join(","), function(data){
+        $('#id_departamento').html('');
+        $("#id_departamento").multiselect('enable');
+        $("#id_departamento").multiselect('refresh');
+        if(data){
+          $.each(data, function(i, item){
+            $('#id_departamento').append($('<option></option>').val(item.id).html(item.nombre));
+          });
+          $('#id_departamento').multiselect('rebuild');
+        }
+      });
+
+    });
+
+    //municipios
+    var foo = [];
+    $(document).on('change','#id_departamento',function(){
+      $('#id_departamento :selected').each(function(i, selected){
+        foo[i] = $(selected).val();
+        $('#id_municipio').multiselect('rebuild');
+      });
+      $.getJSON('/productores/ajax/municipios/?ids='+foo.join(","), function(data){
+        $('#id_municipio').html('');
+        $('#id_municipio').multiselect('enable');
+        $("#id_municipio").multiselect('refresh');
+        var municipio = $('#id_municipio');
+        if(data){
+          $.each(data, function(i, item){
+            $.each(item, function(j, item2){
+              var group = $('<optgroup></optgroup>').attr('label', j);
+              $.each(item2, function(k, item3){
+                group.append($('<option></option>').val(item3.id).html(item3.nombre));
+              });
+              group.appendTo(municipio);
+              $('#id_municipio').multiselect('rebuild');
+            });
+          });
+        }
+      });
+    });
+
+  });
+  </script>
   {% block extra_js %}{% endblock %}
 
 </body>

@@ -1,0 +1,92 @@
+{% extends "productores/base_dashboard.html" %}
+
+{% block content %}
+<div class="content">
+  <div class="">
+    <div class="page-header-title">
+      <h4 class="page-title">Distribución</h4>
+    </div>
+  </div>
+
+  <div class="page-content-wrapper ">
+
+    <div class="container">
+
+      <div class="row">
+        <div class="col-sm-4 col-lg-2">
+          <div class="panel text-center">
+            <div class="panel-heading">
+              <h4 class="panel-title text-muted font-light"><b>Familias</b></h4>
+            </div>
+            <div class="panel-body p-t-10">
+              <h2 class="m-t-0 m-b-15"><b>{{familias}}</b></h2>
+              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-lg-2">
+          <div class="panel text-center">
+            <div class="panel-heading">
+              <h4 class="panel-title text-muted font-light"><b>Hombres</b></h4>
+            </div>
+            <div class="panel-body p-t-10">
+              <h2 class="m-t-0 m-b-15"><b>{{hombres}}</b></h2>
+              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-lg-2">
+          <div class="panel text-center">
+            <div class="panel-heading">
+              <h4 class="panel-title text-muted font-light"><b>Mujeres</b></h4>
+            </div>
+            <div class="panel-body p-t-10">
+              <h2 class="m-t-0 m-b-15"><b>{{mujeres}}</b></h2>
+              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-lg-2">
+          <div class="panel text-center">
+            <div class="panel-heading">
+              <h4 class="panel-title text-muted font-light"><b>Menores de 35</b></h4>
+            </div>
+            <div class="panel-body p-t-10">
+              <h2 class="m-t-0 m-b-15"><b>{{menores_35}}</b></h2>
+              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-lg-2">
+          <div class="panel text-center">
+            <div class="panel-heading">
+              <h4 class="panel-title text-muted font-light"><b>Hectareas</b></h4>
+            </div>
+            <div class="panel-body p-t-10">
+              <h2 class="m-t-0 m-b-15"><b>{{hectareas}}</b></h2>
+              <p class="text-muted m-b-0 m-t-20"><b>Promedio</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-lg-2">
+          <div class="panel text-center">
+            <div class="panel-heading">
+              <h4 class="panel-title text-muted font-light"><b>Certificación</b></h4>
+            </div>
+            <div class="panel-body p-t-10">
+              <h2 class="m-t-0 m-b-15"><b>{{certificacion}}</b></h2>
+              <p class="text-muted m-b-0 m-t-20"><b>Productores</b></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

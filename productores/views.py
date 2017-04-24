@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 import json as simplejson
 from django.db.models import Sum, Count, Avg, F
 import collections
+from django.db.models import Q
 
 # Create your views here.
 def _queryset_filtrado(request):
@@ -80,8 +81,254 @@ def consulta_productores(request,template="productores/consulta.html"):
 
     return render(request, template, locals())
 
+def anios_encuesta():
+    years = []
+    for en in Encuesta.objects.order_by('anio').values_list('anio', flat=True):
+        years.append(en)
+    return list(sorted(set(years)))
+
 @login_required
-def dashboard_productores_filtrado(request,template="productores/dashboard.html"):
+def dashboard_productores(request,template="productores/dashboard.html"):
+    if request.method == 'POST':
+        mensaje = None
+        form = ProductoresForm(request.POST)
+        if form.is_valid():
+            request.session['anio'] = form.cleaned_data['anio']
+            request.session['pais'] = form.cleaned_data['pais']
+            request.session['departamento'] = form.cleaned_data['departamento']
+            request.session['municipio'] = form.cleaned_data['municipio']
+            request.session['organizacion'] = form.cleaned_data['organizacion']
+            request.session['sexo'] = form.cleaned_data['sexo']
+            request.session['edad'] = form.cleaned_data['edad']
+
+            mensaje = "Todas las variables estan correctamente :)"
+            request.session['activo'] = True
+            centinela = 1
+
+        else:
+            centinela = 0
+    else:
+        form = ProductoresForm()
+        mensaje = "Existen alguno errores"
+
+    if 'anio' not in request.session:
+        if request.GET.get('pais', ''):
+            id_pais = request.GET.get('pais', '')
+            filtro = Encuesta.objects.filter(productor__pais = id_pais)
+            years = anios_encuesta()
+    else:
+        filtro = _queryset_filtrado(request)
+        years = request.session['anio']
+
+    hectarea = 0.7050
+
+    #conteos generales
+    familias = filtro.distinct().count()
+    hombres = filtro.filter(productor__sexo = 'Hombre').count()
+    mujeres = filtro.filter(productor__sexo = 'Mujer').count()
+    menores_35 = filtro.filter(productor__edad = 1).count()
+    manzanas = filtro.aggregate(total = Avg('areafinca__area'))['total']
+    try:
+        hectareas = manzanas * hectarea
+    except:
+        hectareas = 0
+
+    certificacion = filtro.filter(certificacion__certificacion = 'Si').count()
+
+    #graficas
+    anios = collections.OrderedDict()
+    last_year = years[-1]
+    for year in years:
+        #ingresos
+        cafe = filtro.filter(destinoproduccion__cultivo__tipo = 1, anio = year).aggregate(
+                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
+
+        cacao = filtro.filter(destinoproduccion__cultivo__tipo = 2, anio = year).aggregate(
+                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
+
+        hortalizas = filtro.filter(destinoproduccion__cultivo__tipo = 3, anio = year).aggregate(
+                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
+
+        #indice de produccio sustentable
+        #conservacion suelo
+        try:
+            conservacion_suelo = ((filtro.filter(anio = year).aggregate(total = Avg(F('conservacionsuelo__erosion')
+                                    + F('conservacionsuelo__sanilizacion')
+                                    + F('conservacionsuelo__contaminacion_suelo')
+                                    + F('conservacionsuelo__materia_organica')))['total']) / 12) * 100
+        except:
+            conservacion_suelo = 0
+
+        #uso_eficiente_agua
+        try:
+            uso_eficiente_agua = ((filtro.filter(anio = year).aggregate(total = Avg(F('usoeficienteagua__gestion_riesgo')
+                                    + F('usoeficienteagua__retencion_agua')
+                                    + F('usoeficienteagua__eficiencia_agua')
+                                    + F('usoeficienteagua__contaminacion_agua')))['total']) / 12) * 100
+        except:
+            uso_eficiente_agua = 0
+
+        #gestion_recursos_naturales
+        try:
+            gestion_recursos_naturales = ((filtro.filter(anio = year).aggregate(total = Avg(F('gestionrecursosnaturales__pruebas_suelo')
+                                    + F('gestionrecursosnaturales__manejo_nutrientes')
+                                    + F('gestionrecursosnaturales__fertilizante_organico')
+                                    + F('gestionrecursosnaturales__balance')
+                                    + F('gestionrecursosnaturales_gestion_residuos')
+                                    + F('gestionrecursosnaturales__gestion_envases')
+                                    + F('gestionrecursosnaturales__uso_pesticida')
+                                    + F('gestionrecursosnaturales__mip')))['total']) / 23) * 100
+        except:
+            gestion_recursos_naturales = 0
+
+        #cambio_climatico
+        try:
+            cambio_climatico = ((filtro.filter(anio = year).aggregate(total = Avg(F('cambioclimatico__emision_carbono')
+                                    + F('cambioclimatico__procesamiento_transporte')))['total']) / 6) * 100
+        except:
+            cambio_climatico = 0
+
+        #biodiversidad
+        try:
+            biodiversidad = ((filtro.filter(anio = year).aggregate(total = Avg(F('biodiversidad__diversidad_vegetal')
+                                    + F('biodiversidad__diversidad_genetica')
+                                    + F('biodiversidad__uso_tierra')))['total']) / 9) * 100
+        except:
+            biodiversidad = 0
+
+        #paisaje_sostenible
+        try:
+            paisaje_sostenible = ((filtro.filter(anio = year).aggregate(total = Avg(F('paisajsostenible__salvaguardar_ecosistemas')
+                                    + F('paisajesostenible__proteccion_vida_silvestre')
+                                    + F('paisajesostenible__tierras_agricolas')
+                                    + F('paisajesostenible__especies_invasoras')))['total']) / 12) * 100
+        except:
+            paisaje_sostenible = 0
+
+        if year == years[-1]:
+            #indice total produccion sustentable -------------------------------------------------
+            indice = (conservacion_suelo + uso_eficiente_agua + gestion_recursos_naturales
+                        + cambio_climatico + paisaje_sostenible) / 5
+
+        # grafica Aumento del indice de manejo de plaga
+        encuestas = filtro.filter(anio = year).count()
+        cultivos = collections.OrderedDict()
+        dicc_indice = collections.OrderedDict()
+        for obj in CULTIVOS_MIP:
+            total_material = 0
+            for x in MATERIAL_CHOICES:
+                material_siembra_sano = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__material_siembra_sano__icontains = x[0]).count()
+                total_material = total_material + material_siembra_sano
+            try:
+                total_material = (total_material / float(encuestas)) * 33.33
+            except:
+                total_material = 0
+
+            total_preparacion = 0
+            for x in PREPARACION_TERRENO:
+                preparacion_terreno = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__preparacion_terreno__icontains = x[0]).count()
+                total_preparacion = total_preparacion + preparacion_terreno
+            try:
+                total_preparacion = (total_preparacion / float(encuestas)) * 20
+            except:
+                total_preparacion = 0
+
+            total_control = 0
+            for x in CONTROL_MALEZAS:
+                control_malezas = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__control_malezas__icontains = x[0]).count()
+                total_control = total_control + control_malezas
+            try:
+                total_control = (total_control / float(encuestas)) * 50
+            except:
+                total_control = 0
+
+            total_fertilizacion = 0
+            for x in FERTILIZACION_ADECUADA:
+                fertilizacion_adecuada = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__fertilizacion_adecuada__icontains = x[0]).count()
+                total_fertilizacion = total_fertilizacion + fertilizacion_adecuada
+            try:
+                total_fertilizacion = (total_fertilizacion / float(encuestas)) * 33.33
+            except:
+                total_fertilizacion = 0
+
+            total_densidad = 0
+            for x in DENSIDAD_SOMBRA:
+                densidad_siembra = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__densidad_siembra__icontains = x[0]).count()
+                total_densidad = total_densidad + densidad_siembra
+            try:
+                total_densidad = (total_densidad / float(encuestas)) * 50
+            except:
+                total_densidad = 0
+
+            total_plagas = 0
+            for x in DENSIDAD_SOMBRA:
+                control_plagas_enfermedades = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__control_plagas_enfermedades__icontains = x[0]).count()
+                total_plagas = total_plagas + control_plagas_enfermedades
+            try:
+                total_plagas = (total_plagas / float(encuestas)) * 50
+            except:
+                total_plagas = 0
+
+            cultivos[obj[0]] = (total_material,total_preparacion,total_control,
+                                total_fertilizacion,total_densidad,total_plagas)
+
+            if year == years[-1]:
+                total_indice = (total_material + total_preparacion + total_control
+                                + total_fertilizacion + total_densidad + total_plagas) / 6
+                dicc_indice[obj[0]] = (total_indice,years[-1])
+
+        #distribucion de las areas
+        areas = collections.OrderedDict()
+        for obj in CULTIVO_CHOICES:
+            area = filtro.filter(anio = year, produccion__cultivo__tipo = obj[0]).aggregate(
+                    sembrada = Sum(F('produccion__area_sembrada') * hectarea),cosechada = Sum(F('produccion__area_cosechada') * hectarea))
+            areas[obj[1]] = (area['sembrada'],area['cosechada'])
+
+        #Cantidad de productores con produccion sustentable, practicas MIP y BPA --------------------------------------
+        bpa = filtro.filter(anio = year, bpapregunta__respuesta = 'Si').count()
+
+        mip = filtro.filter(Q(practicasmip__material_siembra_sano__isnull = False) |
+                            Q(practicasmip__preparacion_terreno__isnull = False) |
+                            Q(practicasmip__control_malezas__isnull = False) |
+                            Q(practicasmip__fertilizacion_adecuada__isnull = False) |
+                            Q(practicasmip__densidad_siembra__isnull = False) |
+                            Q(practicasmip__control_plagas_enfermedades__isnull = False),
+                            anio = year).count()
+
+        l = [1,2,3]
+        prod_sustentable = filtro.filter(Q(conservacionsuelo__erosion__in = l) |
+                                        Q(conservacionsuelo__sanilizacion__in = l) |
+                                        Q(conservacionsuelo__contaminacion_suelo__in = l) |
+                                        Q(conservacionsuelo__materia_organica__in = l) |
+                                        Q(usoeficienteagua__gestion_riesgo__in = l) |
+                                        Q(usoeficienteagua__retencion_agua__in = l) |
+                                        Q(usoeficienteagua__eficiencia_agua__in = l) |
+                                        Q(gestionrecursosnaturales__pruebas_suelo__in = l) |
+                                        Q(gestionrecursosnaturales__manejo_nutrientes__in = l) |
+                                        Q(gestionrecursosnaturales__fertilizante_organico__in = l) |
+                                        Q(gestionrecursosnaturales__balance__in = l) |
+                                        Q(gestionrecursosnaturales__gestion_residuos__in = l) |
+                                        Q(gestionrecursosnaturales__gestion_envases__in = l) |
+                                        Q(gestionrecursosnaturales__uso_pesticida__in = l) |
+                                        Q(gestionrecursosnaturales__mip__in = l) |
+                                        Q(cambioclimatico__emision_carbono__in = l) |
+                                        Q(cambioclimatico__procesamiento_transporte__in = l) |
+                                        Q(biodiversidad__diversidad_vegetal__in = l) |
+                                        Q(biodiversidad__diversidad_genetica__in = l) |
+                                        Q(biodiversidad__uso_tierra__in = l) |
+                                        Q(paisajesostenible__salvaguardar_ecosistemas__in = l) |
+                                        Q(paisajesostenible__proteccion_vida_silvestre__in = l) |
+                                        Q(paisajesostenible__tierras_agricolas__in = l) |
+                                        Q(paisajesostenible__especies_invasoras__in = l),
+                                        anio = year).count()
+
+        #agregando al dic general por anio
+        anios[year] = (cafe,cacao,hortalizas,conservacion_suelo,uso_eficiente_agua,gestion_recursos_naturales,
+                        cambio_climatico,biodiversidad,paisaje_sostenible,cultivos,areas,prod_sustentable,mip,bpa)
+
+    return render(request, template, locals())
+
+def distribucion_areas(request,template="productores/distribucion_areas.html"):
     if request.method == 'POST':
         mensaje = None
         form = ProductoresForm(request.POST)
@@ -114,220 +361,14 @@ def dashboard_productores_filtrado(request,template="productores/dashboard.html"
     #     except:
     #         pass
 
-    filtro = _queryset_filtrado(request)
-
-    hectarea = 0.7050
-
-    #conteos generales
-    familias = filtro.distinct().count()
-    hombres = filtro.filter(productor__sexo = 'Hombre').count()
-    mujeres = filtro.filter(productor__sexo = 'Mujer').count()
-    menores_35 = filtro.filter(productor__edad = 1).count()
-    manzanas = filtro.aggregate(total = Avg('areafinca__area'))['total']
-    try:
-        hectareas = manzanas * hectarea
-    except:
-        hectareas = 0
-
-    certificacion = filtro.filter(certificacion__certificacion = 'Si').count()
-
-    #graficas
-    years = request.session['anio']
-    anios = collections.OrderedDict()
-    last_year = years[-1]
-    for year in years:
-        #ingresos
-        cafe = filtro.filter(destinoproduccion__cultivo__tipo = 1, anio = year).aggregate(
-                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
-
-        cacao = filtro.filter(destinoproduccion__cultivo__tipo = 2, anio = year).aggregate(
-                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
-
-        hortalizas = filtro.filter(destinoproduccion__cultivo__tipo = 3, anio = year).aggregate(
-                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
-
-        #indice de produccio sustentable
-        #conservacion suelo
-        try:
-            conservacion_suelo = ((filtro.filter(anio = year).aggregate(total = Avg(F('conservacionsuelo__erosion')
-                                    + F('conservacionsuelo__sanilizacion')
-                                    + F('conservacionsuelo__contaminacion_suelo')
-                                    + F('conservacionsuelo__materia_organica')))['total']) / 12) * 100
-        except:
-            conservacion_suelo = 0
-
-        #uso_eficiente_agua
-        try:
-            uso_eficiente_agua = ((filtro.filter(anio = year).aggregate(total = Avg(F('usoeficienteagua__gestion_riesgo')
-                                    + F('usoeficienteagua__retencion_agua')
-                                    + F('usoeficienteagua__eficiencia_agua')
-                                    + F('usoeficienteagua__contaminacion_agua')))['total']) / 12) * 100
-        except:
-            uso_eficiente_agua = 0
-
-        #gestion_recursos_naturales
-        try:
-            gestion_recursos_naturales = ((filtro.filter(anio = year).aggregate(total = Avg(F('gestionrecursosnaturales__pruebas_suelo')
-                                    + F('gestionrecursosnaturales__manejo_nutrientes')
-                                    + F('gestionrecursosnaturales__fertilizante_organico')
-                                    + F('gestionrecursosnaturales__balance')
-                                    + F('gestionrecursosnaturales_gestion_residuos')
-                                    + F('gestionrecursosnaturales__gestion_envases')
-                                    + F('gestionrecursosnaturales__uso_pesticida')
-                                    + F('gestionrecursosnaturales__mip')))['total']) / 23) * 100
-        except:
-            gestion_recursos_naturales = 0
-
-        #cambio_climatico
-        try:
-            cambio_climatico = ((filtro.filter(anio = year).aggregate(total = Avg(F('cambioclimatico__emision_carbono')
-                                    + F('cambioclimatico__procesamiento_transporte')))['total']) / 6) * 100
-        except:
-            cambio_climatico = 0
-
-        #biodiversidad
-        try:
-            biodiversidad = ((filtro.filter(anio = year).aggregate(total = Avg(F('biodiversidad__diversidad_vegetal')
-                                    + F('biodiversidad__diversidad_genetica')
-                                    + F('biodiversidad__uso_tierra')))['total']) / 9) * 100
-        except:
-            biodiversidad = 0
-
-        #paisaje_sostenible
-        try:
-            paisaje_sostenible = ((filtro.filter(anio = year).aggregate(total = Avg(F('paisajsostenible__salvaguardar_ecosistemas')
-                                    + F('paisajesostenible__proteccion_vida_silvestre')
-                                    + F('paisajesostenible__tierras_agricolas')
-                                    + F('paisajesostenible__especies_invasoras')))['total']) / 12) * 100
-        except:
-            paisaje_sostenible = 0
-
-        if year == years[-1]:
-            #indice total produccion sustentable -------------------------------------------------
-            indice = (conservacion_suelo + uso_eficiente_agua + gestion_recursos_naturales
-                        + cambio_climatico + paisaje_sostenible) / 5
-
-        # grafica Aumento del indice de manejo de plaga
-        encuestas = filtro.filter(anio = year).count()
-        cultivos = collections.OrderedDict()
-        dicc_indice = collections.OrderedDict()
-        for obj in CULTIVOS_MIP:
-            total_material = 0
-            for x in MATERIAL_CHOICES:
-                material_siembra_sano = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__material_siembra_sano__icontains = x[0]).count()
-                total_material = total_material + material_siembra_sano
-            try:
-                total_material = (total_material / float(encuestas)) * 33.33
-            except:
-                total_material = 0
-
-            total_preparacion = 0
-            for x in PREPARACION_TERRENO:
-                preparacion_terreno = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__preparacion_terreno__icontains = x[0]).count()
-                total_preparacion = total_preparacion + preparacion_terreno
-            try:
-                total_preparacion = (total_preparacion / float(encuestas)) * 20
-            except:
-                total_preparacion = 0
-
-            total_control = 0
-            for x in CONTROL_MALEZAS:
-                control_malezas = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__control_malezas__icontains = x[0]).count()
-                total_control = total_control + control_malezas
-            try:
-                total_control = (total_control / float(encuestas)) * 50
-            except:
-                total_control = 0
-
-            total_fertilizacion = 0
-            for x in FERTILIZACION_ADECUADA:
-                fertilizacion_adecuada = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__fertilizacion_adecuada__icontains = x[0]).count()
-                total_fertilizacion = total_fertilizacion + fertilizacion_adecuada
-            try:
-                total_fertilizacion = (total_fertilizacion / float(encuestas)) * 33.33
-            except:
-                total_fertilizacion = 0
-
-            total_densidad = 0
-            for x in DENSIDAD_SOMBRA:
-                densidad_siembra = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__densidad_siembra__icontains = x[0]).count()
-                total_densidad = total_densidad + densidad_siembra
-            try:
-                total_densidad = (total_densidad / float(encuestas)) * 50
-            except:
-                total_densidad = 0
-
-            total_plagas = 0
-            for x in DENSIDAD_SOMBRA:
-                control_plagas_enfermedades = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__control_plagas_enfermedades__icontains = x[0]).count()
-                total_plagas = total_plagas + control_plagas_enfermedades
-            try:
-                total_plagas = (total_plagas / float(encuestas)) * 50
-            except:
-                total_plagas = 0
-
-            cultivos[obj[0]] = (total_material,total_preparacion,total_control,
-                                total_fertilizacion,total_densidad,total_plagas)
-
-            if year == years[-1]:
-                total_indice = (total_material + total_preparacion + total_control
-                                + total_fertilizacion + total_densidad + total_plagas) / 6
-                dicc_indice[obj[0]] = (total_indice,years[-1])
-
-        #distribucion de las areas
-        areas = collections.OrderedDict()
-        for obj in CULTIVO_CHOICES:
-            area = filtro.filter(anio = year, produccion__cultivo__tipo = obj[0]).aggregate(
-                    sembrada = Sum(F('produccion__area_sembrada') * hectarea),cosechada = Sum(F('produccion__area_cosechada') * hectarea))
-            areas[obj[1]] = (area['sembrada'],area['cosechada'])
-
-        #agregando al dic general por anio
-        anios[year] = (cafe,cacao,hortalizas,conservacion_suelo,uso_eficiente_agua,gestion_recursos_naturales,
-                        cambio_climatico,biodiversidad,paisaje_sostenible,cultivos,areas)
-
-    return render(request, template, locals())
-
-def anios_encuesta():
-    years = []
-    for en in Encuesta.objects.order_by('anio').values_list('anio', flat=True):
-        years.append(en)
-    return list(sorted(set(years)))
-
-@login_required
-def dashboard_productores_nicaragua(request,template="productores/dashboard.html"):
-    if request.method == 'POST':
-        mensaje = None
-        form = ProductoresForm(request.POST)
-        if form.is_valid():
-            request.session['anio'] = form.cleaned_data['anio']
-            request.session['pais'] = form.cleaned_data['pais']
-            request.session['departamento'] = form.cleaned_data['departamento']
-            request.session['municipio'] = form.cleaned_data['municipio']
-            request.session['organizacion'] = form.cleaned_data['organizacion']
-            request.session['sexo'] = form.cleaned_data['sexo']
-            request.session['edad'] = form.cleaned_data['edad']
-
-            mensaje = "Todas las variables estan correctamente :)"
-            request.session['activo'] = True
-            centinela = 1
-
-        else:
-            centinela = 0
+    if 'anio' not in request.session:
+        if request.GET.get('pais', ''):
+            id_pais = request.GET.get('pais', '')
+            filtro = Encuesta.objects.filter(productor__pais = id_pais)
+            years = anios_encuesta()
     else:
-        form = ProductoresForm()
-        mensaje = "Existen alguno errores"
-        try:
-            del request.session['anio']
-            del request.session['pais']
-            del request.session['departamento']
-            del request.session['municipio']
-            del request.session['organizacion']
-            del request.session['sexo']
-            del request.session['edad']
-        except:
-            pass
-
-    filtro = Encuesta.objects.filter(productor__pais__nombre = 'Nicaragua')
+        filtro = _queryset_filtrado(request)
+        years = request.session['anio']
 
     hectarea = 0.7050
 
@@ -343,576 +384,6 @@ def dashboard_productores_nicaragua(request,template="productores/dashboard.html
         hectareas = 0
 
     certificacion = filtro.filter(certificacion__certificacion = 'Si').count()
-
-    #graficas
-    years = anios_encuesta()
-    anios = collections.OrderedDict()
-    last_year = years[-1]
-    for year in years:
-        #ingresos
-        cafe = filtro.filter(destinoproduccion__cultivo__tipo = 1, anio = year).aggregate(
-                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
-
-        cacao = filtro.filter(destinoproduccion__cultivo__tipo = 2, anio = year).aggregate(
-                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
-
-        hortalizas = filtro.filter(destinoproduccion__cultivo__tipo = 3, anio = year).aggregate(
-                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
-
-        #indice de produccio sustentable
-        #conservacion suelo
-        try:
-            conservacion_suelo = ((filtro.filter(anio = year).aggregate(total = Avg(F('conservacionsuelo__erosion')
-                                    + F('conservacionsuelo__sanilizacion')
-                                    + F('conservacionsuelo__contaminacion_suelo')
-                                    + F('conservacionsuelo__materia_organica')))['total']) / 12) * 100
-        except:
-            conservacion_suelo = 0
-
-        #uso_eficiente_agua
-        try:
-            uso_eficiente_agua = ((filtro.filter(anio = year).aggregate(total = Avg(F('usoeficienteagua__gestion_riesgo')
-                                    + F('usoeficienteagua__retencion_agua')
-                                    + F('usoeficienteagua__eficiencia_agua')
-                                    + F('usoeficienteagua__contaminacion_agua')))['total']) / 12) * 100
-        except:
-            uso_eficiente_agua = 0
-
-        #gestion_recursos_naturales
-        try:
-            gestion_recursos_naturales = ((filtro.filter(anio = year).aggregate(total = Avg(F('gestionrecursosnaturales__pruebas_suelo')
-                                    + F('gestionrecursosnaturales__manejo_nutrientes')
-                                    + F('gestionrecursosnaturales__fertilizante_organico')
-                                    + F('gestionrecursosnaturales__balance')
-                                    + F('gestionrecursosnaturales_gestion_residuos')
-                                    + F('gestionrecursosnaturales__gestion_envases')
-                                    + F('gestionrecursosnaturales__uso_pesticida')
-                                    + F('gestionrecursosnaturales__mip')))['total']) / 23) * 100
-        except:
-            gestion_recursos_naturales = 0
-
-        #cambio_climatico
-        try:
-            cambio_climatico = ((filtro.filter(anio = year).aggregate(total = Avg(F('cambioclimatico__emision_carbono')
-                                    + F('cambioclimatico__procesamiento_transporte')))['total']) / 6) * 100
-        except:
-            cambio_climatico = 0
-
-        #biodiversidad
-        try:
-            biodiversidad = ((filtro.filter(anio = year).aggregate(total = Avg(F('biodiversidad__diversidad_vegetal')
-                                    + F('biodiversidad__diversidad_genetica')
-                                    + F('biodiversidad__uso_tierra')))['total']) / 9) * 100
-        except:
-            biodiversidad = 0
-
-        #paisaje_sostenible
-        try:
-            paisaje_sostenible = ((filtro.filter(anio = year).aggregate(total = Avg(F('paisajsostenible__salvaguardar_ecosistemas')
-                                    + F('paisajesostenible__proteccion_vida_silvestre')
-                                    + F('paisajesostenible__tierras_agricolas')
-                                    + F('paisajesostenible__especies_invasoras')))['total']) / 12) * 100
-        except:
-            paisaje_sostenible = 0
-
-        if year == years[-1]:
-            #indice total produccion sustentable -------------------------------------------------
-            indice = (conservacion_suelo + uso_eficiente_agua + gestion_recursos_naturales
-                        + cambio_climatico + paisaje_sostenible) / 5
-
-        # grafica Aumento del indice de manejo de plaga
-        encuestas = filtro.filter(anio = year).count()
-        cultivos = collections.OrderedDict()
-        dicc_indice = collections.OrderedDict()
-        for obj in CULTIVOS_MIP:
-            total_material = 0
-            for x in MATERIAL_CHOICES:
-                material_siembra_sano = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__material_siembra_sano__icontains = x[0]).count()
-                total_material = total_material + material_siembra_sano
-            try:
-                total_material = (total_material / float(encuestas)) * 33.33
-            except:
-                total_material = 0
-
-            total_preparacion = 0
-            for x in PREPARACION_TERRENO:
-                preparacion_terreno = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__preparacion_terreno__icontains = x[0]).count()
-                total_preparacion = total_preparacion + preparacion_terreno
-            try:
-                total_preparacion = (total_preparacion / float(encuestas)) * 20
-            except:
-                total_preparacion = 0
-
-            total_control = 0
-            for x in CONTROL_MALEZAS:
-                control_malezas = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__control_malezas__icontains = x[0]).count()
-                total_control = total_control + control_malezas
-            try:
-                total_control = (total_control / float(encuestas)) * 50
-            except:
-                total_control = 0
-
-            total_fertilizacion = 0
-            for x in FERTILIZACION_ADECUADA:
-                fertilizacion_adecuada = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__fertilizacion_adecuada__icontains = x[0]).count()
-                total_fertilizacion = total_fertilizacion + fertilizacion_adecuada
-            try:
-                total_fertilizacion = (total_fertilizacion / float(encuestas)) * 33.33
-            except:
-                total_fertilizacion = 0
-
-            total_densidad = 0
-            for x in DENSIDAD_SOMBRA:
-                densidad_siembra = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__densidad_siembra__icontains = x[0]).count()
-                total_densidad = total_densidad + densidad_siembra
-            try:
-                total_densidad = (total_densidad / float(encuestas)) * 50
-            except:
-                total_densidad = 0
-
-            total_plagas = 0
-            for x in DENSIDAD_SOMBRA:
-                control_plagas_enfermedades = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__control_plagas_enfermedades__icontains = x[0]).count()
-                total_plagas = total_plagas + control_plagas_enfermedades
-            try:
-                total_plagas = (total_plagas / float(encuestas)) * 50
-            except:
-                total_plagas = 0
-
-            cultivos[obj[0]] = (total_material,total_preparacion,total_control,
-                                total_fertilizacion,total_densidad,total_plagas)
-
-            if year == years[-1]:
-                total_indice = (total_material + total_preparacion + total_control
-                                + total_fertilizacion + total_densidad + total_plagas) / 6
-                dicc_indice[obj[0]] = (total_indice,years[-1])
-
-        #distribucion de las areas
-        areas = collections.OrderedDict()
-        for obj in CULTIVO_CHOICES:
-            area = filtro.filter(anio = year, produccion__cultivo__tipo = obj[0]).aggregate(
-                    sembrada = Sum(F('produccion__area_sembrada') * hectarea),cosechada = Sum(F('produccion__area_cosechada') * hectarea))
-            areas[obj[1]] = (area['sembrada'],area['cosechada'])
-
-        #agregando al dic general por anio
-        anios[year] = (cafe,cacao,hortalizas,conservacion_suelo,uso_eficiente_agua,gestion_recursos_naturales,
-                        cambio_climatico,biodiversidad,paisaje_sostenible,cultivos,areas)
-
-    return render(request, template, locals())
-
-@login_required
-def dashboard_productores_honduras(request,template="productores/dashboard.html"):
-    if request.method == 'POST':
-        mensaje = None
-        form = ProductoresForm(request.POST)
-        if form.is_valid():
-            request.session['anio'] = form.cleaned_data['anio']
-            request.session['pais'] = form.cleaned_data['pais']
-            request.session['departamento'] = form.cleaned_data['departamento']
-            request.session['municipio'] = form.cleaned_data['municipio']
-            request.session['organizacion'] = form.cleaned_data['organizacion']
-            request.session['sexo'] = form.cleaned_data['sexo']
-            request.session['edad'] = form.cleaned_data['edad']
-
-            mensaje = "Todas las variables estan correctamente :)"
-            request.session['activo'] = True
-            centinela = 1
-
-        else:
-            centinela = 0
-    else:
-        form = ProductoresForm()
-        mensaje = "Existen alguno errores"
-        try:
-            del request.session['anio']
-            del request.session['pais']
-            del request.session['departamento']
-            del request.session['municipio']
-            del request.session['organizacion']
-            del request.session['sexo']
-            del request.session['edad']
-        except:
-            pass
-
-    filtro = Encuesta.objects.filter(productor__pais__nombre = 'Honduras')
-
-    hectarea = 0.7050
-
-    #conteos generales
-    familias = filtro.distinct().count()
-    hombres = filtro.filter(productor__sexo = 'Hombre').count()
-    mujeres = filtro.filter(productor__sexo = 'Mujer').count()
-    menores_35 = filtro.filter(productor__edad = 1).count()
-    manzanas = filtro.aggregate(total = Avg('areafinca__area'))['total']
-    try:
-        hectareas = manzanas * hectarea
-    except:
-        hectareas = 0
-
-    certificacion = filtro.filter(certificacion__certificacion = 'Si').count()
-
-    #graficas
-    years = anios_encuesta()
-    anios = collections.OrderedDict()
-    last_year = years[-1]
-    for year in years:
-        #ingresos
-        cafe = filtro.filter(destinoproduccion__cultivo__tipo = 1, anio = year).aggregate(
-                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
-
-        cacao = filtro.filter(destinoproduccion__cultivo__tipo = 2, anio = year).aggregate(
-                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
-
-        hortalizas = filtro.filter(destinoproduccion__cultivo__tipo = 3, anio = year).aggregate(
-                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
-
-        #indice de produccio sustentable
-        #conservacion suelo
-        try:
-            conservacion_suelo = ((filtro.filter(anio = year).aggregate(total = Avg(F('conservacionsuelo__erosion')
-                                    + F('conservacionsuelo__sanilizacion')
-                                    + F('conservacionsuelo__contaminacion_suelo')
-                                    + F('conservacionsuelo__materia_organica')))['total']) / 12) * 100
-        except:
-            conservacion_suelo = 0
-
-        #uso_eficiente_agua
-        try:
-            uso_eficiente_agua = ((filtro.filter(anio = year).aggregate(total = Avg(F('usoeficienteagua__gestion_riesgo')
-                                    + F('usoeficienteagua__retencion_agua')
-                                    + F('usoeficienteagua__eficiencia_agua')
-                                    + F('usoeficienteagua__contaminacion_agua')))['total']) / 12) * 100
-        except:
-            uso_eficiente_agua = 0
-
-        #gestion_recursos_naturales
-        try:
-            gestion_recursos_naturales = ((filtro.filter(anio = year).aggregate(total = Avg(F('gestionrecursosnaturales__pruebas_suelo')
-                                    + F('gestionrecursosnaturales__manejo_nutrientes')
-                                    + F('gestionrecursosnaturales__fertilizante_organico')
-                                    + F('gestionrecursosnaturales__balance')
-                                    + F('gestionrecursosnaturales_gestion_residuos')
-                                    + F('gestionrecursosnaturales__gestion_envases')
-                                    + F('gestionrecursosnaturales__uso_pesticida')
-                                    + F('gestionrecursosnaturales__mip')))['total']) / 23) * 100
-        except:
-            gestion_recursos_naturales = 0
-
-        #cambio_climatico
-        try:
-            cambio_climatico = ((filtro.filter(anio = year).aggregate(total = Avg(F('cambioclimatico__emision_carbono')
-                                    + F('cambioclimatico__procesamiento_transporte')))['total']) / 6) * 100
-        except:
-            cambio_climatico = 0
-
-        #biodiversidad
-        try:
-            biodiversidad = ((filtro.filter(anio = year).aggregate(total = Avg(F('biodiversidad__diversidad_vegetal')
-                                    + F('biodiversidad__diversidad_genetica')
-                                    + F('biodiversidad__uso_tierra')))['total']) / 9) * 100
-        except:
-            biodiversidad = 0
-
-        #paisaje_sostenible
-        try:
-            paisaje_sostenible = ((filtro.filter(anio = year).aggregate(total = Avg(F('paisajsostenible__salvaguardar_ecosistemas')
-                                    + F('paisajesostenible__proteccion_vida_silvestre')
-                                    + F('paisajesostenible__tierras_agricolas')
-                                    + F('paisajesostenible__especies_invasoras')))['total']) / 12) * 100
-        except:
-            paisaje_sostenible = 0
-
-        if year == years[-1]:
-            #indice total produccion sustentable -------------------------------------------------
-            indice = (conservacion_suelo + uso_eficiente_agua + gestion_recursos_naturales
-                        + cambio_climatico + paisaje_sostenible) / 5
-
-        # grafica Aumento del indice de manejo de plaga
-        encuestas = filtro.filter(anio = year).count()
-        cultivos = collections.OrderedDict()
-        dicc_indice = collections.OrderedDict()
-        for obj in CULTIVOS_MIP:
-            total_material = 0
-            for x in MATERIAL_CHOICES:
-                material_siembra_sano = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__material_siembra_sano__icontains = x[0]).count()
-                total_material = total_material + material_siembra_sano
-            try:
-                total_material = (total_material / float(encuestas)) * 33.33
-            except:
-                total_material = 0
-
-            total_preparacion = 0
-            for x in PREPARACION_TERRENO:
-                preparacion_terreno = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__preparacion_terreno__icontains = x[0]).count()
-                total_preparacion = total_preparacion + preparacion_terreno
-            try:
-                total_preparacion = (total_preparacion / float(encuestas)) * 20
-            except:
-                total_preparacion = 0
-
-            total_control = 0
-            for x in CONTROL_MALEZAS:
-                control_malezas = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__control_malezas__icontains = x[0]).count()
-                total_control = total_control + control_malezas
-            try:
-                total_control = (total_control / float(encuestas)) * 50
-            except:
-                total_control = 0
-
-            total_fertilizacion = 0
-            for x in FERTILIZACION_ADECUADA:
-                fertilizacion_adecuada = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__fertilizacion_adecuada__icontains = x[0]).count()
-                total_fertilizacion = total_fertilizacion + fertilizacion_adecuada
-            try:
-                total_fertilizacion = (total_fertilizacion / float(encuestas)) * 33.33
-            except:
-                total_fertilizacion = 0
-
-            total_densidad = 0
-            for x in DENSIDAD_SOMBRA:
-                densidad_siembra = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__densidad_siembra__icontains = x[0]).count()
-                total_densidad = total_densidad + densidad_siembra
-            try:
-                total_densidad = (total_densidad / float(encuestas)) * 50
-            except:
-                total_densidad = 0
-
-            total_plagas = 0
-            for x in DENSIDAD_SOMBRA:
-                control_plagas_enfermedades = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__control_plagas_enfermedades__icontains = x[0]).count()
-                total_plagas = total_plagas + control_plagas_enfermedades
-            try:
-                total_plagas = (total_plagas / float(encuestas)) * 50
-            except:
-                total_plagas = 0
-
-
-            cultivos[obj[0]] = (total_material,total_preparacion,total_control,
-                                total_fertilizacion,total_densidad,total_plagas)
-
-            if year == years[-1]:
-                total_indice = (total_material + total_preparacion + total_control
-                                + total_fertilizacion + total_densidad + total_plagas) / 6
-                dicc_indice[obj[0]] = (total_indice,years[-1])
-
-        #distribucion de las areas
-        areas = collections.OrderedDict()
-        for obj in CULTIVO_CHOICES:
-            area = filtro.filter(anio = year, produccion__cultivo__tipo = obj[0]).aggregate(
-                    sembrada = Sum(F('produccion__area_sembrada') * hectarea),cosechada = Sum(F('produccion__area_cosechada') * hectarea))
-            areas[obj[1]] = (area['sembrada'],area['cosechada'])
-
-        #agregando al dic general por anio
-        anios[year] = (cafe,cacao,hortalizas,conservacion_suelo,uso_eficiente_agua,gestion_recursos_naturales,
-                        cambio_climatico,biodiversidad,paisaje_sostenible,cultivos,areas)
-
-
-    return render(request, template, locals())
-
-@login_required
-def dashboard_productores_guatemala(request,template="productores/dashboard.html"):
-    if request.method == 'POST':
-        mensaje = None
-        form = ProductoresForm(request.POST)
-        if form.is_valid():
-            request.session['anio'] = form.cleaned_data['anio']
-            request.session['pais'] = form.cleaned_data['pais']
-            request.session['departamento'] = form.cleaned_data['departamento']
-            request.session['municipio'] = form.cleaned_data['municipio']
-            request.session['organizacion'] = form.cleaned_data['organizacion']
-            request.session['sexo'] = form.cleaned_data['sexo']
-            request.session['edad'] = form.cleaned_data['edad']
-
-            mensaje = "Todas las variables estan correctamente :)"
-            request.session['activo'] = True
-            centinela = 1
-
-        else:
-            centinela = 0
-    else:
-        form = ProductoresForm()
-        mensaje = "Existen alguno errores"
-        try:
-            del request.session['anio']
-            del request.session['pais']
-            del request.session['departamento']
-            del request.session['municipio']
-            del request.session['organizacion']
-            del request.session['sexo']
-            del request.session['edad']
-        except:
-            pass
-
-    filtro = Encuesta.objects.filter(productor__pais__nombre = 'Guatemala')
-
-    hectarea = 0.7050
-
-    #conteos generales
-    familias = filtro.distinct().count()
-    hombres = filtro.filter(productor__sexo = 'Hombre').count()
-    mujeres = filtro.filter(productor__sexo = 'Mujer').count()
-    menores_35 = filtro.filter(productor__edad = 1).count()
-    manzanas = filtro.aggregate(total = Avg('areafinca__area'))['total']
-    try:
-        hectareas = manzanas * hectarea
-    except:
-        hectareas = 0
-
-    certificacion = filtro.filter(certificacion__certificacion = 'Si').count()
-
-    #graficas
-    years = anios_encuesta()
-    anios = collections.OrderedDict()
-    last_year = years[-1]
-    for year in years:
-        #ingresos
-        cafe = filtro.filter(destinoproduccion__cultivo__tipo = 1, anio = year).aggregate(
-                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
-
-        cacao = filtro.filter(destinoproduccion__cultivo__tipo = 2, anio = year).aggregate(
-                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
-
-        hortalizas = filtro.filter(destinoproduccion__cultivo__tipo = 3, anio = year).aggregate(
-                sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
-
-        #indice de produccio sustentable
-        #conservacion suelo
-        try:
-            conservacion_suelo = ((filtro.filter(anio = year).aggregate(total = Avg(F('conservacionsuelo__erosion')
-                                    + F('conservacionsuelo__sanilizacion')
-                                    + F('conservacionsuelo__contaminacion_suelo')
-                                    + F('conservacionsuelo__materia_organica')))['total']) / 12) * 100
-        except:
-            conservacion_suelo = 0
-
-        #uso_eficiente_agua
-        try:
-            uso_eficiente_agua = ((filtro.filter(anio = year).aggregate(total = Avg(F('usoeficienteagua__gestion_riesgo')
-                                    + F('usoeficienteagua__retencion_agua')
-                                    + F('usoeficienteagua__eficiencia_agua')
-                                    + F('usoeficienteagua__contaminacion_agua')))['total']) / 12) * 100
-        except:
-            uso_eficiente_agua = 0
-
-        #gestion_recursos_naturales
-        try:
-            gestion_recursos_naturales = ((filtro.filter(anio = year).aggregate(total = Avg(F('gestionrecursosnaturales__pruebas_suelo')
-                                    + F('gestionrecursosnaturales__manejo_nutrientes')
-                                    + F('gestionrecursosnaturales__fertilizante_organico')
-                                    + F('gestionrecursosnaturales__balance')
-                                    + F('gestionrecursosnaturales_gestion_residuos')
-                                    + F('gestionrecursosnaturales__gestion_envases')
-                                    + F('gestionrecursosnaturales__uso_pesticida')
-                                    + F('gestionrecursosnaturales__mip')))['total']) / 23) * 100
-        except:
-            gestion_recursos_naturales = 0
-
-        #cambio_climatico
-        try:
-            cambio_climatico = ((filtro.filter(anio = year).aggregate(total = Avg(F('cambioclimatico__emision_carbono')
-                                    + F('cambioclimatico__procesamiento_transporte')))['total']) / 6) * 100
-        except:
-            cambio_climatico = 0
-
-        #biodiversidad
-        try:
-            biodiversidad = ((filtro.filter(anio = year).aggregate(total = Avg(F('biodiversidad__diversidad_vegetal')
-                                    + F('biodiversidad__diversidad_genetica')
-                                    + F('biodiversidad__uso_tierra')))['total']) / 9) * 100
-        except:
-            biodiversidad = 0
-
-        #paisaje_sostenible
-        try:
-            paisaje_sostenible = ((filtro.filter(anio = year).aggregate(total = Avg(F('paisajsostenible__salvaguardar_ecosistemas')
-                                    + F('paisajesostenible__proteccion_vida_silvestre')
-                                    + F('paisajesostenible__tierras_agricolas')
-                                    + F('paisajesostenible__especies_invasoras')))['total']) / 12) * 100
-        except:
-            paisaje_sostenible = 0
-
-        if year == years[-1]:
-            #indice total produccion sustentable -------------------------------------------------
-            indice = (conservacion_suelo + uso_eficiente_agua + gestion_recursos_naturales
-                        + cambio_climatico + paisaje_sostenible) / 5
-
-        # grafica Aumento del indice de manejo de plaga
-        encuestas = filtro.filter(anio = year).count()
-        cultivos = collections.OrderedDict()
-        dicc_indice = collections.OrderedDict()
-        for obj in CULTIVOS_MIP:
-            total_material = 0
-            for x in MATERIAL_CHOICES:
-                material_siembra_sano = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__material_siembra_sano__icontains = x[0]).count()
-                total_material = total_material + material_siembra_sano
-            try:
-                total_material = (total_material / float(encuestas)) * 33.33
-            except:
-                total_material = 0
-
-            total_preparacion = 0
-            for x in PREPARACION_TERRENO:
-                preparacion_terreno = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__preparacion_terreno__icontains = x[0]).count()
-                total_preparacion = total_preparacion + preparacion_terreno
-            try:
-                total_preparacion = (total_preparacion / float(encuestas)) * 20
-            except:
-                total_preparacion = 0
-
-            total_control = 0
-            for x in CONTROL_MALEZAS:
-                control_malezas = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__control_malezas__icontains = x[0]).count()
-                total_control = total_control + control_malezas
-            try:
-                total_control = (total_control / float(encuestas)) * 50
-            except:
-                total_control = 0
-
-            total_fertilizacion = 0
-            for x in FERTILIZACION_ADECUADA:
-                fertilizacion_adecuada = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__fertilizacion_adecuada__icontains = x[0]).count()
-                total_fertilizacion = total_fertilizacion + fertilizacion_adecuada
-            try:
-                total_fertilizacion = (total_fertilizacion / float(encuestas)) * 33.33
-            except:
-                total_fertilizacion = 0
-
-            total_densidad = 0
-            for x in DENSIDAD_SOMBRA:
-                densidad_siembra = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__densidad_siembra__icontains = x[0]).count()
-                total_densidad = total_densidad + densidad_siembra
-            try:
-                total_densidad = (total_densidad / float(encuestas)) * 50
-            except:
-                total_densidad = 0
-
-            total_plagas = 0
-            for x in DENSIDAD_SOMBRA:
-                control_plagas_enfermedades = filtro.filter(anio = year,practicasmip__cultivo = obj[0],practicasmip__control_plagas_enfermedades__icontains = x[0]).count()
-                total_plagas = total_plagas + control_plagas_enfermedades
-            try:
-                total_plagas = (total_plagas / float(encuestas)) * 50
-            except:
-                total_plagas = 0
-            cultivos[obj[0]] = (total_material,total_preparacion,total_control,
-                                total_fertilizacion,total_densidad,total_plagas)
-
-            if year == years[-1]:
-                total_indice = (total_material + total_preparacion + total_control
-                                + total_fertilizacion + total_densidad + total_plagas) / 6
-                dicc_indice[obj[0]] = (total_indice,years[-1])
-
-        #distribucion de las areas
-        areas = collections.OrderedDict()
-        for obj in CULTIVO_CHOICES:
-            area = filtro.filter(anio = year, produccion__cultivo__tipo = obj[0]).aggregate(
-                    sembrada = Sum(F('produccion__area_sembrada') * hectarea),cosechada = Sum(F('produccion__area_cosechada') * hectarea))
-            areas[obj[1]] = (area['sembrada'],area['cosechada'])
-
-        #agregando al dic general por anio
-        anios[year] = (cafe,cacao,hortalizas,conservacion_suelo,uso_eficiente_agua,gestion_recursos_naturales,
-                        cambio_climatico,biodiversidad,paisaje_sostenible,cultivos,areas)
-
 
     return render(request, template, locals())
 

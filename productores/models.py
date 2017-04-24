@@ -611,12 +611,12 @@ PLAGAS_ENFERMEDADES = ((1,'Muestreo de plagas de suelo al momento de la preparac
 class PracticasMIP(models.Model):
     encuesta = models.ForeignKey(Encuesta)
     cultivo = models.CharField(max_length = 50,choices = CULTIVOS_MIP)
-    material_siembra_sano = MultiSelectField(choices = MATERIAL_CHOICES,verbose_name = 'Material de siembra sano')
-    preparacion_terreno = MultiSelectField(choices = PREPARACION_TERRENO,verbose_name = 'Preparación del Terreno')
-    control_malezas = MultiSelectField(choices = CONTROL_MALEZAS,verbose_name = 'Control de malezas')
-    fertilizacion_adecuada = MultiSelectField(choices = FERTILIZACION_ADECUADA,verbose_name = 'Fertilización Adecuada')
-    densidad_siembra = MultiSelectField(choices = DENSIDAD_SOMBRA,verbose_name = 'Densidad de siembra correcta')
-    control_plagas_enfermedades = MultiSelectField(choices = PLAGAS_ENFERMEDADES,verbose_name = 'Control de plagas y enfermedades')
+    material_siembra_sano = MultiSelectField(choices = MATERIAL_CHOICES,verbose_name = 'Material de siembra sano',blank=True,null=True)
+    preparacion_terreno = MultiSelectField(choices = PREPARACION_TERRENO,verbose_name = 'Preparación del Terreno',blank=True,null=True)
+    control_malezas = MultiSelectField(choices = CONTROL_MALEZAS,verbose_name = 'Control de malezas',blank=True,null=True)
+    fertilizacion_adecuada = MultiSelectField(choices = FERTILIZACION_ADECUADA,verbose_name = 'Fertilización Adecuada',blank=True,null=True)
+    densidad_siembra = MultiSelectField(choices = DENSIDAD_SOMBRA,verbose_name = 'Densidad de siembra correcta',blank=True,null=True)
+    control_plagas_enfermedades = MultiSelectField(choices = PLAGAS_ENFERMEDADES,verbose_name = 'Control de plagas y enfermedades',blank=True,null=True)
 
     class Meta:
         verbose_name_plural = 'VII. Prácticas MIP en la propiedad/finca'
