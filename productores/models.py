@@ -238,6 +238,7 @@ UNIDAD_MEDIDA = (('Libra','Libra'),('Unidad','Unidad'),('Docena','Docena'),('Qui
 
 CULTIVO_CHOICES = ((1,'Café'),(2,'Cacao'),(3,'Hortaliza'))
 
+@python_2_unicode_compatible
 class Cultivo(models.Model):
     nombre = models.CharField(max_length = 250)
     unidad_medida = models.CharField(max_length = 50,choices = UNIDAD_MEDIDA)
@@ -245,7 +246,7 @@ class Cultivo(models.Model):
     tipo = models.IntegerField(choices = CULTIVO_CHOICES)
 
     def __str__(self):
-        return u'%s - %s' % (self.nombre.encode('utf-8'),self.unidad_medida)
+        return u'%s - %s' % (self.nombre,self.unidad_medida)
 
     class Meta:
         verbose_name = 'Cultivo'
