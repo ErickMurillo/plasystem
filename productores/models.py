@@ -626,6 +626,9 @@ class PromedioNacional(models.Model):
     pais = models.ForeignKey(Pais)
     cultivo = models.IntegerField(choices = CULTIVO_CHOICES)
 
+    def __str__(self):
+        return '%s - %s' % (self.pais.nombre, self.get_cultivo_display())
+
     class Meta:
         verbose_name = 'Promedio Nacional'
         verbose_name_plural = 'Promedios Nacionales'
@@ -637,3 +640,10 @@ class Promedio(models.Model):
     costo_promedio = models.FloatField()
     rendimiento_promedio = models.FloatField()
     ingreso_promedio = models.FloatField()
+
+    def __str__(self):
+        return '%s' % self.promedio_nacional
+
+    class Meta:
+        verbose_name = 'Promedio'
+        verbose_name_plural = 'Promedios'
