@@ -323,6 +323,16 @@ def dashboard_productores(request,template="productores/dashboard.html"):
                                         anio = year).count()
 
         #agregando al dic general por anio
+
+        rendimiento_cafe = 0
+        rendimiento_cafe_nacional = 0
+
+        rendimiento_cacao = 0
+        rendimiento_cacao_nacional = 0
+
+        rendimiento_hortaliza = 0
+        rendimiento_hortaliza_nacional = 0
+        
         anios[year] = (cafe,cacao,hortalizas,conservacion_suelo,uso_eficiente_agua,gestion_recursos_naturales,
                         cambio_climatico,biodiversidad,paisaje_sostenible,cultivos,areas,prod_sustentable,mip,bpa)
 
