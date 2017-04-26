@@ -622,6 +622,7 @@ class PracticasMIP(models.Model):
     class Meta:
         verbose_name_plural = 'VII. Prácticas MIP en la propiedad/finca'
 
+@python_2_unicode_compatible
 class PromedioNacional(models.Model):
     pais = models.ForeignKey(Pais)
     cultivo = models.IntegerField(choices = CULTIVO_CHOICES)
@@ -633,6 +634,7 @@ class PromedioNacional(models.Model):
         verbose_name = 'Promedio Nacional'
         verbose_name_plural = 'Promedios Nacionales'
 
+@python_2_unicode_compatible
 class Promedio(models.Model):
     promedio_nacional = models.ForeignKey(PromedioNacional)
     anio = models.IntegerField()

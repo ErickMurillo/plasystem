@@ -138,6 +138,7 @@ def dashboard_productores(request,template="productores/dashboard.html"):
     #graficas
     anios = collections.OrderedDict()
     last_year = years[-1]
+    rendimientos = collections.OrderedDict()
     for year in years:
         #ingresos
         cafe = filtro.filter(destinoproduccion__cultivo__tipo = 1, anio = year).aggregate(
@@ -323,9 +324,22 @@ def dashboard_productores(request,template="productores/dashboard.html"):
                                         anio = year).count()
 
         #agregando al dic general por anio
+        anios[year] = (cafe,cacao,hortalizas,conservacion_suelo,uso_eficiente_agua,gestion_recursos_naturales,
+                        cambio_climatico,biodiversidad,paisaje_sostenible,cultivos,areas,prod_sustentable,mip,bpa)
 
-        rendimiento_cafe = 0
-        rendimiento_cafe_nacional = 0
+        cafe_area_cosechada = filtro.filter(produccion__cultivo__tipo=1,
+                                        anio=year).aggregate(t=Sum('produccion__area_cosechada'))['t']
+        cafe_cantidad = filtro.filter(produccion__cultivo__tipo=1,
+                                        anio=year).aggregate(t=Sum('produccion__cantidad_cosechada'))['t']
+        try:
+            rendimiento_cafe = float(cafe_cantidad) / float(cafe_area_cosechada)
+        except:
+            rendimiento_cafe = 0
+
+        rendimiento_cafe_nacional = Promedio.objects.filter(anio=year,
+                                                promedio_nacional__pais__id=id_pais,
+                                                promedio_nacional__cultivo=1).aggregate(t=Sum('rendimiento_promedio'))['t']
+
 
         rendimiento_cacao = 0
         rendimiento_cacao_nacional = 0
@@ -333,8 +347,7 @@ def dashboard_productores(request,template="productores/dashboard.html"):
         rendimiento_hortaliza = 0
         rendimiento_hortaliza_nacional = 0
         
-        anios[year] = (cafe,cacao,hortalizas,conservacion_suelo,uso_eficiente_agua,gestion_recursos_naturales,
-                        cambio_climatico,biodiversidad,paisaje_sostenible,cultivos,areas,prod_sustentable,mip,bpa)
+        rendimientos[year] = (rendimiento_cafe,rendimiento_cafe_nacional)
 
     return render(request, template, locals())
 
