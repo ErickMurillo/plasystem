@@ -341,13 +341,38 @@ def dashboard_productores(request,template="productores/dashboard.html"):
                                                 promedio_nacional__cultivo=1).aggregate(t=Sum('rendimiento_promedio'))['t']
 
 
-        rendimiento_cacao = 0
-        rendimiento_cacao_nacional = 0
+        #rendimento cacao
+        cacao_area_cosechada = filtro.filter(produccion__cultivo__tipo=2,
+                                        anio=year).aggregate(t=Sum('produccion__area_cosechada'))['t']
+        cacao_cantidad = filtro.filter(produccion__cultivo__tipo=2,
+                                        anio=year).aggregate(t=Sum('produccion__cantidad_cosechada'))['t']
+        try:
+            rendimiento_cacao = float(cacao_cantidad) / float(cacao_area_cosechada)
+        except:
+            rendimiento_cacao = 0
 
-        rendimiento_hortaliza = 0
-        rendimiento_hortaliza_nacional = 0
+        rendimiento_cacao_nacional = Promedio.objects.filter(anio=year,
+                                                promedio_nacional__pais__id=id_pais,
+                                                promedio_nacional__cultivo=2).aggregate(t=Sum('rendimiento_promedio'))['t']
+
         
-        rendimientos[year] = (rendimiento_cafe,rendimiento_cafe_nacional)
+        #rendiminetos hortaliza
+        hortaliza_area_cosechada = filtro.filter(produccion__cultivo__tipo=3,
+                                        anio=year).aggregate(t=Sum('produccion__area_cosechada'))['t']
+        hortaliza_cantidad = filtro.filter(produccion__cultivo__tipo=3,
+                                        anio=year).aggregate(t=Sum('produccion__cantidad_cosechada'))['t']
+        try:
+            rendimiento_hortaliza = float(hortaliza_cantidad) / float(hortaliza_area_cosechada)
+        except:
+            rendimiento_hortaliza = 0
+
+        rendimiento_hortaliza_nacional = Promedio.objects.filter(anio=year,
+                                                promedio_nacional__pais__id=id_pais,
+                                                promedio_nacional__cultivo=3).aggregate(t=Sum('rendimiento_promedio'))['t']
+        
+        rendimientos[year] = (rendimiento_cafe,rendimiento_cafe_nacional,
+                              rendimiento_cacao,rendimiento_cacao_nacional,
+                              rendimiento_hortaliza,rendimiento_hortaliza_nacional)
 
     return render(request, template, locals())
 

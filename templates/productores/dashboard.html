@@ -244,29 +244,26 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                   <li role="presentation" class="active">
-                    <a href="#café" aria-controls="café" role="tab" data-toggle="tab">Café</a>
+                    <a href="#café-r" aria-controls="café" role="tab" data-toggle="tab">Café</a>
                   </li>
                   <li role="presentation">
-                    <a href="#cacao" aria-controls="cacao" role="tab" data-toggle="tab">Cacao</a>
+                    <a href="#cacao-r" aria-controls="cacao" role="tab" data-toggle="tab">Cacao</a>
                   </li>
                   <li role="presentation">
-                    <a href="#hortaliza" aria-controls="hortaliza" role="tab" data-toggle="tab">Hortalizas</a>
+                    <a href="#hortaliza-r" aria-controls="hortaliza" role="tab" data-toggle="tab">Hortalizas</a>
                   </li>
                 </ul>
 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                  <div role="tabpanel" class="tab-pane active" id="café">
-                    {% for k,v in rendimientos.items %}
-                      {{k}} ---> {{v}} <br>
-                    {% endfor %}
+                  <div role="tabpanel" class="tab-pane active" id="café-r">
                     <div id="grafico10" width:'100%' style="height: 350px;"></div>
                   </div>
-                  <div role="tabpanel" class="tab-pane" id="cacao">
-                    <div id="grafico10" width:'100%' style="height: 350px;"></div>
-                  </div>
-                  <div role="tabpanel" class="tab-pane" id="hortaliza">
+                  <div role="tabpanel" class="tab-pane" id="cacao-r">
                     <div id="grafico11" width:'100%' style="height: 350px;"></div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="hortaliza-r">
+                    <div id="grafico12" width:'100%' style="height: 350px;"></div>
                   </div>
                 </div>
               </div>
@@ -901,7 +898,7 @@ Highcharts.chart('grafico2', {
 
     Highcharts.chart('grafico10', {
       title: {
-          text: 'Rendimientos'
+          text: 'Rendimientos Café'
       },
       xAxis: {
           categories: [{% for k,v  in rendimientos.items %}'{{k}}',{%endfor%}]
@@ -911,13 +908,67 @@ Highcharts.chart('grafico2', {
         {
           type: 'column',
           name: '{{k}}',
-          data: [{{v.0}},]
+          data: [{{v.0|unlocalize}},]
       },
       {% endfor %}
        {
           type: 'spline',
           name: 'Promedio nacional',
-          data: [{% for k,v in rendimientos.items %}{{v.1}},{%endfor%}],
+          data: [{% for k,v in rendimientos.items %}{{v.1|unlocalize}},{%endfor%}],
+          marker: {
+              lineWidth: 2,
+              lineColor: Highcharts.getOptions().colors[3],
+              fillColor: 'white'
+          }
+      }]
+    });
+
+    Highcharts.chart('grafico11', {
+      title: {
+          text: 'Rendimientos Cacao'
+      },
+      xAxis: {
+          categories: [{% for k,v  in rendimientos.items %}'{{k}}',{%endfor%}]
+      },
+      series: [
+      {% for k,v in rendimientos.items %}
+        {
+          type: 'column',
+          name: '{{k}}',
+          data: [{{v.2|unlocalize}},]
+      },
+      {% endfor %}
+       {
+          type: 'spline',
+          name: 'Promedio nacional',
+          data: [{% for k,v in rendimientos.items %}{{v.3|unlocalize}},{%endfor%}],
+          marker: {
+              lineWidth: 2,
+              lineColor: Highcharts.getOptions().colors[3],
+              fillColor: 'white'
+          }
+      }]
+    });
+
+     Highcharts.chart('grafico12', {
+      title: {
+          text: 'Rendimientos Hortalizas'
+      },
+      xAxis: {
+          categories: [{% for k,v  in rendimientos.items %}'{{k}}',{%endfor%}]
+      },
+      series: [
+      {% for k,v in rendimientos.items %}
+        {
+          type: 'column',
+          name: '{{k}}',
+          data: [{{v.4|unlocalize}},]
+      },
+      {% endfor %}
+       {
+          type: 'spline',
+          name: 'Promedio nacional',
+          data: [{% for k,v in rendimientos.items %}{{v.5|unlocalize}},{%endfor%}],
           marker: {
               lineWidth: 2,
               lineColor: Highcharts.getOptions().colors[3],
