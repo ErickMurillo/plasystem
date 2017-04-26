@@ -1,5 +1,4 @@
 {% extends "productores/base_dashboard.html" %}
-{% load l10n %}
 
 {% block content %}
 <div class="content">
@@ -88,59 +87,25 @@
         <div class="col-sm-6">
           <div class="panel panel-primary">
             <div class="panel-body">
-              <h4 class="m-t-0">Distribución de la finca por hectárea promedio <span class="mdi mdi-help-circle"></span></h4>
-              <div id="grafico1"></div>
+              <h4 class="m-t-0">Productor/a <span class="mdi mdi-help-circle"></span></h4>
+              <p>{{productor.nombre}}</p>
+              <hr>
+              <p>Información del productor/a</p>
+              <p>sexo {{productor.sexo}}</p>
+              <p>edad {{edad}}</p>
+              <p>pais {{productor.pais}}</p>
+              <p>departamento {{productor.departamento}}</p>
+              <p>municipio {{productor.municipio.nombre}}</p>
+              <p>organizacion {{productor.organizacion}}</p>
+              <p>anios de vinculacion {{productor.anios_vinculacion}}</p>
             </div>
           </div>
         </div>
-
         <div class="col-sm-6">
-          <table>
-            <tr>
-             <th></th>
-             <th></th>
-           </tr>
-           {% for prod in productores %}
-           <tr>
-             <td>{{prod.productor}}</td>
-             <td><a href="{% url 'ficha-productor' prod.productor.id %}">Ver ficha</a></td>
-           </tr>
-           {% endfor %}
 
-          </table>
         </div>
       </div>
     </div>
   </div>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-
-<script src="/static/js/heatmap.js"></script>
-<script src="/static/js/treemap.js"></script>
-<script type="text/javascript">
-Highcharts.chart('grafico1', {
-    colorAxis: {
-        minColor: '#FFFFFF',
-        maxColor: Highcharts.getOptions().colors[0]
-    },
-    series: [{
-        type: 'treemap',
-        layoutAlgorithm: 'squarified',
-        data: [
-          {% for k,v in distribucion.items %}
-            {
-              name: '{{k}}',
-              value: {{v|default:'0'|unlocalize}},
-              colorValue: {{forloop.counter}}
-            },
-          {% endfor %}
-         ]
-    }],
-    title: {
-        text: ''
-    }
-});
-</script>
 {% endblock %}

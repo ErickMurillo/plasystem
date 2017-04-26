@@ -350,16 +350,62 @@ def distribucion_areas(request,template="productores/distribucion_areas.html"):
     else:
         form = ProductoresForm()
         mensaje = "Existen alguno errores"
-    #     try:
-    #         del request.session['anio']
-    #         del request.session['pais']
-    #         del request.session['departamento']
-    #         del request.session['municipio']
-    #         del request.session['organizacion']
-    #         del request.session['sexo']
-    #         del request.session['edad']
-    #     except:
-    #         pass
+
+    if 'anio' not in request.session:
+        if request.GET.get('pais', ''):
+            id_pais = request.GET.get('pais', '')
+            filtro = Encuesta.objects.filter(productor__pais = id_pais)
+            years = anios_encuesta()
+    else:
+        filtro = _queryset_filtrado(request)
+        years = request.session['anio']
+
+    hectarea = 0.7050
+
+    #conteos generales
+    productores = filtro.distinct()
+    familias = productores.count()
+    hombres = filtro.filter(productor__sexo = 'Hombre').count()
+    mujeres = filtro.filter(productor__sexo = 'Mujer').count()
+    menores_35 = filtro.filter(productor__edad = 1).count()
+    manzanas = filtro.aggregate(total = Avg('areafinca__area'))['total']
+    try:
+        hectareas = manzanas * hectarea
+    except:
+        hectareas = 0
+
+    certificacion = filtro.filter(certificacion__certificacion = 'Si').count()
+
+    #grafico de distribucion
+    distribucion = collections.OrderedDict()
+    for obj in DISTRIBUCION_CHOICES:
+        promedio_area = filtro.filter(distribucionfinca__seleccion = obj[0]).aggregate(avg = Avg('distribucionfinca__cantidad'))['avg']
+        distribucion[obj[0]] = promedio_area
+
+    return render(request, template, locals())
+
+def ficha_productor(request,id=None,template="productores/ficha_productor.html"):
+    if request.method == 'POST':
+        mensaje = None
+        form = ProductoresForm(request.POST)
+        if form.is_valid():
+            request.session['anio'] = form.cleaned_data['anio']
+            request.session['pais'] = form.cleaned_data['pais']
+            request.session['departamento'] = form.cleaned_data['departamento']
+            request.session['municipio'] = form.cleaned_data['municipio']
+            request.session['organizacion'] = form.cleaned_data['organizacion']
+            request.session['sexo'] = form.cleaned_data['sexo']
+            request.session['edad'] = form.cleaned_data['edad']
+
+            mensaje = "Todas las variables estan correctamente :)"
+            request.session['activo'] = True
+            centinela = 1
+
+        else:
+            centinela = 0
+    else:
+        form = ProductoresForm()
+        mensaje = "Existen alguno errores"
 
     if 'anio' not in request.session:
         if request.GET.get('pais', ''):
@@ -384,6 +430,11 @@ def distribucion_areas(request,template="productores/distribucion_areas.html"):
         hectareas = 0
 
     certificacion = filtro.filter(certificacion__certificacion = 'Si').count()
+
+    #-----------------------------------------------
+    productor = Productor.objects.get(id = id)
+    today = date.today()
+    edad = today.year - productor.fecha_naciemiento.year - ((today.month, today.day) < (productor.fecha_naciemiento.month, productor.fecha_naciemiento.day))
 
     return render(request, template, locals())
 

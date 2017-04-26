@@ -198,31 +198,8 @@
         }
       }
     });
-    $("#id_pais").addClass("form-control").multiselect({
-      buttonWidth: '100%',
-      includeSelectAllOption: true,
-      selectAllText: "Seleccionar todos",
-      buttonText: function(options, select) {
-        if (options.length === 0) {
-          return "Sin selección ...";
-        }
-        else if (options.length > 3) {
-          return "Varias opciones seleccionadas!";
-        }
-        else {
-          var labels = [];
-          options.each(function() {
-            if ($(this).attr('label') !== undefined) {
-              labels.push($(this).attr('label'));
-            }
-            else {
-              labels.push($(this).html());
-            }
-          });
-          return labels.join(', ') + '';
-        }
-      }
-    });
+    $("#id_pais").addClass("form-control");
+
     $("#id_departamento").addClass("form-control").multiselect({
       buttonWidth: '100%',
       includeSelectAllOption: true,
@@ -353,6 +330,41 @@
 
   });
   </script>
+
+  <script type="text/javascript">
+  $( document ).ready(function() {
+    {% if request.session.anio %}
+    $('#id_anio').multiselect('select', [{% for anio in request.session.anio %}'{{anio}}',{% endfor %} ]);
+    {% endif %}
+
+    {% if request.session.pais %}
+    $("#id_pais option[value='{{request.session.pais.id}}']").prop('selected', true);;
+    {% endif %}
+
+    {% if request.session.edad %}
+    $("#id_edad option[value='{{request.session.edad}}']").prop('selected', true);;
+    {% endif %}
+
+    {% if request.session.sexo %}
+    $("#id_sexo option[value='{{request.session.sexo}}']").prop('selected', true);;
+    {% endif %}
+
+    {% if request.session.organizacion %}
+    $('#id_organizacion').multiselect('select', [{% for org in request.session.organizacion %}'{{org}}',{% endfor %} ]);
+    {% endif %}
+
+    {% if request.session.departamento %}
+    $('#id_departamento').multiselect('select', [{% for depto in request.session.departamento %}'{{depto}}',{% endfor %} ]);
+    {% endif %}
+
+    {% if request.session.municipio %}
+    $('#id_municipio').multiselect('select', [{% for muni in request.session.municipio %}'{{muni}}',{% endfor %} ]);
+    {% endif %}
+
+  });
+  </script>
+
+
   {% block extra_js %}{% endblock %}
 
 </body>
