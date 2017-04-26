@@ -291,6 +291,12 @@ class Mercado(models.Model):
     cantidad = models.FloatField()
     precio = models.FloatField()
 
+    ingreso = models.FloatField(editable=False, default=0)
+
+    def save(self):
+        self.ingreso = self.cantidad * self.precio
+        super(Mercado, self).save()
+
 class IngresosOtrosCultivos(models.Model):
     encuesta = models.ForeignKey(Encuesta)
     cultivo = models.ForeignKey(Cultivo)
