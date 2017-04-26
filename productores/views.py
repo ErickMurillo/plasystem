@@ -328,6 +328,7 @@ def dashboard_productores(request,template="productores/dashboard.html"):
 
     return render(request, template, locals())
 
+@login_required
 def distribucion_areas(request,template="productores/distribucion_areas.html"):
     if request.method == 'POST':
         mensaje = None
@@ -384,6 +385,7 @@ def distribucion_areas(request,template="productores/distribucion_areas.html"):
 
     return render(request, template, locals())
 
+@login_required
 def ficha_productor(request,id=None,template="productores/ficha_productor.html"):
     if request.method == 'POST':
         mensaje = None
@@ -435,6 +437,15 @@ def ficha_productor(request,id=None,template="productores/ficha_productor.html")
     productor = Productor.objects.get(id = id)
     today = date.today()
     edad = today.year - productor.fecha_naciemiento.year - ((today.month, today.day) < (productor.fecha_naciemiento.month, productor.fecha_naciemiento.day))
+
+    anios = collections.OrderedDict()
+    for year in years:
+        distribucion = collections.OrderedDict()
+        for obj in DISTRIBUCION_CHOICES:
+            area = DistribucionFinca.objects.filter(encuesta__anio = year,encuesta__productor = productor, seleccion = obj[0]).values_list('cantidad', flat=True)
+            distribucion[obj[0]] = area
+
+        anios[year] = distribucion
 
     return render(request, template, locals())
 

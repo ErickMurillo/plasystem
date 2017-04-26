@@ -1,6 +1,15 @@
 {% extends "productores/base_dashboard.html" %}
+{% load l10n %}
 
 {% block content %}
+<style>
+   #map {
+    height: 400px;
+    width: 100%;
+   }
+</style>
+
+
 <div class="content">
   <div class="">
     <div class="page-header-title">
@@ -102,10 +111,105 @@
           </div>
         </div>
         <div class="col-sm-6">
+          <div id="map"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
 
         </div>
+
+        <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <h4 class="m-t-0">Distribución de áreas de la finca en hectáreas <span class="mdi mdi-help-circle"></span></h4>
+
+              <div role="tabpanel tabs-grafico">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                  {% for key in anios.keys %}
+                    <li role="presentation" class="{% if forloop.counter == 1 %}active{% endif %}">
+                      <a href="#{{key}}" aria-controls="{{key}}" role="tab" data-toggle="tab">{{key}}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  {% for key in anios.keys %}
+                    <div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{key}}">
+                      <div id="grafico{{key}}" width:'100%' style="height: 350px;"></div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBN8m5qDWE3cAMgBegvbkZQ7eHrG-Hu1oI&callback=initMap"
+  type="text/javascript"></script>
+
+<script>
+{% if productor.latitud and productor.longitud %}
+  function initMap() {
+    var point = { lat: {{productor.latitud}}, lng: {{productor.longitud}} };
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 9,
+      center: point
+    });
+    var marker = new google.maps.Marker({
+      position: point,
+      map: map
+    });
+  }
+
+  {% else %}
+  var map;
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 13.6477817, lng: -85.543151},
+      zoom: 6
+    });
+  }
+  {% endif %}
+
+</script>
+
+<script src="/static/js/heatmap.js"></script>
+<script src="/static/js/treemap.js"></script>
+<script type="text/javascript">
+{% for key,value in anios.items %}
+Highcharts.chart('grafico{{key}}', {
+    colorAxis: {
+        minColor: '#FFFFFF',
+        maxColor: Highcharts.getOptions().colors[0]
+    },
+    series: [{
+        type: 'treemap',
+        layoutAlgorithm: 'squarified',
+        data: [
+          {% for k,v in value.items %}
+            {
+              name: '{{k}}',
+              value: {{v.0|default:'0'|unlocalize}},
+              colorValue: {{forloop.counter}}
+            },
+          {% endfor %}
+         ]
+    }],
+    title: {
+        text: ''
+    }
+});
+{% endfor %}
+</script>
 {% endblock %}
