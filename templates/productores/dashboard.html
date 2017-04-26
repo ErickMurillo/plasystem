@@ -903,6 +903,12 @@ Highcharts.chart('grafico2', {
       xAxis: {
           categories: [{% for k,v  in rendimientos.items %}'{{k}}',{%endfor%}]
       },
+      yAxis: {
+        title: {
+            text: 'Quintales(qq)'
+        }
+
+    },
       series: [
       {% for k,v in rendimientos.items %}
         {
@@ -930,6 +936,12 @@ Highcharts.chart('grafico2', {
       xAxis: {
           categories: [{% for k,v  in rendimientos.items %}'{{k}}',{%endfor%}]
       },
+      yAxis: {
+        title: {
+            text: 'Quintales(qq)'
+        }
+
+    },
       series: [
       {% for k,v in rendimientos.items %}
         {
