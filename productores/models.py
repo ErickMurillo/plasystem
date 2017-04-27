@@ -291,6 +291,12 @@ class Mercado(models.Model):
     cantidad = models.FloatField()
     precio = models.FloatField()
 
+    ingreso = models.FloatField(editable=False, default=0)
+
+    def save(self):
+        self.ingreso = self.cantidad * self.precio
+        super(Mercado, self).save()
+
 class IngresosOtrosCultivos(models.Model):
     encuesta = models.ForeignKey(Encuesta)
     cultivo = models.ForeignKey(Cultivo)
@@ -622,14 +628,19 @@ class PracticasMIP(models.Model):
     class Meta:
         verbose_name_plural = 'VII. Prácticas MIP en la propiedad/finca'
 
+@python_2_unicode_compatible
 class PromedioNacional(models.Model):
     pais = models.ForeignKey(Pais)
     cultivo = models.IntegerField(choices = CULTIVO_CHOICES)
+
+    def __str__(self):
+        return '%s - %s' % (self.pais.nombre, self.get_cultivo_display())
 
     class Meta:
         verbose_name = 'Promedio Nacional'
         verbose_name_plural = 'Promedios Nacionales'
 
+@python_2_unicode_compatible
 class Promedio(models.Model):
     promedio_nacional = models.ForeignKey(PromedioNacional)
     anio = models.IntegerField()
@@ -637,3 +648,10 @@ class Promedio(models.Model):
     costo_promedio = models.FloatField()
     rendimiento_promedio = models.FloatField()
     ingreso_promedio = models.FloatField()
+
+    def __str__(self):
+        return '%s' % self.promedio_nacional
+
+    class Meta:
+        verbose_name = 'Promedio'
+        verbose_name_plural = 'Promedios'

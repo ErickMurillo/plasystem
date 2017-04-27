@@ -222,9 +222,39 @@
           <div class="panel panel-primary">
             <div class="panel-body">
               <h4 class="m-t-0">Incremento del margen bruto <span class="mdi mdi-help-circle"></span></h4>
-              <div id="grafico5" style="height: 150px;"></div>
-              <div id="grafico6" style="height: 150px;"></div>
-              <div id="grafico7" style="height: 150px;"></div>
+              <div role="tabpanel tabs-grafico">
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                  <a href="#café-margen" aria-controls="café" role="tab" data-toggle="tab">Café</a>
+                </li>
+                <li role="presentation">
+                  <a href="#cacao-margen" aria-controls="cacao" role="tab" data-toggle="tab">Cacao</a>
+                </li>
+                <li role="presentation">
+                  <a href="#hortaliza-margen" aria-controls="hortaliza" role="tab" data-toggle="tab">Hortalizas</a>
+                </li>
+              </ul>
+
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="café-margen">
+                  <div id="grafico5-cafe" style="height: 150px;"></div>
+                  <div id="grafico6-cafe" style="height: 150px;"></div>
+                  <div id="grafico7-cafe" style="height: 150px;"></div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="cacao-margen">
+                  <div id="grafico5-cacao" style="height: 150px;"></div>
+                  <div id="grafico6-cacao" style="height: 150px;"></div>
+                  <div id="grafico7-cacao" style="height: 150px;"></div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="hortaliza-margen">
+                  <div id="grafico5-horta" style="height: 150px;"></div>
+                  <div id="grafico6-horta" style="height: 150px;"></div>
+                  <div id="grafico7-horta" style="height: 150px;"></div>
+                </div>
+              </div>
+              </div>
 
             </div>
           </div>
@@ -237,14 +267,40 @@
         <div class="col-sm-12">
           <div class="panel panel-primary">
             <div class="panel-body">
-              <h4 class="m-t-0">Rendimiento promedio <span class="mdi mdi-help-circle"></span></h4>
-              <div id="grafico9" width:'100%' style="height: 350px;"></div>
+              <h4 class="m-t-0">Rendimiento promedio<span class="mdi mdi-help-circle"></span>
+              </h4>
 
+              <div role="tabpanel tabs-grafico">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                  <li role="presentation" class="active">
+                    <a href="#café-r" aria-controls="café" role="tab" data-toggle="tab">Café</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#cacao-r" aria-controls="cacao" role="tab" data-toggle="tab">Cacao</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#hortaliza-r" aria-controls="hortaliza" role="tab" data-toggle="tab">Hortalizas</a>
+                  </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="café-r">
+                    <div id="grafico10" width:'100%' style="height: 350px;"></div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="cacao-r">
+                    <div id="grafico11" width:'100%' style="height: 350px;"></div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="hortaliza-r">
+                    <div id="grafico12" width:'100%' style="height: 350px;"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <!-- end row -->
+        </div><!-- end 12 -->
+      </div><!-- end row -->
 
 
 
@@ -603,10 +659,10 @@ Highcharts.chart('grafico2', {
               ]
 
             });
-
-            Highcharts.chart('grafico5', {
+            //graficos margen cafe
+            Highcharts.chart('grafico5-cafe', {
               title: {
-                text: ''
+                text: 'Margen bruto del café'
               },
               subtitle: {
                 text: ''
@@ -621,19 +677,19 @@ Highcharts.chart('grafico2', {
               },
               plotOptions: {
                 series: {
-                  pointStart: 2016
+                  pointStart: {{ingresos_cafe.keys.0}}
                 }
               },
 
               series: [{
                 name: 'Margen bruto',
-                data: [43934, 52503, 57177, 69658, 97031]
+                data: [{% for k,v in ingresos_cafe.items %}{{v.4|unlocalize}},{% endfor %}]
               }]
             });
 
-            Highcharts.chart('grafico6', {
+            Highcharts.chart('grafico6-cafe', {
               title: {
-                text: ''
+                text: 'Ingresos del café'
               },
               subtitle: {
                 text: ''
@@ -648,26 +704,26 @@ Highcharts.chart('grafico2', {
               },
               plotOptions: {
                 series: {
-                  pointStart: 2016
+                  pointStart: {{ingresos_cafe.keys.0}}
                 }
               },
 
               series: [{
                 name: 'Ingreso promedio del productor',
-                data: [43934, 52503, 57177, 69658, 97031],
+                data: [{% for k,v in ingresos_cafe.items %}{{v.0|unlocalize}},{% endfor %}],
                 color: '#f7a35c'
               },
               {
                 name: 'Ingreso promedio nacional',
-                data: [48000, 59000, 68000, 80000, 108000],
+                data: [{% for k,v in ingresos_cafe.items %}{{v.1|unlocalize}},{% endfor %}],
                 color: '#050f2c'
               },
             ]
           });
 
-          Highcharts.chart('grafico7', {
+          Highcharts.chart('grafico7-cafe', {
             title: {
-              text: ''
+              text: 'Costos café'
             },
             subtitle: {
               text: ''
@@ -682,20 +738,209 @@ Highcharts.chart('grafico2', {
             },
             plotOptions: {
               series: {
-                pointStart: 2016
+                pointStart: {{ingresos_cafe.keys.0}}
               }
             },
             series: [{
               name: 'Costos promedio del productor',
-              data: [43934, 52503, 57177, 69658, 97031],
+              data: [{% for k,v in ingresos_cafe.items %}{{v.2|unlocalize}},{% endfor %}],
               color: '#90ed7d'
             },{
               name: 'Costos promedio nacional',
-              data: [48000, 59000, 68000, 80000, 108000],
+              data: [{% for k,v in ingresos_cafe.items %}{{v.3|unlocalize}},{% endfor %}],
               color: '#050f2c'
 
             }]
           });
+          //fin graficos margen cafe
+          //graficos margen cacao
+            Highcharts.chart('grafico5-cacao', {
+              title: {
+                text: 'Margen bruto del cacao'
+              },
+              subtitle: {
+                text: ''
+              },
+              yAxis: {
+                title: {
+                  text: 'Córdobas'
+                },
+              },
+              xAxis: {
+                allowDecimals: false,
+              },
+              plotOptions: {
+                series: {
+                  pointStart: {{ingresos_cacao.keys.0}}
+                }
+              },
+
+              series: [{
+                name: 'Margen bruto',
+                data: [{% for k,v in ingresos_cacao.items %}{{v.4|unlocalize}},{% endfor %}]
+              }]
+            });
+
+            Highcharts.chart('grafico6-cacao', {
+              title: {
+                text: 'Ingresos del cacao'
+              },
+              subtitle: {
+                text: ''
+              },
+              yAxis: {
+                title: {
+                  text: 'Córdobas'
+                },
+              },
+              xAxis: {
+                allowDecimals: false,
+              },
+              plotOptions: {
+                series: {
+                  pointStart: {{ingresos_cacao.keys.0}}
+                }
+              },
+
+              series: [{
+                name: 'Ingreso promedio del productor',
+                data: [{% for k,v in ingresos_cacao.items %}{{v.0|unlocalize}},{% endfor %}],
+                color: '#f7a35c'
+              },
+              {
+                name: 'Ingreso promedio nacional',
+                data: [{% for k,v in ingresos_cacao.items %}{{v.1|unlocalize}},{% endfor %}],
+                color: '#050f2c'
+              },
+            ]
+          });
+
+          Highcharts.chart('grafico7-cacao', {
+            title: {
+              text: 'Costos cacao'
+            },
+            subtitle: {
+              text: ''
+            },
+            yAxis: {
+              title: {
+                text: 'Córdobas'
+              },
+            },
+            xAxis: {
+              allowDecimals: false,
+            },
+            plotOptions: {
+              series: {
+                pointStart: {{ingresos_cacao.keys.0}}
+              }
+            },
+            series: [{
+              name: 'Costos promedio del productor',
+              data: [{% for k,v in ingresos_cacao.items %}{{v.2|unlocalize}},{% endfor %}],
+              color: '#90ed7d'
+            },{
+              name: 'Costos promedio nacional',
+              data: [{% for k,v in ingresos_cacao.items %}{{v.3|unlocalize}},{% endfor %}],
+              color: '#050f2c'
+
+            }]
+          });
+          //fin graficos margen cacao
+           //graficos margen hortaliza
+            Highcharts.chart('grafico5-horta', {
+              title: {
+                text: 'Margen bruto de la hortaliza'
+              },
+              subtitle: {
+                text: ''
+              },
+              yAxis: {
+                title: {
+                  text: 'Córdobas'
+                },
+              },
+              xAxis: {
+                allowDecimals: false,
+              },
+              plotOptions: {
+                series: {
+                  pointStart: {{ingresos_hostalizas.keys.0}}
+                }
+              },
+
+              series: [{
+                name: 'Margen bruto',
+                data: [{% for k,v in ingresos_hostalizas.items %}{{v.4|unlocalize}},{% endfor %}]
+              }]
+            });
+
+            Highcharts.chart('grafico6-horta', {
+              title: {
+                text: 'Ingresos de la hortaliza'
+              },
+              subtitle: {
+                text: ''
+              },
+              yAxis: {
+                title: {
+                  text: 'Córdobas'
+                },
+              },
+              xAxis: {
+                allowDecimals: false,
+              },
+              plotOptions: {
+                series: {
+                  pointStart: {{ingresos_hostalizas.keys.0}}
+                }
+              },
+
+              series: [{
+                name: 'Ingreso promedio del productor',
+                data: [{% for k,v in ingresos_hostalizas.items %}{{v.0|unlocalize}},{% endfor %}],
+                color: '#f7a35c'
+              },
+              {
+                name: 'Ingreso promedio nacional',
+                data: [{% for k,v in ingresos_hostalizas.items %}{{v.1|unlocalize}},{% endfor %}],
+                color: '#050f2c'
+              },
+            ]
+          });
+
+          Highcharts.chart('grafico7-horta', {
+            title: {
+              text: 'Costos hortaliza'
+            },
+            subtitle: {
+              text: ''
+            },
+            yAxis: {
+              title: {
+                text: 'Córdobas'
+              },
+            },
+            xAxis: {
+              allowDecimals: false,
+            },
+            plotOptions: {
+              series: {
+                pointStart: {{ingresos_hostalizas.keys.0}}
+              }
+            },
+            series: [{
+              name: 'Costos promedio del productor',
+              data: [{% for k,v in ingresos_hostalizas.items %}{{v.2|unlocalize}},{% endfor %}],
+              color: '#90ed7d'
+            },{
+              name: 'Costos promedio nacional',
+              data: [{% for k,v in ingresos_hostalizas.items %}{{v.3|unlocalize}},{% endfor %}],
+              color: '#050f2c'
+
+            }]
+          });
+          //fin graficos margen hortaliza
 
 
           Highcharts.chart('grafico8-1', {
@@ -869,95 +1114,99 @@ Highcharts.chart('grafico2', {
 
           });
 
-          Highcharts.chart('grafico9', {
-            chart: {
-              type: 'column'
-            },
-            title: {
-              text: ''
-            },
-            xAxis: {
-              categories: ['Rendimiento QQ',]
-            },
-            yAxis: {
-              title: {
-                text: 'QQ'
-              },
-            },
-            credits: {
-              enabled: false
-            },
-            series: [{
-              name: '2016',
-              data: [80,],
-              dataLabels: {
-                enabled: true,
-                rotation: 0,
-                align: 'center',
-                x: -3,
-                y: 0,
-                formatter: function() {
-                  return this.y;
-                },
-              }
-            }, {
-              name: '2017',
-              data: [90,],
-              dataLabels: {
-                enabled: true,
-                rotation: 0,
-                align: 'center',
-                x: -3,
-                y: 0,
-                formatter: function() {
-                  return this.y;
-                },
-              }
 
-            }, {
-              name: '2018',
-              data: [100,],
-              dataLabels: {
-                enabled: true,
-                rotation: 0,
-                align: 'center',
-                x: -3,
-                y: 0,
-                formatter: function() {
-                  return this.y;
-                },
-              }
+    Highcharts.chart('grafico10', {
+      title: {
+          text: 'Rendimientos Café'
+      },
+      xAxis: {
+          categories: [{% for k,v  in rendimientos.items %}'{{k}}',{%endfor%}]
+      },
+      yAxis: {
+        title: {
+            text: 'Quintales(qq)'
+        }
 
-            }, {
-              name: '2019',
-              data: [110,],
-              dataLabels: {
-                enabled: true,
-                rotation: 0,
-                align: 'center',
-                x: -3,
-                y: 0,
-                formatter: function() {
-                  return this.y;
-                },
-              }
+    },
+      series: [
+      {% for k,v in rendimientos.items %}
+        {
+          type: 'column',
+          name: '{{k}}',
+          data: [{{v.0|unlocalize}},]
+      },
+      {% endfor %}
+       {
+          type: 'spline',
+          name: 'Promedio nacional',
+          data: [{% for k,v in rendimientos.items %}{{v.1|unlocalize}},{%endfor%}],
+          marker: {
+              lineWidth: 2,
+              lineColor: Highcharts.getOptions().colors[3],
+              fillColor: 'white'
+          }
+      }]
+    });
 
-            }, {
-              name: '2020',
-              data: [120,],
-              dataLabels: {
-                enabled: true,
-                rotation: 0,
-                align: 'center',
-                x: -3,
-                y: 0,
-                formatter: function() {
-                  return this.y;
-                },
-              }
+    Highcharts.chart('grafico11', {
+      title: {
+          text: 'Rendimientos Cacao'
+      },
+      xAxis: {
+          categories: [{% for k,v  in rendimientos.items %}'{{k}}',{%endfor%}]
+      },
+      yAxis: {
+        title: {
+            text: 'Quintales(qq)'
+        }
 
-            }]
-          });
+    },
+      series: [
+      {% for k,v in rendimientos.items %}
+        {
+          type: 'column',
+          name: '{{k}}',
+          data: [{{v.2|unlocalize}},]
+      },
+      {% endfor %}
+       {
+          type: 'spline',
+          name: 'Promedio nacional',
+          data: [{% for k,v in rendimientos.items %}{{v.3|unlocalize}},{%endfor%}],
+          marker: {
+              lineWidth: 2,
+              lineColor: Highcharts.getOptions().colors[3],
+              fillColor: 'white'
+          }
+      }]
+    });
 
-          </script>
-          {% endblock %}
+     Highcharts.chart('grafico12', {
+      title: {
+          text: 'Rendimientos Hortalizas'
+      },
+      xAxis: {
+          categories: [{% for k,v  in rendimientos.items %}'{{k}}',{%endfor%}]
+      },
+      series: [
+      {% for k,v in rendimientos.items %}
+        {
+          type: 'column',
+          name: '{{k}}',
+          data: [{{v.4|unlocalize}},]
+      },
+      {% endfor %}
+       {
+          type: 'spline',
+          name: 'Promedio nacional',
+          data: [{% for k,v in rendimientos.items %}{{v.5|unlocalize}},{%endfor%}],
+          marker: {
+              lineWidth: 2,
+              lineColor: Highcharts.getOptions().colors[3],
+              fillColor: 'white'
+          }
+      }]
+    });
+
+</script>
+{% endblock %}
