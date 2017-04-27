@@ -119,7 +119,6 @@ def dashboard_productores(request,template="productores/dashboard.html"):
     else:
         filtro = _queryset_filtrado(request)
         years = request.session['anio']
-        id_pais = request.session['pais'].id
 
     hectarea = 0.7050
 
