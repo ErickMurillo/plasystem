@@ -358,7 +358,7 @@ def dashboard_productores(request,template="productores/dashboard.html"):
                                                 promedio_nacional__pais__id=id_pais,
                                                 promedio_nacional__cultivo=2).aggregate(t=Sum('rendimiento_promedio'))['t']
 
-        
+
         #rendiminetos hortaliza
         hortaliza_area_cosechada = filtro.filter(produccion__cultivo__tipo=3,
                                         anio=year).aggregate(t=Sum('produccion__area_cosechada'))['t']
@@ -372,7 +372,7 @@ def dashboard_productores(request,template="productores/dashboard.html"):
         rendimiento_hortaliza_nacional = Promedio.objects.filter(anio=year,
                                                 promedio_nacional__pais__id=id_pais,
                                                 promedio_nacional__cultivo=3).aggregate(t=Sum('rendimiento_promedio'))['t']
-        
+
         rendimientos[year] = (rendimiento_cafe,rendimiento_cafe_nacional,
                               rendimiento_cacao,rendimiento_cacao_nacional,
                               rendimiento_hortaliza,rendimiento_hortaliza_nacional)
@@ -392,7 +392,7 @@ def dashboard_productores(request,template="productores/dashboard.html"):
         cafe_costo_nacional = Promedio.objects.filter(anio=year,
                                                 promedio_nacional__pais__id=id_pais,
                                                 promedio_nacional__cultivo=1).aggregate(t=Sum('costo_promedio'))['t']
-        
+
         #margen cafe
         cafe_margen = cafe_ingreso - cafe_costo
 
@@ -413,7 +413,7 @@ def dashboard_productores(request,template="productores/dashboard.html"):
         cacao_costo_nacional = Promedio.objects.filter(anio=year,
                                                 promedio_nacional__pais__id=id_pais,
                                                 promedio_nacional__cultivo=2).aggregate(t=Sum('costo_promedio'))['t']
-        
+
         #margen cacao
         cacao_margen = cacao_ingreso - cacao_costo
         ingresos_cacao[year] = (cacao_ingreso,cacao_ingreso_nacional,
@@ -434,7 +434,7 @@ def dashboard_productores(request,template="productores/dashboard.html"):
         hortaliza_costo_nacional = Promedio.objects.filter(anio=year,
                                                 promedio_nacional__pais__id=id_pais,
                                                 promedio_nacional__cultivo=3).aggregate(t=Sum('costo_promedio'))['t']
-        
+
         #margen hortaliza
         hortaliza_margen = hortaliza_ingreso - hortaliza_costo
         ingresos_hostalizas[year] = (hortaliza_ingreso,hortaliza_ingreso_nacional,
