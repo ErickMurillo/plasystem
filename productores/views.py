@@ -81,9 +81,10 @@ def consulta_productores(request,template="productores/consulta.html"):
 
     return render(request, template, locals())
 
-def anios_encuesta():
+def anios_encuesta(valor):
+    print valor
     years = []
-    for en in Encuesta.objects.order_by('anio').values_list('anio', flat=True):
+    for en in Encuesta.objects.filter(productor__pais=valor).order_by('anio').values_list('anio', flat=True):
         years.append(en)
     return list(sorted(set(years)))
 
@@ -115,11 +116,17 @@ def dashboard_productores(request,template="productores/dashboard.html"):
         if request.GET.get('pais', ''):
             id_pais = request.GET.get('pais', '')
             filtro = Encuesta.objects.filter(productor__pais = id_pais)
-            years = anios_encuesta()
+            years = anios_encuesta(id_pais)
+            print "##aca dashboard"
+            print years
     else:
         filtro = _queryset_filtrado(request)
-        years = request.session['anio']
+        print filtro
+        years1 = request.session['anio']
+        years = map(int, years1)
         id_pais = request.session['pais'].id
+        print "###consultar##"
+        print years
 
     hectarea = 0.7050
 
@@ -388,8 +395,7 @@ def dashboard_productores(request,template="productores/dashboard.html"):
         #costo viene numero 12 de la encuesta
         cafe_costo = filtro.filter(produccion__cultivo__tipo=1,
                                    anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t'] + \
-                    filtro.filter(produccion__cultivo__tipo=1,
-                                   anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
+                     filtro.filter(produccion__cultivo__tipo=1,anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
         cafe_costo_nacional = Promedio.objects.filter(anio=year,
                                                 promedio_nacional__pais__id=id_pais,
                                                 promedio_nacional__cultivo=1).aggregate(t=Sum('costo_promedio'))['t']
