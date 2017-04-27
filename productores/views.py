@@ -41,6 +41,10 @@ def _queryset_filtrado(request):
 	for key in unvalid_keys:
 		del params[key]
 
+    print params
+    print Encuesta.objects.filter(**params)
+    print "##arriba el params"
+
     return Encuesta.objects.filter(**params)
 
 @login_required
@@ -82,7 +86,6 @@ def consulta_productores(request,template="productores/consulta.html"):
     return render(request, template, locals())
 
 def anios_encuesta(valor):
-    print valor
     years = []
     for en in Encuesta.objects.filter(productor__pais=valor).order_by('anio').values_list('anio', flat=True):
         years.append(en)
@@ -579,7 +582,7 @@ def get_deptos(request):
     results = []
 
     foo = Encuesta.objects.filter(productor__pais__in = lista).order_by('productor__pais__nombre').distinct().values_list('productor__pais__id', flat=True)
-    print foo
+
     deptos = Departamento.objects.filter(pais__id = foo).order_by('nombre').values('id', 'nombre')
 
     return HttpResponse(simplejson.dumps(list(deptos)), content_type = 'application/json')
