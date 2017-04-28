@@ -103,10 +103,9 @@
            {% for prod in productores %}
            <tr>
              <td>{{prod.productor}}</td>
-             <td><a href="{% url 'ficha-productor' prod.productor.id %}">Ver ficha</a></td>
+             <td><a {% if '/productores/dashboard/distribucion/?pais=' in request.get_full_path %}href="{% url 'ficha-productor' prod.productor.id %}?pais={{id_pais}}"{% else %}href="{% url 'ficha-productor' prod.productor.id %}"{% endif %}>Ver ficha</a></td>
            </tr>
            {% endfor %}
-
           </table>
         </div>
       </div>

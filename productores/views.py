@@ -478,7 +478,7 @@ def distribucion_areas(request,template="productores/distribucion_areas.html"):
         if request.GET.get('pais', ''):
             id_pais = request.GET.get('pais', '')
             filtro = Encuesta.objects.filter(productor__pais = id_pais)
-            years = anios_encuesta()
+            years = anios_encuesta(id_pais)
     else:
         filtro = _queryset_filtrado(request)
         years = request.session['anio']
@@ -535,7 +535,7 @@ def ficha_productor(request,id=None,template="productores/ficha_productor.html")
         if request.GET.get('pais', ''):
             id_pais = request.GET.get('pais', '')
             filtro = Encuesta.objects.filter(productor__pais = id_pais)
-            years = anios_encuesta()
+            years = anios_encuesta(id_pais)
     else:
         filtro = _queryset_filtrado(request)
         years = request.session['anio']
