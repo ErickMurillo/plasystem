@@ -317,15 +317,12 @@
 {% block extra_js %}
 <script type="text/javascript">
 Highcharts.chart('grafico1', {
-
   title: {
     text: ''
   },
-
-
   yAxis: {
     title: {
-      text: 'Córdobas'
+      text: 'Dolares'
     }
   },
   legend: {
@@ -333,30 +330,25 @@ Highcharts.chart('grafico1', {
     align: 'right',
     verticalAlign: 'middle'
   },
-
   xAxis: {
     allowDecimals: false,
   },
-
   plotOptions: {
     series: {
       pointStart: {% for k in anios.keys %}{% if forloop.first%}{{k}}{% endif %}{% endfor %}
     }
   },
-
   series: [{
     name: 'Café',
-    data: [{% for v in anios.values %}{{v.0|default:'0'|unlocalize}},{% endfor %}]
+    data: [{% for v in anios.values %}{{v.0|floatformat:'2'|default:'0'}},{% endfor %}]
   }, {
     name: 'Cacao',
-    data: [{% for v in anios.values %}{{v.1|default:'0'|unlocalize}},{% endfor %}]
+    data: [{% for v in anios.values %}{{v.1|floatformat:'2'|default:'0'}},{% endfor %}]
   }, {
     name: 'Hortalizas',
-    data: [{% for v in anios.values %}{{v.2|default:'0'|unlocalize}},{% endfor %}]
+    data: [{% for v in anios.values %}{{v.2|floatformat:'2'|default:'0'}},{% endfor %}]
   }]
-
 });
-
 Highcharts.chart('grafico2', {
   chart: {
     type: 'bar'
@@ -364,7 +356,6 @@ Highcharts.chart('grafico2', {
   title: {
     text: ''
   },
-
   xAxis: {
     categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}],
     title: {
@@ -391,7 +382,6 @@ Highcharts.chart('grafico2', {
       }
     }
   },
-
   credits: {
     enabled: false
   },
@@ -415,7 +405,6 @@ Highcharts.chart('grafico2', {
         {% endfor %}]
       }]
     });
-
     Highcharts.chart('grafico2-1', {
       chart: {
         type: 'bar'
@@ -423,7 +412,6 @@ Highcharts.chart('grafico2', {
       title: {
         text: ''
       },
-
       xAxis: {
         categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}],
         title: {
@@ -480,7 +468,6 @@ Highcharts.chart('grafico2', {
           title: {
             text: ''
           },
-
           xAxis: {
             categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}],
             title: {
@@ -530,7 +517,6 @@ Highcharts.chart('grafico2', {
                 {% endfor %}]
               }]
             });
-
             Highcharts.chart('grafico3', {
               chart: {
                 type: 'bar'
@@ -584,47 +570,38 @@ Highcharts.chart('grafico2', {
               {% endfor %}
               ]
             });
-
             Highcharts.chart('grafico4', {
-
               chart: {
                 polar: true,
                 type: 'line'
               },
-
               title: {
                 text: '',
                 x: -80
               },
-
               pane: {
                 size: '80%'
               },
-
               xAxis: {
                 categories: ['Conservación de suelos', 'Manejo de aguas','Manejo de <br/>recursos naturales',
                 'Cambios climáticos', 'Biodiversidad', 'Manejo landscape'],
                 tickmarkPlacement: 'on',
                 lineWidth: 0
               },
-
               yAxis: {
                 gridLineInterpolation: 'circle',
                 lineWidth: 0,
                 min: 0
               },
-
               tooltip: {
                 shared: true,
                 pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y}</b><br/>'
               },
-
               legend: {
                 align: 'center',
                 verticalAlign: 'bottom',
                 layout: 'horizontal'
               },
-
               series: [
                 {% for k,v in anios.items %}
                 {
@@ -635,7 +612,6 @@ Highcharts.chart('grafico2', {
                 },
                 {% endfor %}
               ]
-
             });
             //graficos margen cafe
             Highcharts.chart('grafico5-cafe', {
@@ -647,7 +623,7 @@ Highcharts.chart('grafico2', {
               },
               yAxis: {
                 title: {
-                  text: 'Córdobas'
+                  text: 'Dolares'
                 },
               },
               xAxis: {
@@ -658,13 +634,11 @@ Highcharts.chart('grafico2', {
                   pointStart: {{ingresos_cafe.keys.0}}
                 }
               },
-
               series: [{
                 name: 'Margen bruto',
                 data: [{% for k,v in ingresos_cafe.items %}{{v.4|unlocalize}},{% endfor %}]
               }]
             });
-
             Highcharts.chart('grafico6-cafe', {
               title: {
                 text: 'Ingresos del café'
@@ -674,7 +648,7 @@ Highcharts.chart('grafico2', {
               },
               yAxis: {
                 title: {
-                  text: 'Córdobas'
+                  text: 'Dolares'
                 },
               },
               xAxis: {
@@ -685,7 +659,6 @@ Highcharts.chart('grafico2', {
                   pointStart: {{ingresos_cafe.keys.0}}
                 }
               },
-
               series: [{
                 name: 'Ingreso promedio del productor',
                 data: [{% for k,v in ingresos_cafe.items %}{{v.0|unlocalize}},{% endfor %}],
@@ -698,7 +671,6 @@ Highcharts.chart('grafico2', {
               },
             ]
           });
-
           Highcharts.chart('grafico7-cafe', {
             title: {
               text: 'Costos café'
@@ -708,7 +680,7 @@ Highcharts.chart('grafico2', {
             },
             yAxis: {
               title: {
-                text: 'Córdobas'
+                text: 'Dolares'
               },
             },
             xAxis: {
@@ -727,7 +699,6 @@ Highcharts.chart('grafico2', {
               name: 'Costos promedio nacional',
               data: [{% for k,v in ingresos_cafe.items %}{{v.3|unlocalize}},{% endfor %}],
               color: '#050f2c'
-
             }]
           });
           //fin graficos margen cafe
@@ -741,7 +712,7 @@ Highcharts.chart('grafico2', {
               },
               yAxis: {
                 title: {
-                  text: 'Córdobas'
+                  text: 'Dolares'
                 },
               },
               xAxis: {
@@ -752,13 +723,11 @@ Highcharts.chart('grafico2', {
                   pointStart: {{ingresos_cacao.keys.0}}
                 }
               },
-
               series: [{
                 name: 'Margen bruto',
                 data: [{% for k,v in ingresos_cacao.items %}{{v.4|unlocalize}},{% endfor %}]
               }]
             });
-
             Highcharts.chart('grafico6-cacao', {
               title: {
                 text: 'Ingresos del cacao'
@@ -768,7 +737,7 @@ Highcharts.chart('grafico2', {
               },
               yAxis: {
                 title: {
-                  text: 'Córdobas'
+                  text: 'Dolares'
                 },
               },
               xAxis: {
@@ -779,7 +748,6 @@ Highcharts.chart('grafico2', {
                   pointStart: {{ingresos_cacao.keys.0}}
                 }
               },
-
               series: [{
                 name: 'Ingreso promedio del productor',
                 data: [{% for k,v in ingresos_cacao.items %}{{v.0|unlocalize}},{% endfor %}],
@@ -792,7 +760,6 @@ Highcharts.chart('grafico2', {
               },
             ]
           });
-
           Highcharts.chart('grafico7-cacao', {
             title: {
               text: 'Costos cacao'
@@ -802,7 +769,7 @@ Highcharts.chart('grafico2', {
             },
             yAxis: {
               title: {
-                text: 'Córdobas'
+                text: 'Dolares'
               },
             },
             xAxis: {
@@ -821,7 +788,6 @@ Highcharts.chart('grafico2', {
               name: 'Costos promedio nacional',
               data: [{% for k,v in ingresos_cacao.items %}{{v.3|unlocalize}},{% endfor %}],
               color: '#050f2c'
-
             }]
           });
           //fin graficos margen cacao
@@ -835,7 +801,7 @@ Highcharts.chart('grafico2', {
               },
               yAxis: {
                 title: {
-                  text: 'Córdobas'
+                  text: 'Dolares'
                 },
               },
               xAxis: {
@@ -846,13 +812,11 @@ Highcharts.chart('grafico2', {
                   pointStart: {{ingresos_hostalizas.keys.0}}
                 }
               },
-
               series: [{
                 name: 'Margen bruto',
                 data: [{% for k,v in ingresos_hostalizas.items %}{{v.4|unlocalize}},{% endfor %}]
               }]
             });
-
             Highcharts.chart('grafico6-horta', {
               title: {
                 text: 'Ingresos de la hortaliza'
@@ -862,7 +826,7 @@ Highcharts.chart('grafico2', {
               },
               yAxis: {
                 title: {
-                  text: 'Córdobas'
+                  text: 'Dolares'
                 },
               },
               xAxis: {
@@ -873,7 +837,6 @@ Highcharts.chart('grafico2', {
                   pointStart: {{ingresos_hostalizas.keys.0}}
                 }
               },
-
               series: [{
                 name: 'Ingreso promedio del productor',
                 data: [{% for k,v in ingresos_hostalizas.items %}{{v.0|unlocalize}},{% endfor %}],
@@ -886,7 +849,6 @@ Highcharts.chart('grafico2', {
               },
             ]
           });
-
           Highcharts.chart('grafico7-horta', {
             title: {
               text: 'Costos hortaliza'
@@ -896,7 +858,7 @@ Highcharts.chart('grafico2', {
             },
             yAxis: {
               title: {
-                text: 'Córdobas'
+                text: 'Dolares'
               },
             },
             xAxis: {
@@ -915,52 +877,41 @@ Highcharts.chart('grafico2', {
               name: 'Costos promedio nacional',
               data: [{% for k,v in ingresos_hostalizas.items %}{{v.3|unlocalize}},{% endfor %}],
               color: '#050f2c'
-
             }]
           });
           //fin graficos margen hortaliza
-
-
           Highcharts.chart('grafico8-1', {
-
             chart: {
               polar: true,
               type: 'line'
             },
-
             title: {
               text: '',
               x: -80
             },
-
             pane: {
               size: '80%'
             },
-
             xAxis: {
               categories: ['Material de siembra sano', 'Preparación del terreno', 'Control de plagas y enfermedades', 'Densidad del sistema correcto',
               'Fertilización adecuada', 'Control de malezas'],
               tickmarkPlacement: 'on',
               lineWidth: 0
             },
-
             yAxis: {
               gridLineInterpolation: 'circle',
               lineWidth: 0,
               min: 0
             },
-
             tooltip: {
               shared: true,
               pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
             },
-
             legend: {
               align: 'center',
               verticalAlign: 'bottom',
               layout: 'horizontal'
             },
-
             series: [
               {% for key,value in anios.items %}
               {% for k,v in value.9.items %}
@@ -975,49 +926,39 @@ Highcharts.chart('grafico2', {
               {% endfor %}
               {% endfor %}
             ]
-
           });
-
           Highcharts.chart('grafico8-2', {
-
             chart: {
               polar: true,
               type: 'line'
             },
-
             title: {
               text: '',
               x: -80
             },
-
             pane: {
               size: '80%'
             },
-
             xAxis: {
               categories: ['Material de siembra sano', 'Preparación del terreno', 'Control de plagas y enfermedades', 'Densidad del sistema correcto',
               'Fertilización adecuada', 'Control de malezas'],
               tickmarkPlacement: 'on',
               lineWidth: 0
             },
-
             yAxis: {
               gridLineInterpolation: 'circle',
               lineWidth: 0,
               min: 0
             },
-
             tooltip: {
               shared: true,
               pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
             },
-
             legend: {
               align: 'center',
               verticalAlign: 'bottom',
               layout: 'horizontal'
             },
-
             series: [
               {% for key,value in anios.items %}
               {% for k,v in value.9.items %}
@@ -1032,49 +973,39 @@ Highcharts.chart('grafico2', {
               {% endfor %}
               {% endfor %}
             ]
-
           });
-
           Highcharts.chart('grafico8-3', {
-
             chart: {
               polar: true,
               type: 'line'
             },
-
             title: {
               text: '',
               x: -80
             },
-
             pane: {
               size: '80%'
             },
-
             xAxis: {
               categories: ['Material de siembra sano', 'Preparación del terreno', 'Control de plagas y enfermedades', 'Densidad del sistema correcto',
               'Fertilización adecuada', 'Control de malezas'],
               tickmarkPlacement: 'on',
               lineWidth: 0
             },
-
             yAxis: {
               gridLineInterpolation: 'circle',
               lineWidth: 0,
               min: 0
             },
-
             tooltip: {
               shared: true,
               pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
             },
-
             legend: {
               align: 'center',
               verticalAlign: 'bottom',
               layout: 'horizontal'
             },
-
             series: [
               {% for key,value in anios.items %}
               {% for k,v in value.9.items %}
@@ -1089,10 +1020,7 @@ Highcharts.chart('grafico2', {
               {% endfor %}
               {% endfor %}
             ]
-
           });
-
-
     Highcharts.chart('grafico10', {
       title: {
           text: 'Rendimientos Café'
@@ -1104,7 +1032,6 @@ Highcharts.chart('grafico2', {
         title: {
             text: 'Quintales(qq)'
         }
-
     },
       series: [
       {% for k,v in rendimientos.items %}
@@ -1125,7 +1052,6 @@ Highcharts.chart('grafico2', {
           }
       }]
     });
-
     Highcharts.chart('grafico11', {
       title: {
           text: 'Rendimientos Cacao'
@@ -1137,7 +1063,6 @@ Highcharts.chart('grafico2', {
         title: {
             text: 'Quintales(qq)'
         }
-
     },
       series: [
       {% for k,v in rendimientos.items %}
@@ -1158,7 +1083,6 @@ Highcharts.chart('grafico2', {
           }
       }]
     });
-
      Highcharts.chart('grafico12', {
       title: {
           text: 'Rendimientos Hortalizas'
@@ -1185,6 +1109,5 @@ Highcharts.chart('grafico2', {
           }
       }]
     });
-
 </script>
 {% endblock %}

@@ -7,6 +7,7 @@ import json as simplejson
 from django.db.models import Sum, Count, Avg, F
 import collections
 from django.db.models import Q
+from subsectores.models import *
 
 # Create your views here.
 def _queryset_filtrado(request):
@@ -145,15 +146,33 @@ def dashboard_productores(request,template="productores/dashboard.html"):
     ingresos_cacao = collections.OrderedDict()
     ingresos_hostalizas = collections.OrderedDict()
     for year in years:
+        tipo_cambio = TasaCambioPaisAnual.objects.filter(tipo_cambio__pais = id_pais,anio = year).values_list('dolar',flat = True)
+        print tipo_cambio[0]
         #ingresos
         cafe = filtro.filter(destinoproduccion__cultivo__tipo = 1, anio = year).aggregate(
                 sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
 
+        #convercion a dolares
+        try:
+            cafe = cafe / tipo_cambio[0]
+        except:
+            pass
+
         cacao = filtro.filter(destinoproduccion__cultivo__tipo = 2, anio = year).aggregate(
                 sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
 
+        try:
+            cacao = cacao / tipo_cambio[0]
+        except:
+            pass
+
         hortalizas = filtro.filter(destinoproduccion__cultivo__tipo = 3, anio = year).aggregate(
                 sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
+
+        try:
+            hortalizas = hortalizas / tipo_cambio[0]
+        except:
+            pass
 
         #indice de produccio sustentable
         #conservacion suelo
@@ -384,16 +403,39 @@ def dashboard_productores(request,template="productores/dashboard.html"):
             cafe_ingreso = Mercado.objects.filter(destino_produccion__encuesta__in=filtro,
                                                   destino_produccion__cultivo__tipo=1,
                                                   destino_produccion__encuesta__anio=year).aggregate(t=Sum('ingreso'))['t']
+
+            try:
+                cafe_ingreso = cafe_ingreso / tipo_cambio[0]
+            except:
+                pass
+
             cafe_ingreso_nacional = Promedio.objects.filter(anio=year,
                                                     promedio_nacional__pais__id=id_pais,
                                                     promedio_nacional__cultivo=1).aggregate(t=Sum('ingreso_promedio'))['t']
+
+            try:
+                cafe_ingreso_nacional = cafe_ingreso_nacional / tipo_cambio[0]
+            except:
+                pass
+
             #costo viene numero 12 de la encuesta
             cafe_costo = filtro.filter(produccion__cultivo__tipo=1,
                                        anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t'] + \
                          filtro.filter(produccion__cultivo__tipo=1,anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
+
+            try:
+                cafe_costo = cafe_costo / tipo_cambio[0]
+            except:
+                pass
+
             cafe_costo_nacional = Promedio.objects.filter(anio=year,
                                                     promedio_nacional__pais__id=id_pais,
                                                     promedio_nacional__cultivo=1).aggregate(t=Sum('costo_promedio'))['t']
+
+            try:
+                cafe_costo_nacional = cafe_costo_nacional / tipo_cambio[0]
+            except:
+                pass
 
             #margen cafe
             cafe_margen = cafe_ingreso - cafe_costo
@@ -404,17 +446,40 @@ def dashboard_productores(request,template="productores/dashboard.html"):
             cacao_ingreso = Mercado.objects.filter(destino_produccion__encuesta__in=filtro,
                                                   destino_produccion__cultivo__tipo=2,
                                                   destino_produccion__encuesta__anio=year).aggregate(t=Sum('ingreso'))['t']
+
+            try:
+                cacao_ingreso = cacao_ingreso / tipo_cambio[0]
+            except:
+                pass
+
             cacao_ingreso_nacional = Promedio.objects.filter(anio=year,
                                                     promedio_nacional__pais__id=id_pais,
                                                     promedio_nacional__cultivo=2).aggregate(t=Sum('ingreso_promedio'))['t']
+
+            try:
+                cacao_ingreso_nacional = cacao_ingreso_nacional / tipo_cambio[0]
+            except:
+                pass
+
             #costo viene numero 12 de la encuesta
             cacao_costo = filtro.filter(produccion__cultivo__tipo=2,
                                        anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t'] + \
                         filtro.filter(produccion__cultivo__tipo=2,
                                        anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
+
+            try:
+                cacao_costo = cacao_costo / tipo_cambio[0]
+            except:
+                pass
+
             cacao_costo_nacional = Promedio.objects.filter(anio=year,
                                                     promedio_nacional__pais__id=id_pais,
                                                     promedio_nacional__cultivo=2).aggregate(t=Sum('costo_promedio'))['t']
+
+            try:
+                cacao_costo_nacional = cacao_costo_nacional / tipo_cambio[0]
+            except:
+                pass
 
             #margen cacao
             cacao_margen = cacao_ingreso - cacao_costo
@@ -425,17 +490,39 @@ def dashboard_productores(request,template="productores/dashboard.html"):
             hortaliza_ingreso = Mercado.objects.filter(destino_produccion__encuesta__in=filtro,
                                                   destino_produccion__cultivo__tipo=3,
                                                   destino_produccion__encuesta__anio=year).aggregate(t=Sum('ingreso'))['t']
+            try:
+                hortaliza_ingreso = hortaliza_ingreso / tipo_cambio[0]
+            except:
+                pass
+
             hortaliza_ingreso_nacional = Promedio.objects.filter(anio=year,
                                                     promedio_nacional__pais__id=id_pais,
                                                     promedio_nacional__cultivo=3).aggregate(t=Sum('ingreso_promedio'))['t']
+
+            try:
+                hortaliza_ingreso_nacional = hortaliza_ingreso_nacional / tipo_cambio[0]
+            except:
+                pass
+
             #costo viene numero 12 de la encuesta
             hortaliza_costo = filtro.filter(produccion__cultivo__tipo=3,
                                        anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t'] + \
                         filtro.filter(produccion__cultivo__tipo=3,
                                        anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
+
+            try:
+                hortaliza_costo = hortaliza_costo / tipo_cambio[0]
+            except:
+                pass
+
             hortaliza_costo_nacional = Promedio.objects.filter(anio=year,
                                                     promedio_nacional__pais__id=id_pais,
                                                     promedio_nacional__cultivo=3).aggregate(t=Sum('costo_promedio'))['t']
+
+            try:
+                hortaliza_costo_nacional = hortaliza_costo_nacional / tipo_cambio[0]
+            except:
+                pass
 
             #margen hortaliza
             hortaliza_margen = hortaliza_ingreso - hortaliza_costo
@@ -563,6 +650,57 @@ def ficha_productor(request,id=None,template="productores/ficha_productor.html")
             distribucion[obj[0]] = area
 
         anios[year] = distribucion
+
+    return render(request, template, locals())
+
+@login_required
+def ingresos(request,template="productores/ingresos.html"):
+    if request.method == 'POST':
+        mensaje = None
+        form = ProductoresForm(request.POST)
+        if form.is_valid():
+            request.session['anio'] = form.cleaned_data['anio']
+            request.session['pais'] = form.cleaned_data['pais']
+            request.session['departamento'] = form.cleaned_data['departamento']
+            request.session['municipio'] = form.cleaned_data['municipio']
+            request.session['organizacion'] = form.cleaned_data['organizacion']
+            request.session['sexo'] = form.cleaned_data['sexo']
+            request.session['edad'] = form.cleaned_data['edad']
+
+            mensaje = "Todas las variables estan correctamente :)"
+            request.session['activo'] = True
+            centinela = 1
+
+        else:
+            centinela = 0
+    else:
+        form = ProductoresForm()
+        mensaje = "Existen alguno errores"
+
+    if 'anio' not in request.session:
+        if request.GET.get('pais', ''):
+            id_pais = request.GET.get('pais', '')
+            filtro = Encuesta.objects.filter(productor__pais = id_pais)
+            years = anios_encuesta(id_pais)
+    else:
+        filtro = _queryset_filtrado(request)
+        years = request.session['anio']
+
+    hectarea = 0.7050
+
+    #conteos generales
+    productores = filtro.distinct()
+    familias = productores.count()
+    hombres = filtro.filter(productor__sexo = 'Hombre').count()
+    mujeres = filtro.filter(productor__sexo = 'Mujer').count()
+    menores_35 = filtro.filter(productor__edad = 1).count()
+    manzanas = filtro.aggregate(total = Avg('areafinca__area'))['total']
+    try:
+        hectareas = manzanas * hectarea
+    except:
+        hectareas = 0
+
+    certificacion = filtro.filter(certificacion__certificacion = 'Si').count()
 
     return render(request, template, locals())
 
