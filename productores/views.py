@@ -41,10 +41,6 @@ def _queryset_filtrado(request):
 	for key in unvalid_keys:
 		del params[key]
 
-    print params
-    print Encuesta.objects.filter(**params)
-    print "##arriba el params"
-
     return Encuesta.objects.filter(**params)
 
 @login_required
@@ -120,16 +116,11 @@ def dashboard_productores(request,template="productores/dashboard.html"):
             id_pais = request.GET.get('pais', '')
             filtro = Encuesta.objects.filter(productor__pais = id_pais)
             years = anios_encuesta(id_pais)
-            print "##aca dashboard"
-            print years
     else:
         filtro = _queryset_filtrado(request)
-        print filtro
         years1 = request.session['anio']
         years = map(int, years1)
         id_pais = request.session['pais'].id
-        print "###consultar##"
-        print years
 
     hectarea = 0.7050
 
@@ -341,113 +332,114 @@ def dashboard_productores(request,template="productores/dashboard.html"):
         anios[year] = (cafe,cacao,hortalizas,conservacion_suelo,uso_eficiente_agua,gestion_recursos_naturales,
                         cambio_climatico,biodiversidad,paisaje_sostenible,cultivos,areas,prod_sustentable,mip,bpa)
 
-        cafe_area_cosechada = filtro.filter(produccion__cultivo__tipo=1,
-                                        anio=year).aggregate(t=Sum('produccion__area_cosechada'))['t']
-        cafe_cantidad = filtro.filter(produccion__cultivo__tipo=1,
-                                        anio=year).aggregate(t=Sum('produccion__cantidad_cosechada'))['t']
-        try:
-            rendimiento_cafe = float(cafe_cantidad) / float(cafe_area_cosechada)
-        except:
-            rendimiento_cafe = 0
+        if encuestas >= 1:
+            cafe_area_cosechada = filtro.filter(produccion__cultivo__tipo=1,
+                                            anio=year).aggregate(t=Sum('produccion__area_cosechada'))['t']
+            cafe_cantidad = filtro.filter(produccion__cultivo__tipo=1,
+                                            anio=year).aggregate(t=Sum('produccion__cantidad_cosechada'))['t']
+            try:
+                rendimiento_cafe = float(cafe_cantidad) / float(cafe_area_cosechada)
+            except:
+                rendimiento_cafe = 0
 
-        rendimiento_cafe_nacional = Promedio.objects.filter(anio=year,
-                                                promedio_nacional__pais__id=id_pais,
-                                                promedio_nacional__cultivo=1).aggregate(t=Sum('rendimiento_promedio'))['t']
-
-
-        #rendimento cacao
-        cacao_area_cosechada = filtro.filter(produccion__cultivo__tipo=2,
-                                        anio=year).aggregate(t=Sum('produccion__area_cosechada'))['t']
-        cacao_cantidad = filtro.filter(produccion__cultivo__tipo=2,
-                                        anio=year).aggregate(t=Sum('produccion__cantidad_cosechada'))['t']
-        try:
-            rendimiento_cacao = float(cacao_cantidad) / float(cacao_area_cosechada)
-        except:
-            rendimiento_cacao = 0
-
-        rendimiento_cacao_nacional = Promedio.objects.filter(anio=year,
-                                                promedio_nacional__pais__id=id_pais,
-                                                promedio_nacional__cultivo=2).aggregate(t=Sum('rendimiento_promedio'))['t']
+            rendimiento_cafe_nacional = Promedio.objects.filter(anio=year,
+                                                    promedio_nacional__pais__id=id_pais,
+                                                    promedio_nacional__cultivo=1).aggregate(t=Sum('rendimiento_promedio'))['t']
 
 
-        #rendiminetos hortaliza
-        hortaliza_area_cosechada = filtro.filter(produccion__cultivo__tipo=3,
-                                        anio=year).aggregate(t=Sum('produccion__area_cosechada'))['t']
-        hortaliza_cantidad = filtro.filter(produccion__cultivo__tipo=3,
-                                        anio=year).aggregate(t=Sum('produccion__cantidad_cosechada'))['t']
-        try:
-            rendimiento_hortaliza = float(hortaliza_cantidad) / float(hortaliza_area_cosechada)
-        except:
-            rendimiento_hortaliza = 0
+            #rendimento cacao
+            cacao_area_cosechada = filtro.filter(produccion__cultivo__tipo=2,
+                                            anio=year).aggregate(t=Sum('produccion__area_cosechada'))['t']
+            cacao_cantidad = filtro.filter(produccion__cultivo__tipo=2,
+                                            anio=year).aggregate(t=Sum('produccion__cantidad_cosechada'))['t']
+            try:
+                rendimiento_cacao = float(cacao_cantidad) / float(cacao_area_cosechada)
+            except:
+                rendimiento_cacao = 0
 
-        rendimiento_hortaliza_nacional = Promedio.objects.filter(anio=year,
-                                                promedio_nacional__pais__id=id_pais,
-                                                promedio_nacional__cultivo=3).aggregate(t=Sum('rendimiento_promedio'))['t']
+            rendimiento_cacao_nacional = Promedio.objects.filter(anio=year,
+                                                    promedio_nacional__pais__id=id_pais,
+                                                    promedio_nacional__cultivo=2).aggregate(t=Sum('rendimiento_promedio'))['t']
 
-        rendimientos[year] = (rendimiento_cafe,rendimiento_cafe_nacional,
-                              rendimiento_cacao,rendimiento_cacao_nacional,
-                              rendimiento_hortaliza,rendimiento_hortaliza_nacional)
 
-        #ingresos numero 13 en la encuesta cafe
-        cafe_ingreso = Mercado.objects.filter(destino_produccion__encuesta__in=filtro,
-                                              destino_produccion__cultivo__tipo=1,
-                                              destino_produccion__encuesta__anio=year).aggregate(t=Sum('ingreso'))['t']
-        cafe_ingreso_nacional = Promedio.objects.filter(anio=year,
-                                                promedio_nacional__pais__id=id_pais,
-                                                promedio_nacional__cultivo=1).aggregate(t=Sum('ingreso_promedio'))['t']
-        #costo viene numero 12 de la encuesta
-        cafe_costo = filtro.filter(produccion__cultivo__tipo=1,
-                                   anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t'] + \
-                     filtro.filter(produccion__cultivo__tipo=1,anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
-        cafe_costo_nacional = Promedio.objects.filter(anio=year,
-                                                promedio_nacional__pais__id=id_pais,
-                                                promedio_nacional__cultivo=1).aggregate(t=Sum('costo_promedio'))['t']
+            #rendiminetos hortaliza
+            hortaliza_area_cosechada = filtro.filter(produccion__cultivo__tipo=3,
+                                            anio=year).aggregate(t=Sum('produccion__area_cosechada'))['t']
+            hortaliza_cantidad = filtro.filter(produccion__cultivo__tipo=3,
+                                            anio=year).aggregate(t=Sum('produccion__cantidad_cosechada'))['t']
+            try:
+                rendimiento_hortaliza = float(hortaliza_cantidad) / float(hortaliza_area_cosechada)
+            except:
+                rendimiento_hortaliza = 0
 
-        #margen cafe
-        cafe_margen = cafe_ingreso - cafe_costo
+            rendimiento_hortaliza_nacional = Promedio.objects.filter(anio=year,
+                                                    promedio_nacional__pais__id=id_pais,
+                                                    promedio_nacional__cultivo=3).aggregate(t=Sum('rendimiento_promedio'))['t']
 
-        ingresos_cafe[year] = (cafe_ingreso,cafe_ingreso_nacional,
-                          cafe_costo,cafe_costo_nacional,cafe_margen)
-        #ingresos numero 13 en la encuesta cacao
-        cacao_ingreso = Mercado.objects.filter(destino_produccion__encuesta__in=filtro,
-                                              destino_produccion__cultivo__tipo=2,
-                                              destino_produccion__encuesta__anio=year).aggregate(t=Sum('ingreso'))['t']
-        cacao_ingreso_nacional = Promedio.objects.filter(anio=year,
-                                                promedio_nacional__pais__id=id_pais,
-                                                promedio_nacional__cultivo=2).aggregate(t=Sum('ingreso_promedio'))['t']
-        #costo viene numero 12 de la encuesta
-        cacao_costo = filtro.filter(produccion__cultivo__tipo=2,
-                                   anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t'] + \
-                    filtro.filter(produccion__cultivo__tipo=2,
-                                   anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
-        cacao_costo_nacional = Promedio.objects.filter(anio=year,
-                                                promedio_nacional__pais__id=id_pais,
-                                                promedio_nacional__cultivo=2).aggregate(t=Sum('costo_promedio'))['t']
+            rendimientos[year] = (rendimiento_cafe,rendimiento_cafe_nacional,
+                                  rendimiento_cacao,rendimiento_cacao_nacional,
+                                  rendimiento_hortaliza,rendimiento_hortaliza_nacional)
 
-        #margen cacao
-        cacao_margen = cacao_ingreso - cacao_costo
-        ingresos_cacao[year] = (cacao_ingreso,cacao_ingreso_nacional,
-                          cacao_costo,cacao_costo_nacional,cacao_margen)
+            #ingresos numero 13 en la encuesta cafe
+            cafe_ingreso = Mercado.objects.filter(destino_produccion__encuesta__in=filtro,
+                                                  destino_produccion__cultivo__tipo=1,
+                                                  destino_produccion__encuesta__anio=year).aggregate(t=Sum('ingreso'))['t']
+            cafe_ingreso_nacional = Promedio.objects.filter(anio=year,
+                                                    promedio_nacional__pais__id=id_pais,
+                                                    promedio_nacional__cultivo=1).aggregate(t=Sum('ingreso_promedio'))['t']
+            #costo viene numero 12 de la encuesta
+            cafe_costo = filtro.filter(produccion__cultivo__tipo=1,
+                                       anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t'] + \
+                         filtro.filter(produccion__cultivo__tipo=1,anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
+            cafe_costo_nacional = Promedio.objects.filter(anio=year,
+                                                    promedio_nacional__pais__id=id_pais,
+                                                    promedio_nacional__cultivo=1).aggregate(t=Sum('costo_promedio'))['t']
 
-        #ingresos numero 13 en la encuesta hortaliza
-        hortaliza_ingreso = Mercado.objects.filter(destino_produccion__encuesta__in=filtro,
-                                              destino_produccion__cultivo__tipo=3,
-                                              destino_produccion__encuesta__anio=year).aggregate(t=Sum('ingreso'))['t']
-        hortaliza_ingreso_nacional = Promedio.objects.filter(anio=year,
-                                                promedio_nacional__pais__id=id_pais,
-                                                promedio_nacional__cultivo=3).aggregate(t=Sum('ingreso_promedio'))['t']
-        #costo viene numero 12 de la encuesta
-        hortaliza_costo = filtro.filter(produccion__cultivo__tipo=3,
-                                   anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t'] + \
-                    filtro.filter(produccion__cultivo__tipo=3,
-                                   anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
-        hortaliza_costo_nacional = Promedio.objects.filter(anio=year,
-                                                promedio_nacional__pais__id=id_pais,
-                                                promedio_nacional__cultivo=3).aggregate(t=Sum('costo_promedio'))['t']
+            #margen cafe
+            cafe_margen = cafe_ingreso - cafe_costo
 
-        #margen hortaliza
-        hortaliza_margen = hortaliza_ingreso - hortaliza_costo
-        ingresos_hostalizas[year] = (hortaliza_ingreso,hortaliza_ingreso_nacional,
+            ingresos_cafe[year] = (cafe_ingreso,cafe_ingreso_nacional,
+                              cafe_costo,cafe_costo_nacional,cafe_margen)
+            #ingresos numero 13 en la encuesta cacao
+            cacao_ingreso = Mercado.objects.filter(destino_produccion__encuesta__in=filtro,
+                                                  destino_produccion__cultivo__tipo=2,
+                                                  destino_produccion__encuesta__anio=year).aggregate(t=Sum('ingreso'))['t']
+            cacao_ingreso_nacional = Promedio.objects.filter(anio=year,
+                                                    promedio_nacional__pais__id=id_pais,
+                                                    promedio_nacional__cultivo=2).aggregate(t=Sum('ingreso_promedio'))['t']
+            #costo viene numero 12 de la encuesta
+            cacao_costo = filtro.filter(produccion__cultivo__tipo=2,
+                                       anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t'] + \
+                        filtro.filter(produccion__cultivo__tipo=2,
+                                       anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
+            cacao_costo_nacional = Promedio.objects.filter(anio=year,
+                                                    promedio_nacional__pais__id=id_pais,
+                                                    promedio_nacional__cultivo=2).aggregate(t=Sum('costo_promedio'))['t']
+
+            #margen cacao
+            cacao_margen = cacao_ingreso - cacao_costo
+            ingresos_cacao[year] = (cacao_ingreso,cacao_ingreso_nacional,
+                              cacao_costo,cacao_costo_nacional,cacao_margen)
+
+            #ingresos numero 13 en la encuesta hortaliza
+            hortaliza_ingreso = Mercado.objects.filter(destino_produccion__encuesta__in=filtro,
+                                                  destino_produccion__cultivo__tipo=3,
+                                                  destino_produccion__encuesta__anio=year).aggregate(t=Sum('ingreso'))['t']
+            hortaliza_ingreso_nacional = Promedio.objects.filter(anio=year,
+                                                    promedio_nacional__pais__id=id_pais,
+                                                    promedio_nacional__cultivo=3).aggregate(t=Sum('ingreso_promedio'))['t']
+            #costo viene numero 12 de la encuesta
+            hortaliza_costo = filtro.filter(produccion__cultivo__tipo=3,
+                                       anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t'] + \
+                        filtro.filter(produccion__cultivo__tipo=3,
+                                       anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
+            hortaliza_costo_nacional = Promedio.objects.filter(anio=year,
+                                                    promedio_nacional__pais__id=id_pais,
+                                                    promedio_nacional__cultivo=3).aggregate(t=Sum('costo_promedio'))['t']
+
+            #margen hortaliza
+            hortaliza_margen = hortaliza_ingreso - hortaliza_costo
+            ingresos_hostalizas[year] = (hortaliza_ingreso,hortaliza_ingreso_nacional,
                           hortaliza_costo,hortaliza_costo_nacional,hortaliza_margen)
 
 
