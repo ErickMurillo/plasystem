@@ -702,6 +702,33 @@ def ingresos(request,template="productores/ingresos.html"):
 
     certificacion = filtro.filter(certificacion__certificacion = 'Si').count()
 
+    #graficos
+    anios = collections.OrderedDict()
+    for year in years:
+        merc_formal = ['Empresas comercializadoras','Empresas procesadoras',
+                        'Empresas exportadoras','Supermercados','Cadena de restaurantes']
+
+        merc_informal = ['Mercado tradicional','Cooperativa','Ferias','Intermediarios']
+
+        cultivos = collections.OrderedDict()
+        for obj in CULTIVO_CHOICES:
+            ventas_formal = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = obj[0],
+                                        destinoproduccion__mercado__mercado__in = merc_formal).aggregate(
+                                        ventas = Sum('destinoproduccion__mercado__cantidad'))['ventas']
+
+            ventas_informal = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = obj[0],
+                                        destinoproduccion__mercado__mercado__in = merc_informal).aggregate(
+                                        ventas = Sum('destinoproduccion__mercado__cantidad'))['ventas']
+
+            cultivos[obj[1]] = (ventas_formal,ventas_informal)
+
+            for mer in MERCADO_CHOICES:
+                ventas = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = obj[0],
+                                            destinoproduccion__mercado__mercado = merc).aggregate(
+                                            ventas = Sum('destinoproduccion__mercado__cantidad'))['ventas']
+
+        anios[year] = cultivos
+
     return render(request, template, locals())
 
 #ajax

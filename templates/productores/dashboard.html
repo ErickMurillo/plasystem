@@ -88,7 +88,7 @@
         <div class="col-sm-6">
           <div class="panel panel-primary">
             <div class="panel-body">
-              <h4 class="m-t-0">Ingresos del productor por cultivo <span class="mdi mdi-help-circle"></span><span class="more-ind"> <a href="">+indicadores</a> </span></h4>
+              <h4 class="m-t-0">Ingresos del productor por cultivo <span class="mdi mdi-help-circle"></span><span class="more-ind"> <a href="{% if '/productores/dashboard/?pais=' in request.get_full_path %}/productores/dashboard/ingresos/?pais={{id_pais}}{% else %}/productores/dashboard/ingresos/{% endif %}">+indicadores</a> </span></h4>
               <div id="grafico1"></div>
             </div>
           </div>
