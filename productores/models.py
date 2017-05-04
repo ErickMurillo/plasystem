@@ -341,12 +341,16 @@ class IngresosActividadesGanaderia(models.Model):
         verbose_name = 'Fuente de ingreso'
         verbose_name_plural = '16. Otros ingresos por actividades de ganadería (mayor y menor) y procesamiento de productos agropecuarios'
 
+@python_2_unicode_compatible
 class TipoSistemaRiego(models.Model):
     nombre = models.CharField(max_length = 150)
 
     class Meta:
         verbose_name = 'Tipo de sistema de riego'
         verbose_name_plural = 'Tipos de sistemas de riego'
+
+    def __str__(self):
+        return self.nombre
 
 ESTADO_CHOICES = (('Bueno','Bueno'),('Regular','Regular'),('Malo','Malo'))
 
