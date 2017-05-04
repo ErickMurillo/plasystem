@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 
 # Create your models here.
+@python_2_unicode_compatible
 class TipoOrganizacion(models.Model):
     nombre = models.CharField(max_length = 200)
 
@@ -14,6 +15,7 @@ class TipoOrganizacion(models.Model):
         verbose_name = 'Tipo de Organización'
         verbose_name_plural = 'Tipos de Organizaciones'
 
+@python_2_unicode_compatible
 class Organizacion(models.Model):
     nombre = models.CharField(max_length = 200)
     tipo = models.ForeignKey(TipoOrganizacion)
