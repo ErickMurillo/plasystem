@@ -263,6 +263,7 @@ class Produccion(models.Model):
     cantidad_cosechada = models.FloatField(verbose_name = 'Cantidad cosechada')
     consumo = models.FloatField(verbose_name = 'Consumo de la familia')
     procesamiento = models.FloatField()
+    rechazo = models.FloatField()
     venta = models.FloatField()
     costo_produccion = models.FloatField(verbose_name = 'Costo producción por Mz (Moneda local)')
     archivo_costo_produccion = models.FileField(verbose_name = 'Archivo costo producción', blank = True, null = True)
@@ -635,10 +636,10 @@ class PracticasMIP(models.Model):
 @python_2_unicode_compatible
 class PromedioNacional(models.Model):
     pais = models.ForeignKey(Pais)
-    cultivo = models.IntegerField(choices = CULTIVO_CHOICES)
+    cultivo = models.ForeignKey(Cultivo)
 
     def __str__(self):
-        return '%s - %s' % (self.pais.nombre, self.get_cultivo_display())
+        return '%s - %s' % (self.pais.nombre, self.cultivo)
 
     class Meta:
         verbose_name = 'Promedio Nacional'
@@ -647,7 +648,7 @@ class PromedioNacional(models.Model):
 @python_2_unicode_compatible
 class Promedio(models.Model):
     promedio_nacional = models.ForeignKey(PromedioNacional)
-    anio = models.IntegerField()
+    anio = models.IntegerField(verbose_name = 'Año')
     precio_promedio = models.FloatField()
     costo_promedio = models.FloatField()
     rendimiento_promedio = models.FloatField()

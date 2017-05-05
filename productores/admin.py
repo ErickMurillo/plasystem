@@ -158,13 +158,17 @@ class EncuestaAdmin(NestedModelAdmin):
         css = {'all': ('css/admin-encuesta.css','css/select2.min.css')}
         js = ('js/jquery.min.js','js/select2.min.js','js/encuesta-admin.js')
 
+class CultivoAdmin(admin.ModelAdmin):
+    list_filter = ('tipo',)
+    search_fields = ('nombre',)
+
 admin.site.register(Encuesta,EncuestaAdmin)
 admin.site.register(Encuestador)
 admin.site.register(Certificado)
 admin.site.register(EmpresaCertifica)
 admin.site.register(EliminacionFocos)
 admin.site.register(ProteccionFuentes)
-admin.site.register(Cultivo)
+admin.site.register(Cultivo,CultivoAdmin)
 admin.site.register(TipoSistemaRiego)
 
 class Promedio_Inline(admin.TabularInline):
@@ -174,5 +178,7 @@ class Promedio_Inline(admin.TabularInline):
 
 class PromedioNacionalAdmin(admin.ModelAdmin):
     inlines = [Promedio_Inline,]
+    list_filter = ('pais','cultivo__tipo')
+    search_fields = ('cultivo__nombre',)
 
 admin.site.register(PromedioNacional,PromedioNacionalAdmin)
