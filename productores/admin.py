@@ -72,7 +72,7 @@ class BPA_Inline(NestedTabularInline):
 class Produccion_Inline(NestedTabularInline):
     model = Produccion
     extra = 1
-    form = ProduccionForm
+    # form = ProduccionForm
 
 class Mercado_Inline(NestedTabularInline):
     model = Mercado
