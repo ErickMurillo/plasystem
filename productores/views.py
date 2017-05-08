@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from .models import *
 from .forms import *
@@ -147,7 +148,6 @@ def dashboard_productores(request,template="productores/dashboard.html"):
     ingresos_hostalizas = collections.OrderedDict()
     for year in years:
         tipo_cambio = TasaCambioPaisAnual.objects.filter(tipo_cambio__pais = id_pais,anio = year).values_list('dolar',flat = True)
-        print tipo_cambio[0]
         #ingresos
         cafe = filtro.filter(destinoproduccion__cultivo__tipo = 1, anio = year).aggregate(
                 sum = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['sum']
@@ -482,6 +482,8 @@ def dashboard_productores(request,template="productores/dashboard.html"):
                 pass
 
             #margen cacao
+            if cacao_ingreso == None:
+                cacao_ingreso = 0
             cacao_margen = cacao_ingreso - cacao_costo
             ingresos_cacao[year] = (cacao_ingreso,cacao_ingreso_nacional,
                               cacao_costo,cacao_costo_nacional,cacao_margen)
@@ -525,6 +527,8 @@ def dashboard_productores(request,template="productores/dashboard.html"):
                 pass
 
             #margen hortaliza
+            if hortaliza_ingreso == None:
+                hortaliza_ingreso = 0
             hortaliza_margen = hortaliza_ingreso - hortaliza_costo
             ingresos_hostalizas[year] = (hortaliza_ingreso,hortaliza_ingreso_nacional,
                           hortaliza_costo,hortaliza_costo_nacional,hortaliza_margen)
@@ -705,6 +709,7 @@ def ingresos(request,template="productores/ingresos.html"):
     #graficos
     anios = collections.OrderedDict()
     for year in years:
+
         merc_formal = ['Empresas comercializadoras','Empresas procesadoras',
                         'Empresas exportadoras','Supermercados','Cadena de restaurantes']
 
@@ -722,12 +727,44 @@ def ingresos(request,template="productores/ingresos.html"):
 
             cultivos[obj[1]] = (ventas_formal,ventas_informal)
 
-            for mer in MERCADO_CHOICES:
-                ventas = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = obj[0],
-                                            destinoproduccion__mercado__mercado = merc).aggregate(
-                                            ventas = Sum('destinoproduccion__mercado__cantidad'))['ventas']
+        ventas = collections.OrderedDict()
+        for mercado in MERCADO_CHOICES:
+            cafe = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 1,
+                                destinoproduccion__mercado__mercado = mercado[0]).aggregate(
+                                ventas = Sum('destinoproduccion__mercado__cantidad'))['ventas']
 
-        anios[year] = cultivos
+            cacao = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 2,
+                                destinoproduccion__mercado__mercado = mercado[0]).aggregate(
+                                ventas = Sum('destinoproduccion__mercado__cantidad'))['ventas']
+
+            hortalizas = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 3,
+                                destinoproduccion__mercado__mercado = mercado[0]).aggregate(
+                                ventas = Sum('destinoproduccion__mercado__cantidad'))['ventas']
+
+            ventas[mercado[0]] = cafe,cacao,hortalizas
+
+        #grafica 5 incremento del vol de prod
+        #cafe
+
+
+        #cacao
+        cacao_prod = filtro.filter(anio = year,produccion__cultivo__tipo = 2).aggregate(prod = Sum(
+                                    'produccion__cantidad_cosechada'))['prod']
+
+        area_cacao = filtro.filter(produccion__cultivo__tipo = 2,anio=year).aggregate(
+                                            t = Sum('produccion__area_cosechada'))['t']
+
+        sembrada_cacao = filtro.filter(produccion__cultivo__tipo = 2,anio=year).aggregate(
+                                            t = Sum('produccion__area_sembrada'))['t']
+
+        cantidad_cacao = filtro.filter(produccion__cultivo__tipo = 2,
+                                        anio=year).aggregate(t=Sum('produccion__cantidad_cosechada'))['t']
+        try:
+            rendimiento_cacao = float(cantidad_cacao) / float(area_cacao)
+        except:
+            rendimiento_cacao = 0
+
+        anios[year] = cultivos,ventas,cacao_prod,rendimiento_cacao,area_cacao,sembrada_cacao
 
     return render(request, template, locals())
 

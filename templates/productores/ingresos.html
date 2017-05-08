@@ -181,6 +181,39 @@
           </div>
         </div>
       </div>
+
+      <div class="col-sm-6">
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="panel panel-primary">
+          <div class="panel-body">
+            <h4 class="m-t-0">Incremento del volumen de producción <span class="mdi mdi-help-circle"></span></h4>
+            <div role="tabpanel tabs-grafico">
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs" role="tablist">
+                {% for key in anios.keys %}
+                <li role="presentation" class="{% if forloop.first %}active{% endif %}">
+                  <a href="#{{key}}" aria-controls="{{key}}" role="tab" data-toggle="tab">{{key}}</a>
+                </li>
+                {% endfor %}
+              </ul>
+
+              <!-- Tab panes -->
+              <div class="tab-content">
+                {% for key in anios.keys %}
+                <div role="tabpanel" class="tab-pane {% if forloop.first %}active{% endif %}" id="{{key}}">
+                  <div id="grafico5-{{forloop.counter}}" width:'100%' style="height: 350px;"></div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -213,9 +246,9 @@ yAxis: {
     overflow: 'justify'
   }
 },
-tooltip: {
-  valueSuffix: 'ha'
-},
+// tooltip: {
+//   valueSuffix: 'ha'
+// },
 plotOptions: {
   column: {
     dataLabels: {
@@ -229,7 +262,7 @@ credits: {
 series: [{
   name: 'Formal',
   data: [{% for values in anios.values %}
-    {% for k,v in values.items %}
+    {% for k,v in values.0.items %}
     {% if k == 'Café' %}
     {{v.0|default:'0'}},
     {% endif %}
@@ -238,7 +271,7 @@ series: [{
   }, {
     name: 'Informal',
     data: [{% for values in anios.values %}
-      {% for k,v in values.items %}
+      {% for k,v in values.0.items %}
       {% if k == 'Café' %}
       {{v.1|default:'0'}},
       {% endif %}
@@ -286,7 +319,7 @@ credits: {
 series: [{
   name: 'Formal',
   data: [{% for values in anios.values %}
-    {% for k,v in values.items %}
+    {% for k,v in values.0.items %}
     {% if k == 'Cacao' %}
     {{v.0|default:'0'}},
     {% endif %}
@@ -295,7 +328,7 @@ series: [{
   }, {
     name: 'Informal',
     data: [{% for values in anios.values %}
-      {% for k,v in values.items %}
+      {% for k,v in values.0.items %}
       {% if k == 'Cacao' %}
       {{v.1|default:'0'}},
       {% endif %}
@@ -343,8 +376,8 @@ Highcharts.chart('grafico2-3', {
   series: [{
     name: 'Formal',
     data: [{% for values in anios.values %}
-      {% for k,v in values.items %}
-      {% if k == 'Hortalizas' %}
+      {% for k,v in values.0.items %}
+      {% if k == 'Hortaliza' %}
       {{v.0|default:'0'}},
       {% endif %}
       {% endfor %}
@@ -352,8 +385,8 @@ Highcharts.chart('grafico2-3', {
     }, {
       name: 'Informal',
       data: [{% for values in anios.values %}
-        {% for k,v in values.items %}
-        {% if k == 'Hortalizas' %}
+        {% for k,v in values.0.items %}
+        {% if k == 'Hortaliza' %}
         {{v.1|default:'0'}},
         {% endif %}
         {% endfor %}
@@ -412,50 +445,409 @@ Highcharts.chart('grafico3', {
   }]
 });
 
-Highcharts.chart('grafico4', {
 
+Highcharts.chart('grafico4-1', {
+    chart: {
+        type: 'line'
+    },
     title: {
-        text: 'Solar Employment Growth by Sector, 2010-2016'
+        text: ''
     },
-
-    subtitle: {
-        text: 'Source: thesolarfoundation.com'
+    xAxis: {
+        categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}]
     },
-
     yAxis: {
         title: {
-            text: 'Number of Employees'
+            text: 'Volumen'
         }
     },
-    legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
+    // plotOptions: {
+    //     line: {
+    //         dataLabels: {
+    //             enabled: true
+    //         },
+    //         enableMouseTracking: false
+    //     }
+    // },
+    series: [
+
+    {
+        name: 'Mercado tradicional',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Mercado tradicional' %}{{v.0|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
     },
 
-    plotOptions: {
-        series: {
-            pointStart: 2010
+    {
+        name: 'Cooperativa',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Cooperativa' %}{{v.0|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Ferias',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Ferias' %}{{v.0|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Empresas procesadoras',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Empresas procesadoras' %}{{v.0|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Empresas comercializadoras',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Empresas comercializadoras' %}{{v.0|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Supermercados',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Supermercados' %}{{v.0|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Empresas exportadoras',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Empresas exportadoras' %}{{v.0|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Cadena de restaurantes',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Cadena de restaurantes' %}{{v.0|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Intermediarios',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Intermediarios' %}{{v.0|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+  ]
+}),
+
+Highcharts.chart('grafico4-2', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}]
+    },
+    yAxis: {
+        title: {
+            text: 'Volumen'
         }
     },
+    // plotOptions: {
+    //     line: {
+    //         dataLabels: {
+    //             enabled: true
+    //         },
+    //         enableMouseTracking: false
+    //     }
+    // },
+    series: [
 
-    series: [{
-        name: 'Installation',
-        data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-    }, {
-        name: 'Manufacturing',
-        data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-    }, {
-        name: 'Sales & Distribution',
-        data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-    }, {
-        name: 'Project Development',
-        data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-    }, {
-        name: 'Other',
-        data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
-    }]
+    {
+        name: 'Mercado tradicional',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Mercado tradicional' %}{{v.1|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
 
+    {
+        name: 'Cooperativa',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Cooperativa' %}{{v.1|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Ferias',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Ferias' %}{{v.1|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Empresas procesadoras',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Empresas procesadoras' %}{{v.1|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Empresas comercializadoras',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Empresas comercializadoras' %}{{v.1|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Supermercados',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Supermercados' %}{{v.1|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Empresas exportadoras',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Empresas exportadoras' %}{{v.1|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Cadena de restaurantes',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Cadena de restaurantes' %}{{v.1|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Intermediarios',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Intermediarios' %}{{v.1|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+  ]
+}),
+
+Highcharts.chart('grafico4-3', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}]
+    },
+    yAxis: {
+        title: {
+            text: 'Volumen'
+        }
+    },
+    // plotOptions: {
+    //     line: {
+    //         dataLabels: {
+    //             enabled: true
+    //         },
+    //         enableMouseTracking: false
+    //     }
+    // },
+    series: [
+
+    {
+        name: 'Mercado tradicional',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Mercado tradicional' %}{{v.2|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Cooperativa',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Cooperativa' %}{{v.2|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Ferias',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Ferias' %}{{v.2|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Empresas procesadoras',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Empresas procesadoras' %}{{v.2|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Empresas comercializadoras',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Empresas comercializadoras' %}{{v.2|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Supermercados',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Supermercados' %}{{v.2|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Empresas exportadoras',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Empresas exportadoras' %}{{v.2|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Cadena de restaurantes',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Cadena de restaurantes' %}{{v.2|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+    {
+        name: 'Intermediarios',
+        data: [{% for values in anios.values %}
+                {% for k,v in values.1.items %}
+                  {% if k == 'Intermediarios' %}{{v.2|default:'0'}},{% endif %}
+                {% endfor %}
+              {% endfor %}]
+    },
+
+  ]
 });
+
+{% for values in anios.values %}
+Highcharts.chart('grafico5-{{forloop.counter}}', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: [
+            'Café',
+            'Cacao',
+            'Hortalizas'
+        ]
+    },
+    yAxis: [{
+        min: 0,
+        title: {
+            text: 'Quintales'
+        }
+    }, {
+        title: {
+            text: 'Hectáreas'
+        },
+        opposite: true
+    }],
+    legend: {
+        shadow: false
+    },
+    tooltip: {
+        shared: true
+    },
+    plotOptions: {
+        column: {
+            grouping: false,
+            shadow: false,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Vol. de producción',
+        color: 'rgba(165,170,217,1)',
+        data: [{{values.2}},{{values.3}},{{values.4}},{{values.5}}],
+        pointPadding: 0.3,
+        pointPlacement: -0.2
+    }, {
+        name: 'Rendimientos',
+        color: 'rgba(126,86,134,.9)',
+        data: [140, 90, 40],
+        pointPadding: 0.4,
+        pointPlacement: -0.2
+    }, {
+        name: 'Área cosechada',
+        color: 'rgba(248,161,63,1)',
+        data: [183.6, 178.8, 198.5],
+        tooltip: {
+            valuePrefix: '$',
+            valueSuffix: ' M'
+        },
+        pointPadding: 0.3,
+        pointPlacement: 0.2,
+        yAxis: 1
+    }, {
+        name: 'Área sembrada',
+        color: 'rgba(186,60,61,.9)',
+        data: [203.6, 198.8, 208.5],
+        tooltip: {
+            valuePrefix: '$',
+            valueSuffix: ' M'
+        },
+        pointPadding: 0.4,
+        pointPlacement: 0.2,
+        yAxis: 1
+    }]
+});
+{% endfor %}
 </script>
 {% endblock %}
