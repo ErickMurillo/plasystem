@@ -419,15 +419,13 @@ def dashboard_productores(request,template="productores/dashboard.html"):
                 pass
 
             #costo viene numero 12 de la encuesta
-            try:
-                costo = filtro.filter(produccion__cultivo__tipo=1,
-                                           anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t']
-            except:
+            costo = filtro.filter(produccion__cultivo__tipo=1,
+                               anio=year).aggregate(t = Sum('produccion__costo_produccion'))['t']
+            if costo == None:
                 costo = 0
 
-            try:
-                inversion = filtro.filter(produccion__cultivo__tipo=1,anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
-            except:
+            inversion = filtro.filter(produccion__cultivo__tipo = 1,anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
+            if inversion == None:
                 inversion = 0
 
             cafe_costo = costo + inversion
@@ -476,10 +474,17 @@ def dashboard_productores(request,template="productores/dashboard.html"):
                 pass
 
             #costo viene numero 12 de la encuesta
-            cacao_costo = filtro.filter(produccion__cultivo__tipo=2,
-                                       anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t'] + \
-                        filtro.filter(produccion__cultivo__tipo=2,
-                                       anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
+            costo_cac = filtro.filter(produccion__cultivo__tipo=2,
+                                           anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t']
+            if costo_cac == None:
+                costo_cac = 0
+
+            inversion_cac = filtro.filter(produccion__cultivo__tipo=2,
+                               anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
+            if inversion_cac == None:
+                inversion_cac = 0
+
+            cacao_costo = costo_cac + inversion_cac
 
             try:
                 cacao_costo = cacao_costo / tipo_cambio[0]
@@ -521,16 +526,14 @@ def dashboard_productores(request,template="productores/dashboard.html"):
                 pass
 
             #costo viene numero 12 de la encuesta
-            try:
-                costo_hor = filtro.filter(produccion__cultivo__tipo=3,
+            costo_hor = filtro.filter(produccion__cultivo__tipo=3,
                                            anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t']
-            except:
+            if costo_hor == None:
                 costo_hor = 0
 
-            try:
-                inversion_hor = filtro.filter(produccion__cultivo__tipo=3,
+            inversion_hor = filtro.filter(produccion__cultivo__tipo=3,
                                anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
-            except:
+            if inversion_hor == None:
                 inversion_hor = 0
 
             hortaliza_costo = costo_hor + inversion_hor
