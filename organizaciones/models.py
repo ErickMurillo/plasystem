@@ -98,3 +98,4 @@ class ApoyoDonante(models.Model):
 
     def __unicode__(self):
         return self.institucion.nombre
+
