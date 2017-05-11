@@ -823,6 +823,11 @@ def ingresos(request,template="productores/ingresos.html"):
                             ventas = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['ventas']
 
         try:
+            ingreso_cafe = ingreso_cafe / tipo_cambio[0]
+        except:
+            pass
+
+        try:
             ha_cafe = (filtro.filter(anio = year,produccion__cultivo__tipo = 1).aggregate(
                                 ha = Sum('produccion__area_sembrada'))['ha']) * hectarea
         except:
@@ -831,9 +836,20 @@ def ingresos(request,template="productores/ingresos.html"):
         precio_prom_cafe = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 1).aggregate(
                             precio = Avg('destinoproduccion__mercado__precio'))['precio']
 
+        try:
+            precio_prom_cafe = precio_prom_cafe / tipo_cambio[0]
+        except:
+            pass
+
+
         #cacao
         ingreso_cacao = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 2).aggregate(
                             ventas = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['ventas']
+
+        try:
+            ingreso_cacao = ingreso_cacao / tipo_cambio[0]
+        except:
+            pass
 
         try:
             ha_cacao = (filtro.filter(anio = year,produccion__cultivo__tipo = 2).aggregate(
@@ -844,9 +860,19 @@ def ingresos(request,template="productores/ingresos.html"):
         precio_prom_cacao = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 2).aggregate(
                             precio = Avg('destinoproduccion__mercado__precio'))['precio']
 
+        try:
+            precio_prom_cacao = precio_prom_cacao / tipo_cambio[0]
+        except:
+            pass
+
         #hortalizas
         ingreso_hortalizas = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 3).aggregate(
                             ventas = Sum(F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['ventas']
+
+        try:
+            ingreso_hortalizas = ingreso_hortalizas / tipo_cambio[0]
+        except:
+            pass
 
         try:
             ha_hortalizas = (filtro.filter(anio = year,produccion__cultivo__tipo = 3).aggregate(
@@ -857,23 +883,28 @@ def ingresos(request,template="productores/ingresos.html"):
         precio_prom_hortalizas = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 3).aggregate(
                             precio = Avg('destinoproduccion__mercado__precio'))['precio']
 
+        try:
+            precio_prom_hortalizas = precio_prom_hortalizas / tipo_cambio[0]
+        except:
+            pass
+
         #contribucion al ingreso por rubro
 
         try:
             ingreso_no_agro = (filtro.filter(anio = year).aggregate(
-                        total = Sum(F('fuenteingresos__cantidad_mensual') * F('fuenteingresos__cantidad_veces')))['total']) * tipo_cambio[0]
+                        total = Sum(F('fuenteingresos__cantidad_mensual') * F('fuenteingresos__cantidad_veces')))['total']) / tipo_cambio[0]
         except:
             ingreso_no_agro = 0
 
         try:
             otros_cultivos = (filtro.filter(anio = year).aggregate(total = Sum(
-                            'ingresosotroscultivos__ingreso_anual'))['total']) * tipo_cambio[0]
+                            'ingresosotroscultivos__ingreso_anual'))['total']) / tipo_cambio[0]
         except:
             otros_cultivos = 0
 
         try:
             ganaderia = (filtro.filter(anio = year).aggregate(total = Sum(
-                    F('ingresosactividadesganaderia__cantidad_mensual') * F('ingresosactividadesganaderia__cantidad_veces')))['total']) * tipo_cambio[0]
+                    F('ingresosactividadesganaderia__cantidad_mensual') * F('ingresosactividadesganaderia__cantidad_veces')))['total']) / tipo_cambio[0]
         except:
             ganaderia = 0
 
@@ -881,29 +912,42 @@ def ingresos(request,template="productores/ingresos.html"):
 
         try:
             cafe = (filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 1).aggregate(total = Sum(
-                        F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['total']) * tipo_cambio[0]
+                        F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['total']) / tipo_cambio[0]
         except:
             cafe = 0
 
         try:
             cacao = (filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 2).aggregate(total = Sum(
-                        F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['total']) * tipo_cambio[0]
+                        F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['total']) / tipo_cambio[0]
         except:
             cacao = 0
 
         try:
             hortalizas = (filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 3).aggregate(total = Sum(
-                        F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['total']) * tipo_cambio[0]
+                        F('destinoproduccion__mercado__cantidad') * F('destinoproduccion__mercado__precio')))['total']) / tipo_cambio[0]
 
         except:
             hortalizas = 0
+
+
+        #detalle de los cultivos
+        ventas_cafe = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 1).aggregate(
+                            ventas = Sum('destinoproduccion__mercado__cantidad'))['ventas']
+
+        ventas_cacao = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 2).aggregate(
+                            ventas = Sum('destinoproduccion__mercado__cantidad'))['ventas']
+
+        ventas_hortalizas = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 3).aggregate(
+                            ventas = Sum('destinoproduccion__mercado__cantidad'))['ventas']
+                            
 
         anios[year] = (cultivos,ventas,cafe_prod,rendimiento_cafe,area_cafe,sembrada_cafe,
                         cacao_prod,rendimiento_cacao,area_cacao,sembrada_cacao,
                         hortaliza_prod,rendimiento_hortaliza,area_hortaliza,sembrada_hortaliza,
                         ingreso_cafe,ha_cafe,precio_prom_cafe,ingreso_cacao,ha_cacao,precio_prom_cacao,
                         ingreso_hortalizas,ha_hortalizas,precio_prom_hortalizas,
-                        ingreso_no_agro,otros_ingresos,cafe,cacao,hortalizas)
+                        ingreso_no_agro,otros_ingresos,cafe,cacao,hortalizas,
+                        ventas_cafe,ventas_cacao,ventas_hortalizas)
 
     return render(request, template, locals())
 
