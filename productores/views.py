@@ -419,18 +419,32 @@ def dashboard_productores(request,template="productores/dashboard.html"):
                 pass
 
             #costo viene numero 12 de la encuesta
-            cafe_costo = filtro.filter(produccion__cultivo__tipo=1,
-                                       anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t'] + \
-                         filtro.filter(produccion__cultivo__tipo=1,anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
+            try:
+                costo = filtro.filter(produccion__cultivo__tipo=1,
+                                           anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t']
+            except:
+                costo = 0
+
+            try:
+                inversion = filtro.filter(produccion__cultivo__tipo=1,anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
+            except:
+                inversion = 0
+
+            cafe_costo = costo + inversion
+
 
             try:
                 cafe_costo = cafe_costo / tipo_cambio[0]
             except:
                 pass
 
-            cafe_costo_nacional = Promedio.objects.filter(anio=year,
-                                                    promedio_nacional__pais__id=id_pais,
-                                                    promedio_nacional__cultivo=1).aggregate(t=Sum('costo_promedio'))['t']
+            try:
+                cafe_costo_nacional = Promedio.objects.filter(anio=year,
+                                                        promedio_nacional__pais__id=id_pais,
+                                                        promedio_nacional__cultivo=1).aggregate(t=Sum('costo_promedio'))['t']
+            except:
+                cafe_costo_nacional = 0
+
 
             try:
                 cafe_costo_nacional = cafe_costo_nacional / tipo_cambio[0]
@@ -507,10 +521,19 @@ def dashboard_productores(request,template="productores/dashboard.html"):
                 pass
 
             #costo viene numero 12 de la encuesta
-            hortaliza_costo = filtro.filter(produccion__cultivo__tipo=3,
-                                       anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t'] + \
-                        filtro.filter(produccion__cultivo__tipo=3,
-                                       anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
+            try:
+                costo_hor = filtro.filter(produccion__cultivo__tipo=3,
+                                           anio=year).aggregate(t=Sum('produccion__costo_produccion'))['t']
+            except:
+                costo_hor = 0
+
+            try:
+                inversion_hor = filtro.filter(produccion__cultivo__tipo=3,
+                               anio=year).aggregate(t=Sum('produccion__costo_inversion'))['t']
+            except:
+                inversion_hor = 0
+
+            hortaliza_costo = costo_hor + inversion_hor
 
             try:
                 hortaliza_costo = hortaliza_costo / tipo_cambio[0]
