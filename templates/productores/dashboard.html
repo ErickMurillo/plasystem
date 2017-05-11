@@ -335,7 +335,7 @@ Highcharts.chart('grafico1', {
   },
   plotOptions: {
     series: {
-      pointStart: {% for k in anios.keys %}{% if forloop.first%}{{k}}{% endif %}{% endfor %}
+      pointStart: {{ anios.keys.0 }}
     }
   },
   series: [{

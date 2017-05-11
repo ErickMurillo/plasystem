@@ -625,6 +625,7 @@ def ficha_productor(request,id=None,template="productores/ficha_productor.html")
     else:
         filtro = _queryset_filtrado(request)
         years = request.session['anio']
+        id_pais = request.session['pais'].id
 
     hectarea = 0.7050
 
@@ -653,8 +654,34 @@ def ficha_productor(request,id=None,template="productores/ficha_productor.html")
             area = DistribucionFinca.objects.filter(encuesta__anio = year,encuesta__productor = productor, seleccion = obj[0]).values_list('cantidad', flat=True)
             distribucion[obj[0]] = area
 
-        anios[year] = distribucion
+        tipo_cambio = TasaCambioPaisAnual.objects.filter(tipo_cambio__pais = id_pais,anio = year).values_list('dolar',flat = True)
+        ingresos
+        cafe = DestinoProduccion.objects.filter(encuesta__productor = productor, cultivo__tipo = 1, encuesta__anio = year).aggregate(
+                sum = Sum(F('mercado__cantidad') * F('mercado__precio')))['sum']
 
+        #convercion a dolares
+        try:
+            cafe = cafe / tipo_cambio[0]
+        except:
+            pass
+
+        cacao = DestinoProduccion.objects.filter(encuesta__productor = productor, cultivo__tipo = 2, encuesta__anio = year).aggregate(
+                sum = Sum(F('mercado__cantidad') * F('mercado__precio')))['sum']
+
+        try:
+            cacao = cacao / tipo_cambio[0]
+        except:
+            pass
+
+        hortalizas = DestinoProduccion.objects.filter(encuesta__productor = productor, cultivo__tipo = 3, encuesta__anio = year).aggregate(
+                sum = Sum(F('mercado__cantidad') * F('mercado__precio')))['sum']
+
+        try:
+            hortalizas = hortalizas / tipo_cambio[0]
+        except:
+            pass
+
+        anios[year] = (distribucion,cafe,cacao,hortalizas)
     return render(request, template, locals())
 
 @login_required
@@ -939,7 +966,7 @@ def ingresos(request,template="productores/ingresos.html"):
 
         ventas_hortalizas = filtro.filter(anio = year,destinoproduccion__cultivo__tipo = 3).aggregate(
                             ventas = Sum('destinoproduccion__mercado__cantidad'))['ventas']
-                            
+
 
         anios[year] = (cultivos,ventas,cafe_prod,rendimiento_cafe,area_cafe,sembrada_cafe,
                         cacao_prod,rendimiento_cacao,area_cacao,sembrada_cacao,

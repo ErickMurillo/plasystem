@@ -4,7 +4,7 @@
 {% block content %}
 <style>
    #map {
-    height: 400px;
+    height: 370px;
     width: 100%;
    }
 </style>
@@ -117,8 +117,13 @@
 
       <div class="row">
         <div class="col-sm-6">
-
-        </div>
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <h4 class="m-t-0">Ingresos del productor por cultivo <span class="mdi mdi-help-circle"></span></h4>
+              <div id="grafico1" width:'100%' style="height: 350px;"></div>
+              </div>
+            </div>
+          </div>
 
         <div class="col-sm-6">
           <div class="panel panel-primary">
@@ -197,7 +202,7 @@ Highcharts.chart('grafico{{key}}', {
         type: 'treemap',
         layoutAlgorithm: 'squarified',
         data: [
-          {% for k,v in value.items %}
+          {% for k,v in value.0.items %}
             {
               name: '{{k}}',
               value: {{v.0|default:'0'|unlocalize}},
@@ -210,6 +215,41 @@ Highcharts.chart('grafico{{key}}', {
         text: ''
     }
 });
+
 {% endfor %}
+
+Highcharts.chart('grafico1', {
+  title: {
+    text: ''
+  },
+  yAxis: {
+    title: {
+      text: 'Dolares'
+    }
+  },
+  legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'middle'
+  },
+  xAxis: {
+    allowDecimals: false,
+  },
+  plotOptions: {
+    series: {
+      pointStart: {{ anios.keys.0 }}
+    }
+  },
+  series: [{
+    name: 'Café',
+    data: [{% for v in anios.values %}{{v.1|floatformat:'2'|default:'0'}},{% endfor %}]
+  }, {
+    name: 'Cacao',
+    data: [{% for v in anios.values %}{{v.2|floatformat:'2'|default:'0'}},{% endfor %}]
+  }, {
+    name: 'Hortalizas',
+    data: [{% for v in anios.values %}{{v.3|floatformat:'2'|default:'0'}},{% endfor %}]
+  }]
+});
 </script>
 {% endblock %}
