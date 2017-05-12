@@ -72,7 +72,7 @@ class Organizacion(models.Model):
         verbose_name = 'Organización'
         verbose_name_plural = 'Organizaciones'
 
-class Intituciones(models.Model):
+class Instituciones(models.Model):
     nombre = models.CharField(max_length=250)
 
     def __unicode__(self):
@@ -91,11 +91,161 @@ class Areas(models.Model):
         verbose_name_plural = 'Areas de apoyo'
 
 class ApoyoDonante(models.Model):
-    institucion = models.ForeignKey(Intituciones)
+    institucion = models.ForeignKey(Instituciones)
     areas = models.ManyToManyField(Areas)
 
     organizacion = models.ForeignKey(Organizacion)
 
     def __unicode__(self):
         return self.institucion.nombre
+
+
+class OrganizacionPertenece(models.Model):
+    organizaciones = models.ManyToManyField(Instituciones)
+
+    organizacion = models.ForeignKey(Organizacion)
+
+    def __unicode__(self):
+        return self.organizaciones.nombre
+
+    class Meta:
+        verbose_name_plural = 'Organizaciones a la que pertenece'
+
+CHOICE_MIEMBROS = (
+    (1, 'Número de miembros registrados oficialmente'),
+    (2, 'Número de miembros en proceso de afiliación'),
+    )
+
+class MiembrosOficiales(models.Model):
+    opcion = models.IntegerField(choices=CHOICE_MIEMBROS)
+    total_hombre = models.IntegerField()
+    total_mujer = models.IntegerField()
+    activos_hombre = models.IntegerField()
+    activos_mujer = models.IntegerField()
+    jovenes_hombre = models.IntegerField()
+    jovenes_mujer = models.IntegerField()
+    inactivos_hombre = models.IntegerField()
+    inactivos_mujer = models.IntegerField()
+
+
+    organizacion = models.ForeignKey(Organizacion)
+
+    
+
+class NumeroCooperativa(models.Model):
+    numero_cooperativa = models.IntegerField()
+
+    organizacion = models.ForeignKey(Organizacion)
+
+    def __unicode__(self):
+        return '%s' % str(self.numero_cooperativa)
+
+CHOICE_PROVEEDORES = (
+    (1, 'Número de miembros registrados oficialmente'),
+    
+    )
+
+class ProductoresProveedores(models.Model):
+    opcion = models.IntegerField(choices=CHOICE_PROVEEDORES)
+    total_hombre = models.IntegerField()
+    total_mujer = models.IntegerField()
+    activos_hombre = models.IntegerField()
+    activos_mujer = models.IntegerField()
+    jovenes_hombre = models.IntegerField()
+    jovenes_mujer = models.IntegerField()
+
+    organizacion = models.ForeignKey(Organizacion)
+
+    
+
+CHOICE_EMPLEADOS = (
+    (1, 'Tiempo completo'),
+    (2, 'Tiempo parcial'),
+    (3, 'Temporales')
+    )
+
+class EmpleadosOrganizacion(models.Model):
+    opcion = models.IntegerField(choices=CHOICE_EMPLEADOS)
+    total_hombre = models.IntegerField()
+    total_mujer = models.IntegerField()
+    adultos_hombre = models.IntegerField()
+    adultos_mujer = models.IntegerField()
+    jovenes_hombre = models.IntegerField()
+    jovenes_mujer = models.IntegerField()
+
+    organizacion = models.ForeignKey(Organizacion)
+
+    def __unicode__(self):
+        return self.get_opcion_display()
+
+CHOICE_TRANSITABLE = (
+    (1, 'Transitable todo el tiempo'),
+    (2, 'Transitable solo en verano'),
+    )
+
+class Infraestructura(models.Model):
+    vias_finca = models.CharField(max_length=250)
+    transitable_finca = models.IntegerField(choices=CHOICE_TRANSITABLE)
+    vias_oficina = models.CharField(max_length=250)
+    transitable_oficina = models.IntegerField(choices=CHOICE_TRANSITABLE)
+    distancia = models.CharField(max_length=150)
+    acceso_internet = models.CharField(max_length=150, choices=CHOICE_SI_NO)
+    transporte_publico = models.CharField(max_length=150, choices=CHOICE_SI_NO)
+    red_movil = models.CharField(max_length=150, choices=CHOICE_SI_NO)
+    electricidad = models.CharField(max_length=150, choices=CHOICE_SI_NO)
+    agua_potable = models.CharField(max_length=150, choices=CHOICE_SI_NO)
+
+    organizacion = models.ForeignKey(Organizacion)
+
+    def __unicode__(self):
+        return self.vias_finca
+
+CHOICE_SECTOR = (
+    (1, 'Agricultura'),
+    (2, 'Ganadería'),
+    (3, 'Forestal'),
+    (4, 'Acuicultura'),
+    )
+
+class SectoresProductos(models.Model):
+    sector = models.IntegerField(choices=CHOICE_SECTOR)
+    producto = models.CharField(max_length=250)
+
+    organizacion = models.ForeignKey(Organizacion)
+
+    def __unicode__(self):
+        return self.get_sector_display()
+
+
+class Actividades(models.Model):
+    nombre = models.CharField(max_length=250)
+
+    def __unicode__(self):
+        return self.nombre
+
+class Actividad(models.Model):
+    actividad = models.ForeignKey(Actividades)
+    socios = models.IntegerField(choices=CHOICE_SI_NO)
+    no_socios = models.IntegerField(choices=CHOICE_SI_NO)
+
+    organizacion = models.ForeignKey(Organizacion)
+
+    def __unicode__(self):
+        return self.get_actividad_display()
+
+class Servicios(models.Model):
+    nombre = models.CharField(max_length=250)
+
+    def __unicode__(self):
+        return self.nombre
+
+class Servicio(models.Model):
+    servicio = models.ForeignKey(Servicios)
+    socios = models.IntegerField(choices=CHOICE_SI_NO)
+    no_socios = models.IntegerField(choices=CHOICE_SI_NO)
+
+    organizacion = models.ForeignKey(Organizacion)
+
+    def __unicode__(self):
+        return self.get_actividad_display()
 
