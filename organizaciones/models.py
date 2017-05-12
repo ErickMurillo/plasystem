@@ -183,17 +183,19 @@ CHOICE_TRANSITABLE = (
     (2, 'Transitable solo en verano'),
     )
 
+CHOICE_SI_NO_STRING = (('1', 'Si'),('2', 'No'))
+
 class Infraestructura(models.Model):
     vias_finca = models.CharField(max_length=250)
     transitable_finca = models.IntegerField(choices=CHOICE_TRANSITABLE)
     vias_oficina = models.CharField(max_length=250)
     transitable_oficina = models.IntegerField(choices=CHOICE_TRANSITABLE)
     distancia = models.CharField(max_length=150)
-    acceso_internet = models.CharField(max_length=150, choices=CHOICE_SI_NO)
-    transporte_publico = models.CharField(max_length=150, choices=CHOICE_SI_NO)
-    red_movil = models.CharField(max_length=150, choices=CHOICE_SI_NO)
-    electricidad = models.CharField(max_length=150, choices=CHOICE_SI_NO)
-    agua_potable = models.CharField(max_length=150, choices=CHOICE_SI_NO)
+    acceso_internet = models.CharField(max_length=2, choices=CHOICE_SI_NO_STRING)
+    transporte_publico = models.CharField(max_length=2, choices=CHOICE_SI_NO_STRING)
+    red_movil = models.CharField(max_length=2, choices=CHOICE_SI_NO_STRING)
+    electricidad = models.CharField(max_length=2, choices=CHOICE_SI_NO_STRING)
+    agua_potable = models.CharField(max_length=2, choices=CHOICE_SI_NO_STRING)
 
     organizacion = models.ForeignKey(Organizacion)
 
