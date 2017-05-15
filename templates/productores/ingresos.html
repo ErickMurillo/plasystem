@@ -84,11 +84,73 @@
       </div>
 
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-6" id="tabla-detalle-cultivos">
           <div class="panel panel-primary">
             <div class="panel-body">
               <h4 class="m-t-0">Detalles de los cultivos <span class="mdi mdi-help-circle"></span></h4>
-              <div id="grafico1"></div>
+              <div role="tabpanel tabs-grafico">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                  {% for key in anios.keys %}
+                  <li role="presentation" class="{% if forloop.first %}active{% endif %}">
+                    <a href="#{{key}}-cultivos" aria-controls="{{key}}-cultivos" role="tab" data-toggle="tab">{{key}}</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+
+              <div class="tab-content">
+                {% for key,values in anios.items %}
+                <div role="tabpanel" class="tab-pane {% if forloop.first %}active{% endif %}" id="{{key}}-cultivos">
+                  <div class="row">
+                    <div id="result"></div>
+                    <table id="table-sparkline">
+                      <thead>
+                        <tr>
+                          <th>Cultivo</th>
+                          <th>Vendido</th>
+                          <th></th>
+                          <th>Precio de venta</th>
+                          <th></th>
+                          <th>Ingresos</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody id="tbody-sparkline">
+                        <tr>
+                          <th>Café</th>
+                          <td>{{values.28|default:'0'|floatformat:'2'}}</td>
+                          <td data-sparkline="71, 78, 39, 66 "/>
+                          <td>{{values.16|default:'0'|floatformat:'2'}}</td>
+                          <td data-sparkline="68, 52, 80, 96 "/>
+                          <td>{{values.14|default:'0'|floatformat:'2'}}</td>
+                          <td data-sparkline="3, 26, -41, -30 ; column"/>
+                        </tr>
+                        <tr>
+                          <th>Cacao</th>
+                          <td>{{values.29|default:'0'|floatformat:'2'}}</td>
+                          <td data-sparkline="71, 78, 39, 66 "/>
+                          <td>{{values.19|default:'0'|floatformat:'2'}}</td>
+                          <td data-sparkline="68, 52, 80, 96 "/>
+                          <td>{{values.17|default:'0'|floatformat:'2'}}</td>
+                          <td data-sparkline="3, 26, -41, -30 ; column"/>
+                        </tr>
+                        <tr>
+                          <th>Hortalizas</th>
+                          <td>{{values.30|default:'0'|floatformat:'2'}}</td>
+                          <td data-sparkline="71, 78, 39, 66 "/>
+                          <td>{{values.22|default:'0'|floatformat:'2'}}</td>
+                          <td data-sparkline="68, 52, 80, 96 "/>
+                          <td>{{values.20|default:'0'|floatformat:'2'}}</td>
+                          <td data-sparkline="3, 26, -41, -30 ; column"/>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+
             </div>
           </div>
         </div>
@@ -129,142 +191,160 @@
         </div>
       </div>
 
+
+
       <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-12">
           <div class="panel panel-primary">
             <div class="panel-body">
-              <h4 class="m-t-0">Contribucion al ingreso por rubro <span class="mdi mdi-help-circle"></span></h4>
-              <div id="grafico3" width:'100%' style="height: 300px;"></div>
+              <h4 class="m-t-0">Contribución al ingreso por rubro <span class="mdi mdi-help-circle"></span></h4>
+              <div role="tabpanel tabs-grafico">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                  {% for key in anios.keys %}
+                  <li role="presentation" class="{% if forloop.first %}active{% endif %}">
+                    <a href="#{{key}}-contribucion" aria-controls="{{key}}-contribucion" role="tab" data-toggle="tab">{{key}}</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  {% for key in anios.keys %}
+                  <div role="tabpanel" class="tab-pane {% if forloop.first %}active{% endif %}" id="{{key}}-contribucion">
+                    <div class="row">
+                      <div class="col-sm-4" id="grafico3.1-{{key}}-{{forloop.counter}}" width:'100%' style="height: 300px;"></div>
+                      <div class="col-sm-4" id="grafico3.2-{{key}}-{{forloop.counter}}" width:'100%' style="height: 300px;"></div>
+                      <div class="col-sm-4" id="grafico3.3-{{key}}-{{forloop.counter}}" width:'100%' style="height: 300px;"></div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      <div class="col-sm-4">
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <h4 class="m-t-0">Incremento en volumen de venta de productos sanos al mercado formal e informal <span class="mdi mdi-help-circle"></span></h4>
+              <div role="tabpanel tabs-grafico">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                  <li role="presentation" class="active">
+                    <a href="#café-4" aria-controls="café-4" role="tab" data-toggle="tab">Café</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#cacao-4" aria-controls="cacao-4" role="tab" data-toggle="tab">Cacao</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#hortaliza-4" aria-controls="hortaliza-4" role="tab" data-toggle="tab">Hortalizas</a>
+                  </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="café-4">
+                    <div id="grafico4-1" width:'100%' style="height: 350px;"></div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="cacao-4">
+                    <div id="grafico4-2" width:'100%' style="height: 350px;"></div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="hortaliza-4">
+                    <div id="grafico4-3" width:'100%' style="height: 350px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <h4 class="m-t-0">Incremento del rendimiento por área cosechada <span class="mdi mdi-help-circle"></span></h4>
+              <div id="grafico7" width:'100%' style="height: 350px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <h4 class="m-t-0">Incremento del volumen de producción <span class="mdi mdi-help-circle"></span></h4>
+              <div role="tabpanel tabs-grafico">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                  {% for key in anios.keys %}
+                  <li role="presentation" class="{% if forloop.first %}active{% endif %}">
+                    <a href="#{{key}}" aria-controls="{{key}}" role="tab" data-toggle="tab">{{key}}</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  {% for key in anios.keys %}
+                  <div role="tabpanel" class="tab-pane {% if forloop.first %}active{% endif %}" id="{{key}}">
+                    <div id="grafico5-{{forloop.counter}}" width:'100%' style="height: 350px;"></div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <h4 class="m-t-0">Aumento de ingresos por hectáreas por cada rubro <span class="mdi mdi-help-circle"></span></h4>
+              <div role="tabpanel tabs-grafico">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                  <li role="presentation" class="active">
+                    <a href="#café-margen" aria-controls="café" role="tab" data-toggle="tab">Café</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#cacao-margen" aria-controls="cacao" role="tab" data-toggle="tab">Cacao</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#hortaliza-margen" aria-controls="hortaliza" role="tab" data-toggle="tab">Hortalizas</a>
+                  </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="café-margen">
+                    <div id="grafico6-1.1" style="height: 150px;"></div>
+                    <div id="grafico6-1.2" style="height: 150px;"></div>
+                    <div id="grafico6-1.3" style="height: 150px;"></div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="cacao-margen">
+                    <div id="grafico6-2.1" style="height: 150px;"></div>
+                    <div id="grafico6-2.2" style="height: 150px;"></div>
+                    <div id="grafico6-2.3" style="height: 150px;"></div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="hortaliza-margen">
+                    <div id="grafico6-3.1" style="height: 150px;"></div>
+                    <div id="grafico6-3.2" style="height: 150px;"></div>
+                    <div id="grafico6-3.3" style="height: 150px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </div>
-      <div class="col-sm-4">
 
-      </div>
     </div>
-
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="panel panel-primary">
-          <div class="panel-body">
-            <h4 class="m-t-0">Incremento en volumen de venta de productos sanos al mercado formal e informal <span class="mdi mdi-help-circle"></span></h4>
-            <div role="tabpanel tabs-grafico">
-              <!-- Nav tabs -->
-              <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active">
-                  <a href="#café-4" aria-controls="café-4" role="tab" data-toggle="tab">Café</a>
-                </li>
-                <li role="presentation">
-                  <a href="#cacao-4" aria-controls="cacao-4" role="tab" data-toggle="tab">Cacao</a>
-                </li>
-                <li role="presentation">
-                  <a href="#hortaliza-4" aria-controls="hortaliza-4" role="tab" data-toggle="tab">Hortalizas</a>
-                </li>
-              </ul>
-
-              <!-- Tab panes -->
-              <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="café-4">
-                  <div id="grafico4-1" width:'100%' style="height: 350px;"></div>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="cacao-4">
-                  <div id="grafico4-2" width:'100%' style="height: 350px;"></div>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="hortaliza-4">
-                  <div id="grafico4-3" width:'100%' style="height: 350px;"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-6">
-        <div class="panel panel-primary">
-          <div class="panel-body">
-            <h4 class="m-t-0">Incremento del rendimiento por área cosechada <span class="mdi mdi-help-circle"></span></h4>
-            <div id="grafico7" width:'100%' style="height: 350px;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="panel panel-primary">
-          <div class="panel-body">
-            <h4 class="m-t-0">Incremento del volumen de producción <span class="mdi mdi-help-circle"></span></h4>
-            <div role="tabpanel tabs-grafico">
-              <!-- Nav tabs -->
-              <ul class="nav nav-tabs" role="tablist">
-                {% for key in anios.keys %}
-                <li role="presentation" class="{% if forloop.first %}active{% endif %}">
-                  <a href="#{{key}}" aria-controls="{{key}}" role="tab" data-toggle="tab">{{key}}</a>
-                </li>
-                {% endfor %}
-              </ul>
-
-              <!-- Tab panes -->
-              <div class="tab-content">
-                {% for key in anios.keys %}
-                <div role="tabpanel" class="tab-pane {% if forloop.first %}active{% endif %}" id="{{key}}">
-                  <div id="grafico5-{{forloop.counter}}" width:'100%' style="height: 350px;"></div>
-                </div>
-                {% endfor %}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-6">
-        <div class="panel panel-primary">
-          <div class="panel-body">
-            <h4 class="m-t-0">Aumento de ingresos por hectáreas por cada rubro <span class="mdi mdi-help-circle"></span></h4>
-            <div role="tabpanel tabs-grafico">
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="active">
-                <a href="#café-margen" aria-controls="café" role="tab" data-toggle="tab">Café</a>
-              </li>
-              <li role="presentation">
-                <a href="#cacao-margen" aria-controls="cacao" role="tab" data-toggle="tab">Cacao</a>
-              </li>
-              <li role="presentation">
-                <a href="#hortaliza-margen" aria-controls="hortaliza" role="tab" data-toggle="tab">Hortalizas</a>
-              </li>
-            </ul>
-
-            <!-- Tab panes -->
-            <div class="tab-content">
-              <div role="tabpanel" class="tab-pane active" id="café-margen">
-                <div id="grafico6-1.1" style="height: 150px;"></div>
-                <div id="grafico6-1.2" style="height: 150px;"></div>
-                <div id="grafico6-1.3" style="height: 150px;"></div>
-              </div>
-              <div role="tabpanel" class="tab-pane" id="cacao-margen">
-                <div id="grafico6-2.1" style="height: 150px;"></div>
-                <div id="grafico6-2.2" style="height: 150px;"></div>
-                <div id="grafico6-2.3" style="height: 150px;"></div>
-              </div>
-              <div role="tabpanel" class="tab-pane" id="hortaliza-margen">
-                <div id="grafico6-3.1" style="height: 150px;"></div>
-                <div id="grafico6-3.2" style="height: 150px;"></div>
-                <div id="grafico6-3.3" style="height: 150px;"></div>
-              </div>
-            </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
   </div>
-</div>
 </div>
 {% endblock %}
 
@@ -272,119 +352,62 @@
 <script type="text/javascript">
 Highcharts.chart('grafico2-1', {
 chart: {
-  type: 'column'
+type: 'column'
 },
 title: {
-  text: ''
+text: ''
 },
 xAxis: {
-  categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}],
-  title: {
-    text: null
-  }
+categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}],
+title: {
+text: null
+}
 },
 yAxis: {
-  min: 0,
-  title: {
-    text: 'Volumen',
-    // align: 'high'
-  },
-  labels: {
-    overflow: 'justify'
-  }
+min: 0,
+title: {
+text: 'Volumen',
+// align: 'high'
+},
+labels: {
+overflow: 'justify'
+}
 },
 // tooltip: {
 //   valueSuffix: 'ha'
 // },
 plotOptions: {
-  column: {
-    dataLabels: {
-      enabled: true
-    }
-  }
+column: {
+dataLabels: {
+enabled: true
+}
+}
 },
 credits: {
-  enabled: false
+enabled: false
 },
 series: [{
-  name: 'Formal',
-  data: [{% for values in anios.values %}
-    {% for k,v in values.0.items %}
-    {% if k == 'Café' %}
-    {{v.0|default:'0'}},
-    {% endif %}
-    {% endfor %}
-    {% endfor %}]
-  }, {
-    name: 'Informal',
-    data: [{% for values in anios.values %}
-      {% for k,v in values.0.items %}
-      {% if k == 'Café' %}
-      {{v.1|default:'0'}},
-      {% endif %}
-      {% endfor %}
-      {% endfor %}]
-    }],
-  });
+name: 'Formal',
+data: [{% for values in anios.values %}
+{% for k,v in values.0.items %}
+{% if k == 'Café' %}
+{{v.0|default:'0'}},
+{% endif %}
+{% endfor %}
+{% endfor %}]
+}, {
+name: 'Informal',
+data: [{% for values in anios.values %}
+{% for k,v in values.0.items %}
+{% if k == 'Café' %}
+{{v.1|default:'0'}},
+{% endif %}
+{% endfor %}
+{% endfor %}]
+}],
+});
 
 Highcharts.chart('grafico2-2', {
-chart: {
-  type: 'column'
-},
-title: {
-  text: ''
-},
-xAxis: {
-  categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}],
-  title: {
-    text: null
-  }
-},
-yAxis: {
-  min: 0,
-  title: {
-    text: 'Volumen',
-    // align: 'high'
-  },
-  labels: {
-    overflow: 'justify'
-  }
-},
-tooltip: {
-  valueSuffix: 'ha'
-},
-plotOptions: {
-  column: {
-    dataLabels: {
-      enabled: true
-    }
-  }
-},
-credits: {
-  enabled: false
-},
-series: [{
-  name: 'Formal',
-  data: [{% for values in anios.values %}
-    {% for k,v in values.0.items %}
-    {% if k == 'Cacao' %}
-    {{v.0|default:'0'}},
-    {% endif %}
-    {% endfor %}
-    {% endfor %}]
-  }, {
-    name: 'Informal',
-    data: [{% for values in anios.values %}
-      {% for k,v in values.0.items %}
-      {% if k == 'Cacao' %}
-      {{v.1|default:'0'}},
-      {% endif %}
-      {% endfor %}
-      {% endfor %}]
-    }],
-  });
-
-Highcharts.chart('grafico2-3', {
   chart: {
     type: 'column'
   },
@@ -424,7 +447,7 @@ Highcharts.chart('grafico2-3', {
     name: 'Formal',
     data: [{% for values in anios.values %}
       {% for k,v in values.0.items %}
-      {% if k == 'Hortaliza' %}
+      {% if k == 'Cacao' %}
       {{v.0|default:'0'}},
       {% endif %}
       {% endfor %}
@@ -433,7 +456,7 @@ Highcharts.chart('grafico2-3', {
       name: 'Informal',
       data: [{% for values in anios.values %}
         {% for k,v in values.0.items %}
-        {% if k == 'Hortaliza' %}
+        {% if k == 'Cacao' %}
         {{v.1|default:'0'}},
         {% endif %}
         {% endfor %}
@@ -441,14 +464,72 @@ Highcharts.chart('grafico2-3', {
       }],
     });
 
-Highcharts.chart('grafico3', {
+    Highcharts.chart('grafico2-3', {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: ''
+      },
+      xAxis: {
+        categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}],
+        title: {
+          text: null
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Volumen',
+          // align: 'high'
+        },
+        labels: {
+          overflow: 'justify'
+        }
+      },
+      tooltip: {
+        valueSuffix: 'ha'
+      },
+      plotOptions: {
+        column: {
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        name: 'Formal',
+        data: [{% for values in anios.values %}
+          {% for k,v in values.0.items %}
+          {% if k == 'Hortaliza' %}
+          {{v.0|default:'0'}},
+          {% endif %}
+          {% endfor %}
+          {% endfor %}]
+        }, {
+          name: 'Informal',
+          data: [{% for values in anios.values %}
+            {% for k,v in values.0.items %}
+            {% if k == 'Hortaliza' %}
+            {{v.1|default:'0'}},
+            {% endif %}
+            {% endfor %}
+            {% endfor %}]
+          }],
+        });
+
+{% for key,values in anios.items %}
+Highcharts.chart('grafico3.1-{{key}}-{{forloop.counter}}', {
   chart: {
     plotBackgroundColor: null,
     plotBorderWidth: 0,
     plotShadow: false
   },
   title: {
-    text: 'Café',
+    text: '',
     align: 'center',
     verticalAlign: 'middle',
     y: 40
@@ -473,716 +554,988 @@ Highcharts.chart('grafico3', {
   },
   series: [{
     type: 'pie',
-    name: 'Browser share',
+    name: 'Contribución',
     innerSize: '50%',
     data: [
-      ['Firefox',   10.38],
-      ['IE',       56.33],
-      ['Chrome', 24.03],
-      ['Safari',    4.77],
-      ['Opera',     0.91],
-      {
-        name: 'Proprietary or Undetectable',
-        y: 0.2,
-        dataLabels: {
-          enabled: false
-        }
-      }
+      ['No Agrícolas',{{values.23}}],
+      ['Café', {{values.25}}],
+      ['Otros ingresos', {{values.24}}],
     ]
   }]
 });
 
+Highcharts.chart('grafico3.2-{{key}}-{{forloop.counter}}', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: 0,
+    plotShadow: false
+  },
+  title: {
+    text: '',
+    align: 'center',
+    verticalAlign: 'middle',
+    y: 40
+  },
+  tooltip: {
+    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+  },
+  plotOptions: {
+    pie: {
+      dataLabels: {
+        enabled: true,
+        distance: -50,
+        style: {
+          fontWeight: 'bold',
+          color: 'white'
+        }
+      },
+      startAngle: -90,
+      endAngle: 90,
+      center: ['50%', '75%']
+    }
+  },
+  series: [{
+    type: 'pie',
+    name: 'Contribución',
+    innerSize: '50%',
+    data: [
+      ['No Agrícolas',{{values.23}}],
+      ['Cacao', {{values.26}}],
+      ['Otros ingresos', {{values.24}}],
+    ]
+  }]
+});
+
+Highcharts.chart('grafico3.3-{{key}}-{{forloop.counter}}', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: 0,
+    plotShadow: false
+  },
+  title: {
+    text: '',
+    align: 'center',
+    verticalAlign: 'middle',
+    y: 40
+  },
+  tooltip: {
+    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+  },
+  plotOptions: {
+    pie: {
+      dataLabels: {
+        enabled: true,
+        distance: -50,
+        style: {
+          fontWeight: 'bold',
+          color: 'white'
+        }
+      },
+      startAngle: -90,
+      endAngle: 90,
+      center: ['50%', '75%']
+    }
+  },
+  series: [{
+    type: 'pie',
+    name: 'Contribución',
+    innerSize: '50%',
+    data: [
+      ['No Agrícolas',{{values.23}}],
+      ['Hortalizas', {{values.27}}],
+      ['Otros ingresos', {{values.24}}],
+    ]
+  }]
+});
+{% endfor %}
+
 
 Highcharts.chart('grafico4-1', {
-    chart: {
-        type: 'line'
-    },
+  chart: {
+    type: 'line'
+  },
+  title: {
+    text: ''
+  },
+  xAxis: {
+    categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}]
+  },
+  yAxis: {
     title: {
-        text: ''
-    },
-    xAxis: {
-        categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}]
-    },
-    yAxis: {
-        title: {
-            text: 'Volumen'
-        }
-    },
-    // plotOptions: {
-    //     line: {
-    //         dataLabels: {
-    //             enabled: true
-    //         },
-    //         enableMouseTracking: false
-    //     }
-    // },
-    series: [
+      text: 'Volumen'
+    }
+  },
+  // plotOptions: {
+  //     line: {
+  //         dataLabels: {
+  //             enabled: true
+  //         },
+  //         enableMouseTracking: false
+  //     }
+  // },
+  series: [
 
     {
-        name: 'Mercado tradicional',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Mercado tradicional' %}{{v.0|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+      name: 'Mercado tradicional',
+      data: [{% for values in anios.values %}
+        {% for k,v in values.1.items %}
+        {% if k == 'Mercado tradicional' %}{{v.0|default:'0'}},{% endif %}
+        {% endfor %}
+        {% endfor %}]
+      },
 
-    {
+      {
         name: 'Cooperativa',
         data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Cooperativa' %}{{v.0|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+          {% for k,v in values.1.items %}
+          {% if k == 'Cooperativa' %}{{v.0|default:'0'}},{% endif %}
+          {% endfor %}
+          {% endfor %}]
+        },
 
-    {
-        name: 'Ferias',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Ferias' %}{{v.0|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+        {
+          name: 'Ferias',
+          data: [{% for values in anios.values %}
+            {% for k,v in values.1.items %}
+            {% if k == 'Ferias' %}{{v.0|default:'0'}},{% endif %}
+            {% endfor %}
+            {% endfor %}]
+          },
 
-    {
-        name: 'Empresas procesadoras',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Empresas procesadoras' %}{{v.0|default:'0'}},{% endif %}
-                {% endfor %}
+          {
+            name: 'Empresas procesadoras',
+            data: [{% for values in anios.values %}
+              {% for k,v in values.1.items %}
+              {% if k == 'Empresas procesadoras' %}{{v.0|default:'0'}},{% endif %}
+              {% endfor %}
               {% endfor %}]
-    },
+            },
 
-    {
-        name: 'Empresas comercializadoras',
-        data: [{% for values in anios.values %}
+            {
+              name: 'Empresas comercializadoras',
+              data: [{% for values in anios.values %}
                 {% for k,v in values.1.items %}
-                  {% if k == 'Empresas comercializadoras' %}{{v.0|default:'0'}},{% endif %}
+                {% if k == 'Empresas comercializadoras' %}{{v.0|default:'0'}},{% endif %}
                 {% endfor %}
-              {% endfor %}]
-    },
+                {% endfor %}]
+              },
 
-    {
-        name: 'Supermercados',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
+              {
+                name: 'Supermercados',
+                data: [{% for values in anios.values %}
+                  {% for k,v in values.1.items %}
                   {% if k == 'Supermercados' %}{{v.0|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+                  {% endfor %}
+                  {% endfor %}]
+                },
 
-    {
-        name: 'Empresas exportadoras',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Empresas exportadoras' %}{{v.0|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+                {
+                  name: 'Empresas exportadoras',
+                  data: [{% for values in anios.values %}
+                    {% for k,v in values.1.items %}
+                    {% if k == 'Empresas exportadoras' %}{{v.0|default:'0'}},{% endif %}
+                    {% endfor %}
+                    {% endfor %}]
+                  },
 
-    {
-        name: 'Cadena de restaurantes',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Cadena de restaurantes' %}{{v.0|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+                  {
+                    name: 'Cadena de restaurantes',
+                    data: [{% for values in anios.values %}
+                      {% for k,v in values.1.items %}
+                      {% if k == 'Cadena de restaurantes' %}{{v.0|default:'0'}},{% endif %}
+                      {% endfor %}
+                      {% endfor %}]
+                    },
 
-    {
-        name: 'Intermediarios',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Intermediarios' %}{{v.0|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+                    {
+                      name: 'Intermediarios',
+                      data: [{% for values in anios.values %}
+                        {% for k,v in values.1.items %}
+                        {% if k == 'Intermediarios' %}{{v.0|default:'0'}},{% endif %}
+                        {% endfor %}
+                        {% endfor %}]
+                      },
 
-  ]
-}),
+                    ]
+                  }),
 
 Highcharts.chart('grafico4-2', {
-    chart: {
-        type: 'line'
-    },
-    title: {
-        text: ''
-    },
-    xAxis: {
-        categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}]
-    },
-    yAxis: {
-        title: {
-            text: 'Volumen'
-        }
-    },
-    // plotOptions: {
-    //     line: {
-    //         dataLabels: {
-    //             enabled: true
-    //         },
-    //         enableMouseTracking: false
-    //     }
-    // },
-    series: [
+chart: {
+type: 'line'
+},
+title: {
+text: ''
+},
+xAxis: {
+categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}]
+},
+yAxis: {
+title: {
+text: 'Volumen'
+}
+},
+// plotOptions: {
+//     line: {
+//         dataLabels: {
+//             enabled: true
+//         },
+//         enableMouseTracking: false
+//     }
+// },
+series: [
 
-    {
-        name: 'Mercado tradicional',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Mercado tradicional' %}{{v.1|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Mercado tradicional',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Mercado tradicional' %}{{v.1|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Cooperativa',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Cooperativa' %}{{v.1|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Cooperativa',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Cooperativa' %}{{v.1|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Ferias',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Ferias' %}{{v.1|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Ferias',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Ferias' %}{{v.1|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Empresas procesadoras',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Empresas procesadoras' %}{{v.1|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Empresas procesadoras',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Empresas procesadoras' %}{{v.1|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Empresas comercializadoras',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Empresas comercializadoras' %}{{v.1|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Empresas comercializadoras',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Empresas comercializadoras' %}{{v.1|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Supermercados',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Supermercados' %}{{v.1|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Supermercados',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Supermercados' %}{{v.1|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Empresas exportadoras',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Empresas exportadoras' %}{{v.1|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Empresas exportadoras',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Empresas exportadoras' %}{{v.1|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Cadena de restaurantes',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Cadena de restaurantes' %}{{v.1|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Cadena de restaurantes',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Cadena de restaurantes' %}{{v.1|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Intermediarios',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Intermediarios' %}{{v.1|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Intermediarios',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Intermediarios' %}{{v.1|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-  ]
+]
 }),
 
 Highcharts.chart('grafico4-3', {
-    chart: {
-        type: 'line'
-    },
-    title: {
-        text: ''
-    },
-    xAxis: {
-        categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}]
-    },
-    yAxis: {
-        title: {
-            text: 'Volumen'
-        }
-    },
-    // plotOptions: {
-    //     line: {
-    //         dataLabels: {
-    //             enabled: true
-    //         },
-    //         enableMouseTracking: false
-    //     }
-    // },
-    series: [
+chart: {
+type: 'line'
+},
+title: {
+text: ''
+},
+xAxis: {
+categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}]
+},
+yAxis: {
+title: {
+text: 'Volumen'
+}
+},
+// plotOptions: {
+//     line: {
+//         dataLabels: {
+//             enabled: true
+//         },
+//         enableMouseTracking: false
+//     }
+// },
+series: [
 
-    {
-        name: 'Mercado tradicional',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Mercado tradicional' %}{{v.2|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Mercado tradicional',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Mercado tradicional' %}{{v.2|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Cooperativa',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Cooperativa' %}{{v.2|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Cooperativa',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Cooperativa' %}{{v.2|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Ferias',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Ferias' %}{{v.2|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Ferias',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Ferias' %}{{v.2|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Empresas procesadoras',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Empresas procesadoras' %}{{v.2|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Empresas procesadoras',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Empresas procesadoras' %}{{v.2|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Empresas comercializadoras',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Empresas comercializadoras' %}{{v.2|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Empresas comercializadoras',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Empresas comercializadoras' %}{{v.2|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Supermercados',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Supermercados' %}{{v.2|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Supermercados',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Supermercados' %}{{v.2|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Empresas exportadoras',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Empresas exportadoras' %}{{v.2|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Empresas exportadoras',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Empresas exportadoras' %}{{v.2|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Cadena de restaurantes',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Cadena de restaurantes' %}{{v.2|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Cadena de restaurantes',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Cadena de restaurantes' %}{{v.2|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-    {
-        name: 'Intermediarios',
-        data: [{% for values in anios.values %}
-                {% for k,v in values.1.items %}
-                  {% if k == 'Intermediarios' %}{{v.2|default:'0'}},{% endif %}
-                {% endfor %}
-              {% endfor %}]
-    },
+{
+name: 'Intermediarios',
+data: [{% for values in anios.values %}
+{% for k,v in values.1.items %}
+{% if k == 'Intermediarios' %}{{v.2|default:'0'}},{% endif %}
+{% endfor %}
+{% endfor %}]
+},
 
-  ]
+]
 });
 
 {% for values in anios.values %}
 Highcharts.chart('grafico5-{{forloop.counter}}', {
-    chart: {
-        type: 'column'
-    },
-    title: {
-        text: ''
-    },
-    xAxis: {
-        categories: [
-            'Café',
-            'Cacao',
-            'Hortalizas'
-        ]
-    },
-    yAxis: [{
-        min: 0,
-        title: {
-            text: 'Quintales'
-        }
-    }, {
-        title: {
-            text: 'Hectáreas'
-        },
-        opposite: true
-    }],
-    legend: {
-        shadow: false
-    },
-    tooltip: {
-        shared: true
-    },
-    plotOptions: {
-        column: {
-            grouping: false,
-            shadow: false,
-            borderWidth: 0
-        }
-    },
-    series: [{
-        name: 'Vol. de producción',
-        color: 'rgba(165,170,217,1)',
-        data: [{{values.2|floatformat:'2'|default:'0'}},{{values.6|floatformat:'2'|default:'0'}},
-                {{values.10|floatformat:'2'|default:'0'}},],
-        pointPadding: 0.3,
-        pointPlacement: -0.2
-    }, {
-        name: 'Rendimientos',
-        color: 'rgba(126,86,134,.9)',
-        data: [{{values.3|floatformat:'2'|default:'0'}},{{values.7|floatformat:'2'|default:'0'}},
-                {{values.11|floatformat:'2'|default:'0'}},],
-        pointPadding: 0.4,
-        pointPlacement: -0.2
-    }, {
-        name: 'Área cosechada',
-        color: 'rgba(248,161,63,1)',
-        data: [{{values.4|floatformat:'2'|default:'0'}},{{values.8|floatformat:'2'|default:'0'}},
-                {{values.12|floatformat:'2'|default:'0'}},],
-        tooltip: {
-            valueSuffix: ' ha'
-        },
-        pointPadding: 0.3,
-        pointPlacement: 0.2,
-        yAxis: 1
-    }, {
-        name: 'Área sembrada',
-        color: 'rgba(186,60,61,.9)',
-        data: [{{values.5|floatformat:'2'|default:'0'}},{{values.9|floatformat:'2'|default:'0'}},
-                {{values.13|floatformat:'2'|default:'0'}},],
-        tooltip: {
-            valueSuffix: ' ha'
-        },
-        pointPadding: 0.4,
-        pointPlacement: 0.2,
-        yAxis: 1
-    }]
+chart: {
+type: 'column'
+},
+title: {
+text: ''
+},
+xAxis: {
+categories: [
+'Café',
+'Cacao',
+'Hortalizas'
+]
+},
+yAxis: [{
+min: 0,
+title: {
+text: 'Quintales'
+}
+}, {
+title: {
+text: 'Hectáreas'
+},
+opposite: true
+}],
+legend: {
+shadow: false
+},
+tooltip: {
+shared: true
+},
+plotOptions: {
+column: {
+grouping: false,
+shadow: false,
+borderWidth: 0
+}
+},
+series: [{
+name: 'Vol. de producción',
+color: 'rgba(165,170,217,1)',
+data: [{{values.2|floatformat:'2'|default:'0'}},{{values.6|floatformat:'2'|default:'0'}},
+{{values.10|floatformat:'2'|default:'0'}},],
+pointPadding: 0.3,
+pointPlacement: -0.2
+}, {
+name: 'Rendimientos',
+color: 'rgba(126,86,134,.9)',
+data: [{{values.3|floatformat:'2'|default:'0'}},{{values.7|floatformat:'2'|default:'0'}},
+{{values.11|floatformat:'2'|default:'0'}},],
+pointPadding: 0.4,
+pointPlacement: -0.2
+}, {
+name: 'Área cosechada',
+color: 'rgba(248,161,63,1)',
+data: [{{values.4|floatformat:'2'|default:'0'}},{{values.8|floatformat:'2'|default:'0'}},
+{{values.12|floatformat:'2'|default:'0'}},],
+tooltip: {
+valueSuffix: ' ha'
+},
+pointPadding: 0.3,
+pointPlacement: 0.2,
+yAxis: 1
+}, {
+name: 'Área sembrada',
+color: 'rgba(186,60,61,.9)',
+data: [{{values.5|floatformat:'2'|default:'0'}},{{values.9|floatformat:'2'|default:'0'}},
+{{values.13|floatformat:'2'|default:'0'}},],
+tooltip: {
+valueSuffix: ' ha'
+},
+pointPadding: 0.4,
+pointPlacement: 0.2,
+yAxis: 1
+}]
 });
 
 {% endfor %}
 
 Highcharts.chart('grafico6-1.1', {
-  title: {
-    text: 'Ingresos'
-  },
-  subtitle: {
-    text: ''
-  },
-  yAxis: {
-    title: {
-      text: 'Dolares'
-    },
-  },
-  xAxis: {
-    allowDecimals: false,
-  },
-  plotOptions: {
-    series: {
-      pointStart: {{anios.keys.0}}
-    }
-  },
-  series: [{
-    name: 'Ingresos',
-    data: [{% for k,v in anios.items %}{{v.14|default:'0'}},{% endfor %}],
-    color: '#90ed7d'
-  }]
+title: {
+text: 'Ingresos'
+},
+subtitle: {
+text: ''
+},
+yAxis: {
+title: {
+text: 'Dolares'
+},
+},
+xAxis: {
+allowDecimals: false,
+},
+plotOptions: {
+series: {
+pointStart: {{anios.keys.0}}
+}
+},
+series: [{
+name: 'Ingresos',
+data: [{% for k,v in anios.items %}{{v.14|default:'0'}},{% endfor %}],
+color: '#90ed7d'
+}]
 });
 
 Highcharts.chart('grafico6-1.2', {
-  title: {
-    text: 'Hectáreas'
-  },
-  subtitle: {
-    text: ''
-  },
-  yAxis: {
-    title: {
-      text: 'ha'
-    },
-  },
-  xAxis: {
-    allowDecimals: false,
-  },
-  plotOptions: {
-    series: {
-      pointStart: {{anios.keys.0}}
-    }
-  },
-  series: [{
-    name: 'Hectáreas',
-    data: [{% for k,v in anios.items %}{{v.15|default:'0'}},{% endfor %}],
-    color: '#050f2c'
-  }]
+title: {
+text: 'Hectáreas'
+},
+subtitle: {
+text: ''
+},
+yAxis: {
+title: {
+text: 'ha'
+},
+},
+xAxis: {
+allowDecimals: false,
+},
+plotOptions: {
+series: {
+pointStart: {{anios.keys.0}}
+}
+},
+series: [{
+name: 'Hectáreas',
+data: [{% for k,v in anios.items %}{{v.15|default:'0'}},{% endfor %}],
+color: '#050f2c'
+}]
 });
 
 Highcharts.chart('grafico6-1.3', {
-  title: {
-    text: 'Precio Promedio'
-  },
-  subtitle: {
-    text: ''
-  },
-  yAxis: {
-    title: {
-      text: 'Dolares'
-    },
-  },
-  xAxis: {
-    allowDecimals: false,
-  },
-  plotOptions: {
-    series: {
-      pointStart: {{anios.keys.0}}
-    }
-  },
-  series: [{
-    name: 'Precio',
-    data: [{% for k,v in anios.items %}{{v.16|default:'0'}},{% endfor %}],
-    color: '#f7a35c'
-  }]
+title: {
+text: 'Precio Promedio'
+},
+subtitle: {
+text: ''
+},
+yAxis: {
+title: {
+text: 'Dolares'
+},
+},
+xAxis: {
+allowDecimals: false,
+},
+plotOptions: {
+series: {
+pointStart: {{anios.keys.0}}
+}
+},
+series: [{
+name: 'Precio',
+data: [{% for k,v in anios.items %}{{v.16|default:'0'}},{% endfor %}],
+color: '#f7a35c'
+}]
 });
 
 Highcharts.chart('grafico6-2.1', {
-  title: {
-    text: 'Ingresos'
-  },
-  subtitle: {
-    text: ''
-  },
-  yAxis: {
-    title: {
-      text: 'Dolares'
-    },
-  },
-  xAxis: {
-    allowDecimals: false,
-  },
-  plotOptions: {
-    series: {
-      pointStart: {{anios.keys.0}}
-    }
-  },
-  series: [{
-    name: 'Ingresos',
-    data: [{% for k,v in anios.items %}{{v.17|default:'0'}},{% endfor %}],
-    color: '#90ed7d'
-  }]
+title: {
+text: 'Ingresos'
+},
+subtitle: {
+text: ''
+},
+yAxis: {
+title: {
+text: 'Dolares'
+},
+},
+xAxis: {
+allowDecimals: false,
+},
+plotOptions: {
+series: {
+pointStart: {{anios.keys.0}}
+}
+},
+series: [{
+name: 'Ingresos',
+data: [{% for k,v in anios.items %}{{v.17|default:'0'}},{% endfor %}],
+color: '#90ed7d'
+}]
 });
 
 Highcharts.chart('grafico6-2.2', {
-  title: {
-    text: 'Hectáreas'
-  },
-  subtitle: {
-    text: ''
-  },
-  yAxis: {
-    title: {
-      text: 'ha'
-    },
-  },
-  xAxis: {
-    allowDecimals: false,
-  },
-  plotOptions: {
-    series: {
-      pointStart: {{anios.keys.0}}
-    }
-  },
-  series: [{
-    name: 'Hectáreas',
-    data: [{% for k,v in anios.items %}{{v.18|default:'0'}},{% endfor %}],
-    color: '#050f2c'
-  }]
+title: {
+text: 'Hectáreas'
+},
+subtitle: {
+text: ''
+},
+yAxis: {
+title: {
+text: 'ha'
+},
+},
+xAxis: {
+allowDecimals: false,
+},
+plotOptions: {
+series: {
+pointStart: {{anios.keys.0}}
+}
+},
+series: [{
+name: 'Hectáreas',
+data: [{% for k,v in anios.items %}{{v.18|default:'0'}},{% endfor %}],
+color: '#050f2c'
+}]
 });
 
 Highcharts.chart('grafico6-2.3', {
-  title: {
-    text: 'Precio Promedio'
-  },
-  subtitle: {
-    text: ''
-  },
-  yAxis: {
-    title: {
-      text: 'Dolares'
-    },
-  },
-  xAxis: {
-    allowDecimals: false,
-  },
-  plotOptions: {
-    series: {
-      pointStart: {{anios.keys.0}}
-    }
-  },
-  series: [{
-    name: 'Precio',
-    data: [{% for k,v in anios.items %}{{v.19|default:'0'}},{% endfor %}],
-    color: '#f7a35c'
-  }]
+title: {
+text: 'Precio Promedio'
+},
+subtitle: {
+text: ''
+},
+yAxis: {
+title: {
+text: 'Dolares'
+},
+},
+xAxis: {
+allowDecimals: false,
+},
+plotOptions: {
+series: {
+pointStart: {{anios.keys.0}}
+}
+},
+series: [{
+name: 'Precio',
+data: [{% for k,v in anios.items %}{{v.19|default:'0'}},{% endfor %}],
+color: '#f7a35c'
+}]
 });
 
 Highcharts.chart('grafico6-3.1', {
-  title: {
-    text: 'Ingresos'
-  },
-  subtitle: {
-    text: ''
-  },
-  yAxis: {
-    title: {
-      text: 'Dolares'
-    },
-  },
-  xAxis: {
-    allowDecimals: false,
-  },
-  plotOptions: {
-    series: {
-      pointStart: {{anios.keys.0}}
-    }
-  },
-  series: [{
-    name: 'Ingresos',
-    data: [{% for k,v in anios.items %}{{v.20|default:'0'}},{% endfor %}],
-    color: '#90ed7d'
-  }]
+title: {
+text: 'Ingresos'
+},
+subtitle: {
+text: ''
+},
+yAxis: {
+title: {
+text: 'Dolares'
+},
+},
+xAxis: {
+allowDecimals: false,
+},
+plotOptions: {
+series: {
+pointStart: {{anios.keys.0}}
+}
+},
+series: [{
+name: 'Ingresos',
+data: [{% for k,v in anios.items %}{{v.20|default:'0'}},{% endfor %}],
+color: '#90ed7d'
+}]
 });
 
 Highcharts.chart('grafico6-3.2', {
-  title: {
-    text: 'Hectáreas'
-  },
-  subtitle: {
-    text: ''
-  },
-  yAxis: {
-    title: {
-      text: 'ha'
-    },
-  },
-  xAxis: {
-    allowDecimals: false,
-  },
-  plotOptions: {
-    series: {
-      pointStart: {{anios.keys.0}}
-    }
-  },
-  series: [{
-    name: 'Hectáreas',
-    data: [{% for k,v in anios.items %}{{v.21|default:'0'}},{% endfor %}],
-    color: '#050f2c'
-  }]
+title: {
+text: 'Hectáreas'
+},
+subtitle: {
+text: ''
+},
+yAxis: {
+title: {
+text: 'ha'
+},
+},
+xAxis: {
+allowDecimals: false,
+},
+plotOptions: {
+series: {
+pointStart: {{anios.keys.0}}
+}
+},
+series: [{
+name: 'Hectáreas',
+data: [{% for k,v in anios.items %}{{v.21|default:'0'}},{% endfor %}],
+color: '#050f2c'
+}]
 });
 
 Highcharts.chart('grafico6-3.3', {
-  title: {
-    text: 'Precio Promedio'
-  },
-  subtitle: {
-    text: ''
-  },
-  yAxis: {
-    title: {
-      text: 'Dolares'
-    },
-  },
-  xAxis: {
-    allowDecimals: false,
-  },
-  plotOptions: {
-    series: {
-      pointStart: {{anios.keys.0}}
-    }
-  },
-  series: [{
-    name: 'Precio',
-    data: [{% for k,v in anios.items %}{{v.22|default:'0'}},{% endfor %}],
-    color: '#f7a35c'
-  }]
+title: {
+text: 'Precio Promedio'
+},
+subtitle: {
+text: ''
+},
+yAxis: {
+title: {
+text: 'Dolares'
+},
+},
+xAxis: {
+allowDecimals: false,
+},
+plotOptions: {
+series: {
+pointStart: {{anios.keys.0}}
+}
+},
+series: [{
+name: 'Precio',
+data: [{% for k,v in anios.items %}{{v.22|default:'0'}},{% endfor %}],
+color: '#f7a35c'
+}]
 });
 
 Highcharts.chart('grafico7', {
-    chart: {
-        type: 'line'
-    },
-    title: {
-        text: ''
-    },
-    xAxis: {
-        categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}]
-    },
-    yAxis: {
-        title: {
-            text: 'Área cosechada'
-        }
-    },
+chart: {
+type: 'line'
+},
+title: {
+text: ''
+},
+xAxis: {
+categories: [{% for key in anios.keys %}'{{key}}',{% endfor %}]
+},
+yAxis: {
+title: {
+text: 'Área cosechada'
+}
+},
 
-    series: [
+series: [
 
-    {
-        name: 'Café',
-        data: [{% for values in anios.values %}
-                  {{values.4|default:'0'}},
-              {% endfor %}]
-    },
+{
+name: 'Café',
+data: [{% for values in anios.values %}
+{{values.4|default:'0'}},
+{% endfor %}]
+},
 
-    {
-        name: 'Cacao',
-        data: [{% for values in anios.values %}
-                  {{values.8|default:'0'}},
-              {% endfor %}]
-    },
+{
+name: 'Cacao',
+data: [{% for values in anios.values %}
+{{values.8|default:'0'}},
+{% endfor %}]
+},
 
-    {
-        name: 'Hortalizas',
-        data: [{% for values in anios.values %}
-                  {{values.12|default:'0'}},
-              {% endfor %}]
-    },
+{
+name: 'Hortalizas',
+data: [{% for values in anios.values %}
+{{values.12|default:'0'}},
+{% endfor %}]
+},
 
-  ]
-})
+]
+});
+
+Highcharts.SparkLine = function (a, b, c) {
+var hasRenderToArg = typeof a === 'string' || a.nodeName,
+options = arguments[hasRenderToArg ? 1 : 0],
+defaultOptions = {
+chart: {
+renderTo: (options.chart && options.chart.renderTo) || this,
+backgroundColor: null,
+borderWidth: 0,
+type: 'area',
+margin: [2, 0, 2, 0],
+width: 120,
+height: 20,
+style: {
+overflow: 'visible'
+},
+
+// small optimalization, saves 1-2 ms each sparkline
+skipClone: true
+},
+title: {
+text: ''
+},
+credits: {
+enabled: false
+},
+xAxis: {
+labels: {
+enabled: false
+},
+title: {
+text: null
+},
+startOnTick: false,
+endOnTick: false,
+tickPositions: []
+},
+yAxis: {
+endOnTick: false,
+startOnTick: false,
+labels: {
+enabled: false
+},
+title: {
+text: null
+},
+tickPositions: [0]
+},
+legend: {
+enabled: false
+},
+tooltip: {
+backgroundColor: null,
+borderWidth: 0,
+shadow: false,
+useHTML: true,
+hideDelay: 0,
+shared: true,
+padding: 0,
+positioner: function (w, h, point) {
+return { x: point.plotX - w / 2, y: point.plotY - h };
+}
+},
+plotOptions: {
+series: {
+animation: false,
+lineWidth: 1,
+shadow: false,
+states: {
+hover: {
+lineWidth: 1
+}
+},
+marker: {
+radius: 1,
+states: {
+hover: {
+  radius: 2
+}
+}
+},
+fillOpacity: 0.25
+},
+column: {
+negativeColor: '#910000',
+borderColor: 'silver'
+}
+}
+};
+
+options = Highcharts.merge(defaultOptions, options);
+
+return hasRenderToArg ?
+new Highcharts.Chart(a, options, c) :
+new Highcharts.Chart(options, b);
+};
+
+var start = +new Date(),
+$tds = $('td[data-sparkline]'),
+fullLen = $tds.length,
+n = 0;
+
+// Creating 153 sparkline charts is quite fast in modern browsers, but IE8 and mobile
+// can take some seconds, so we split the input into chunks and apply them in timeouts
+// in order avoid locking up the browser process and allow interaction.
+function doChunk() {
+var time = +new Date(),
+i,
+len = $tds.length,
+$td,
+stringdata,
+arr,
+data,
+chart;
+
+for (i = 0; i < len; i += 1) {
+$td = $($tds[i]);
+stringdata = $td.data('sparkline');
+arr = stringdata.split('; ');
+data = $.map(arr[0].split(', '), parseFloat);
+chart = {};
+
+if (arr[1]) {
+chart.type = arr[1];
+}
+$td.highcharts('SparkLine', {
+series: [{
+data: data,
+pointStart: 1
+}],
+tooltip: {
+headerFormat: '<span style="font-size: 10px">' + $td.parent().find('th').html() + ', Q{point.x}:</span><br/>',
+pointFormat: '<b>{point.y}.000</b> USD'
+},
+chart: chart
+});
+
+n += 1;
+
+// If the process takes too much time, run a timeout to allow interaction with the browser
+if (new Date() - time > 500) {
+$tds.splice(0, i + 1);
+setTimeout(doChunk, 0);
+break;
+}
+
+// Print a feedback on the performance
+// if (n === fullLen) {
+// $('#result').html('Generated ' + fullLen + ' sparklines in ' + (new Date() - start) + ' ms');
+// }
+}
+}
+doChunk();
 </script>
+{% endblock %}
+
+{% block extra_css %}
+<style media="screen">
+#result {
+  text-align: right;
+  color: gray;
+  min-height: 2em;
+}
+#table-sparkline {
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+th {
+  font-weight: bold;
+  text-align: left;
+}
+td, th {
+  padding: 5px;
+  border-bottom: 1px solid silver;
+  height: 20px;
+}
+
+thead th {
+  border-top: 2px solid gray;
+  border-bottom: 2px solid gray;
+}
+.highcharts-tooltip>span {
+  background: white;
+  border: 1px solid silver;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px #888;
+  padding: 8px;
+}
+#table-sparkline{
+  display: block;
+  overflow-x: auto;
+}
+
+#tabla-detalle-cultivos .highcharts-button-box, #tabla-detalle-cultivos .highcharts-button-symbol{
+  display: none !important
+}
+</style>
 {% endblock %}

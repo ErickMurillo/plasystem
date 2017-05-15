@@ -12,6 +12,7 @@
   <link href="/static/css/icons.css" rel="stylesheet" type="text/css">
   <link href="/static/css/style.css" rel="stylesheet" type="text/css">
   <link href="/static/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css">
+  {% block extra_css %}{% endblock %}
 </head>
 <body class="fixed-left">
 
@@ -60,15 +61,12 @@
                   <img src="/static/nuevo/avatar-1.jpg" alt="user-img" class="img-circle">
                   <span class="profile-username">
                     {% if user.get_full_name %}{{user.get_full_name}}{% else %}{{ user.username }}{% endif %} <br>
-                    <small>Gerente</small>
+                    <!--<small>Gerente</small>-->
                   </span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="javascript:void(0)"> Profile</a></li>
-                  <li><a href="javascript:void(0)"><span class="badge badge-success pull-right">5</span> Settings </a></li>
-                  <li><a href="javascript:void(0)"> Lock screen</a></li>
-                  <li class="divider"></li>
-                  <li><a href="javascript:void(0)"> Logout</a></li>
+                    <li><a href="/admin"> Administrador</a></li>
+                    <li><a href="/logout"> Cerrar sesion</a></li>
                 </ul>
               </li>
             </ul>
