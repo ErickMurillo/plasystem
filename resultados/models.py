@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from organizaciones.models import *
+from multiselectfield import MultiSelectField
 
 # Create your models here.
 class Digitador(models.Model):
@@ -72,7 +73,7 @@ CHOICE_SOSTENIBILIDAD = (
         (2, 'Aspectos ambientales')
     )
 
-class Operaciones(models.Model):
+class Sostenibilidad(models.Model):
     opciones = models.IntegerField(choices=CHOICE_SOSTENIBILIDAD)
     valor = models.FloatField()
     mejoras = models.TextField('Principales Mejoras Realizadas (Describa)')
@@ -110,7 +111,7 @@ CHOICE_DESEMPENO_FINANCIERO = (
         (3, 'Pérdidas y ganancias')
     )
 
-class DesmepenoFinanciero(models.Model):
+class DesempenoFinanciero(models.Model):
     opciones = models.IntegerField(choices=CHOICE_DESEMPENO_FINANCIERO)
     valor = models.FloatField()
     mejoras = models.TextField('Principales Mejoras Realizadas (Describa)')
@@ -245,5 +246,37 @@ class ProducenComercializan(models.Model):
     cantidad_mujeres = models.IntegerField()
     cultivo = models.CharField(max_length=250)
     area_hombre_sembrada = models.FloatField()
+    area_mujer_sembrada = models.FloatField()
+    area_hombre_cosechada = models.FloatField()
+    area_mujer_cosechada = models.FloatField()
+    unidad_medida = models.CharField(max_length=50)
+    cantidad = models.FloatField()
+    cantidad_certificada = models.FloatField()
+    precio_promedio = models.FloatField()
 
     resultado_implementacion = models.ForeignKey(ResultadosImplementacion)
+
+    class Meta:
+        verbose_name_plural = '34.1 Productores que producen y comercializan de forma colectiva'
+
+
+CHOICE_TIPO_MERCADO = (
+        ('uno', 'Tradicional'),
+        ('dos', 'Feria'),
+        ('tres', 'Local'),
+        ('cuatro', 'Empresa comercializadora'),
+        ('cinco', 'Empresa procesadora'),
+        ('seis', 'Empresas exportadoras'),
+        ('siete', 'Supermercado'),
+        ('ocho', 'Cadena de restaurantes'),
+        ('nueve', 'Intermediarios'),
+    )
+
+class IncrementoAbastecimiento(models.Model):
+    comprador = models.CharField(max_length=250)
+    tipo_mercado = MultiSelectField(choices = CHOICE_TIPO_MERCADO)
+
+    resultado_implementacion = models.ForeignKey(ResultadosImplementacion)
+
+    class Meta:
+        verbose_name_plural = '34.2 Cantidad de productores que incremento de volumen'
