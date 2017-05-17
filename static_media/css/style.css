@@ -3639,6 +3639,21 @@ File: nuevo css
     border-radius: 5px;
     color: #5cb45b;
 }
+.more-ind a:hover{
+  color: white;
+  background: #5cb45b;
+}
+.link-prod{
+    font-size: 13px;
+    padding: 5px 10px;
+    border: 1px solid #5cb45b;
+    border-radius: 5px;
+    color: #5cb45b;
+}
+.link-prod:hover{
+  color: white;
+  background: #5cb45b;
+}
 .nav.nav-tabs + .tab-content {
   margin-bottom: 0;
   padding: 0px;
@@ -3669,6 +3684,41 @@ File: nuevo css
 }
 #wrapper.enlarged .content-page{
       margin-left: 0px;
+}
+.table-prod{
+  max-height: 370px;
+  overflow-y: scroll;
+}
+.m-t-0 small{
+  display: block;
+  color: #898989;
+  margin-top: 5px;
+  font-weight: bold;
+}
+.green-title{
+  color: #5cb45b;
+  font-weight: bold;
+}
+.listdata-prod{
+  list-style: none;
+  padding: 0px;
+  
+}
+.listdata-prod li{
+  display: inline-block;
+  padding: 0px 10px;
+}
+.data-prod small{
+  display: block;
+  margin-top: 5px;
+  color: #898989;
+  font-size: 13px;
+  font-weight: bold;
+
+}
+.breadcrumb li a{
+  color: white;
+  font-size: 14px;
 }
 /*
 File: Responsive
