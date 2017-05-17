@@ -57,12 +57,27 @@ admin.site.register(Digitador)
 admin.site.register(ResultadosEvaluacion, ResultadoEvaluacionAdmin)
 
 class ProducenComercializanInline(admin.TabularInline):
-	model = ProducenComercializan
-	extra = 1
-	max_num = 6
+    model = ProducenComercializan
+    extra = 1
+
+class IncrementoAbastecimientoInline(admin.TabularInline):
+    model = IncrementoAbastecimiento
+    extra = 1
+
+class AumentadoIngresosInline(admin.TabularInline):
+    model = AumentadoIngresos
+    extra = 1
+
+class AumentadoProductividadInline(admin.TabularInline):
+    model = AumentadoProductividad
+    extra = 1
 
 class ResultadosImplementacionAdmin(admin.ModelAdmin):
-	inlines = [ProducenComercializanInline,]
+    inlines = [ProducenComercializanInline,IncrementoAbastecimientoInline,
+               AumentadoIngresosInline,AumentadoProductividadInline]
+
+    class Media:
+        css = {'all': ('css/admin-resultado-implementacion.css',)}
+        
 
 admin.site.register(ResultadosImplementacion, ResultadosImplementacionAdmin)
-

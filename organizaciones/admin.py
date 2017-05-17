@@ -74,6 +74,6 @@ class OrganizacionAdmin(admin.ModelAdmin):
                ActividadInline,ServicioInline
                ]
 
-# Register your models here.
+
 admin.site.register(Organizacion, OrganizacionAdmin)
 admin.site.register(TipoOrganizacion)

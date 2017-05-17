@@ -12,6 +12,10 @@ class Digitador(models.Model):
     def __unicode__(self):
         return self.nombre
 
+    class Meta:
+        verbose_name = 'Digitador'
+        verbose_name_plural = 'Digitadores'
+
 class ResultadosEvaluacion(models.Model):
     digitador = models.ForeignKey(Digitador)
     fecha = models.DateField()
@@ -22,7 +26,7 @@ class ResultadosEvaluacion(models.Model):
 
     def save(self):
         self.year = self.fecha.year
-        super(Encuesta, self).save()
+        super(ResultadosEvaluacion, self).save()
 
     def __unicode__(self):
         return self.organizacion.nombre
@@ -220,7 +224,7 @@ class ResultadosImplementacion(models.Model):
 
     def save(self):
         self.year = self.fecha.year
-        super(Encuesta, self).save()
+        super(ResultadosImplementacion, self).save()
 
     def __unicode__(self):
         return self.organizacion.nombre
@@ -273,10 +277,37 @@ CHOICE_TIPO_MERCADO = (
     )
 
 class IncrementoAbastecimiento(models.Model):
-    comprador = models.CharField(max_length=250)
+    comprador = models.FloatField()
     tipo_mercado = MultiSelectField(choices = CHOICE_TIPO_MERCADO)
 
     resultado_implementacion = models.ForeignKey(ResultadosImplementacion)
 
     class Meta:
         verbose_name_plural = '34.2 Cantidad de productores que incremento de volumen'
+
+
+CHOICE_AUMENTADO_INGRESOS = (
+        (1, 'Café'),
+        (2, 'Cacao'),
+        (3, 'Hostalizas'),
+        
+    )
+
+
+class AumentadoIngresos(models.Model):
+    opcion = models.IntegerField(choices=CHOICE_AUMENTADO_INGRESOS)
+    valor = models.FloatField()
+
+    resultado_implementacion = models.ForeignKey(ResultadosImplementacion)
+
+    class Meta:
+        verbose_name_plural = '34.3 Cantidad de productores aumentado ingresos'
+
+
+class AumentadoProductividad(models.Model):
+    valor = models.FloatField()
+
+    resultado_implementacion = models.ForeignKey(ResultadosImplementacion)
+
+    class Meta:
+        verbose_name_plural = '35 productividad (kg/ha) de cacao fermentado seco'
