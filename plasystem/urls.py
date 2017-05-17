@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """plasystem URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -17,6 +18,9 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from .views import *
 from django.contrib.auth import views as auth_views
+
+admin.site.site_header = "Administración"
+admin.site.site_title = "sitio administrativo"
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
