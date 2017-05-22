@@ -404,6 +404,9 @@ def dashboard_productores(request,template="productores/dashboard.html"):
                                                   destino_produccion__cultivo__tipo=1,
                                                   destino_produccion__encuesta__anio=year).aggregate(t=Sum('ingreso'))['t']
 
+            if cafe_ingreso == None:
+                cafe_ingreso = 0
+
             try:
                 cafe_ingreso = cafe_ingreso / tipo_cambio[0]
             except:
@@ -429,7 +432,6 @@ def dashboard_productores(request,template="productores/dashboard.html"):
                 inversion = 0
 
             cafe_costo = costo + inversion
-
 
             try:
                 cafe_costo = cafe_costo / tipo_cambio[0]
