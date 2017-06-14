@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'^logout/$', auth_views.logout,{'next_page': '/'}),
     url(r'^$', index, name='index'),
     url(r'^productores/', include('productores.urls')),
+    url(r'^organizaciones/', include('resultados.urls')),
 ]
