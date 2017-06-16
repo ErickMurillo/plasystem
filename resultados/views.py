@@ -4,6 +4,7 @@ from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from organizaciones.models import *
+from django.db.models import Sum, Count, Avg, F
 # Create your views here.
 
 def _queryset_filtrado(request):
@@ -16,7 +17,7 @@ def _queryset_filtrado(request):
         params['organizacion__in'] = request.session['organizacion']
 
     if request.session['pais']:
-        params['productor__pais'] = request.session['pais']
+        params['pais'] = request.session['pais']
 
 
 	unvalid_keys = []
@@ -39,6 +40,7 @@ def consulta(request,template="organizaciones/consulta.html"):
         if form.is_valid():
             request.session['anio'] = form.cleaned_data['anio']
             request.session['organizacion'] = form.cleaned_data['organizacion']
+            request.session['pais'] = form.cleaned_data['pais']
 
             mensaje = "Todas las variables estan correctamente :)"
             request.session['activo'] = True
@@ -55,6 +57,7 @@ def consulta(request,template="organizaciones/consulta.html"):
         try:
             del request.session['anio']
             del request.session['organizacion']
+            del request.session['pais']
         except:
             pass
 
@@ -62,7 +65,31 @@ def consulta(request,template="organizaciones/consulta.html"):
 
 @login_required
 def dashboard(request,template="organizaciones/dashboard.html"):
-	filtro = _queryset_filtrado(request)
-	print filtro
+    if request.method == 'POST':
+        mensaje = None
+        form = OrganizacionesForm(request.POST)
+        if form.is_valid():
+            request.session['anio'] = form.cleaned_data['anio']
+            request.session['organizacion'] = form.cleaned_data['organizacion']
+            request.session['pais'] = form.cleaned_data['pais']
 
-	return render(request, template, locals())
+            mensaje = "Todas las variables estan correctamente :)"
+            request.session['activo'] = True
+            centinela = 1
+
+        else:
+            centinela = 0
+
+    else:
+        form = OrganizacionesForm()
+        mensaje = "Existen alguno errores"
+
+    filtro = _queryset_filtrado(request)
+
+    miembros_hombres = ProductoresProveedores.objects.filter(organizacion__in = filtro[0].values_list(
+                        'organizacion',flat=True)).aggregate(total = Sum('activos_hombre'))['total']
+
+    miembros_mujeres = ProductoresProveedores.objects.filter(organizacion__in = filtro[0].values_list(
+                        'organizacion',flat=True)).aggregate(total = Sum('activos_mujer'))['total']
+    
+    return render(request, template, locals())
