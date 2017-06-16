@@ -105,8 +105,8 @@ class OrganizacionPertenece(models.Model):
 
     organizacion = models.ForeignKey(Organizacion)
 
-    def __unicode__(self):
-        return self.organizaciones.nombre
+    #def __unicode__(self):
+    #    return self.organizaciones.nombre
 
     class Meta:
         verbose_name_plural = 'Organizaciones a la que pertenece'

@@ -77,3 +77,6 @@ class OrganizacionAdmin(admin.ModelAdmin):
 
 admin.site.register(Organizacion, OrganizacionAdmin)
 admin.site.register(TipoOrganizacion)
+admin.site.register(ApoyoDonante)
+admin.site.register(Areas)
+admin.site.register(Instituciones)
