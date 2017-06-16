@@ -3,48 +3,111 @@
 {% block content %}
 
 <div class="content">
-  <div class="">
-    <div class="page-header-title">
-      <h4 class="page-title">Dashboard Organizaciones</h4>
-    </div>
-  </div>
+	<div class="">
+		<div class="page-header-title">
+			<h4 class="page-title">Dashboard Organizaciones</h4>
+		</div>
+	</div>
 
-  <div class="page-content-wrapper ">
+	<div class="page-content-wrapper ">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4 col-lg-2">
+					<div class="panel text-center">
+						<div class="panel-heading">
+							<h4 class="panel-title text-muted font-light"><b>Miembros activos hombres</b></h4>
+						</div>
+						<div class="panel-body p-t-10">
+							<h2 class="m-t-0 m-b-15"><b>{{miembros_hombres|default:"0"}}</b></h2>
+							<p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+						</div>
+					</div>
+				</div>
 
-    <div class="container">
+				<div class="col-sm-4 col-lg-2">
+					<div class="panel text-center">
+						<div class="panel-heading">
+							<h4 class="panel-title text-muted font-light"><b>Miembros activos mujeres</b></h4>
+						</div>
+						<div class="panel-body p-t-10">
+							<h2 class="m-t-0 m-b-15"><b>{{miembros_mujeres|default:"0"}}</b></h2>
+							<p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+						</div>
+					</div>
+				</div>
+			</div>
 
-      <div class="row">
-        <div class="col-sm-4 col-lg-2">
-          <div class="panel text-center">
-            <div class="panel-heading">
-              <h4 class="panel-title text-muted font-light"><b>Miembros activos hombres</b></h4>
-            </div>
-            <div class="panel-body p-t-10">
-              <h2 class="m-t-0 m-b-15"><b>{{miembros_hombres|default:"0"}}</b></h2>
-              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
-            </div>
-          </div>
-        </div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<h4 class="m-t-0">Empleados de la organización tiempo completo <span class="mdi mdi-help-circle"></span></h4>
+							<div id="grafico1" width:'100%' style="height: 350px;"></div>
+						</div>
+					</div>
+				</div>
 
-        <div class="col-sm-4 col-lg-2">
-          <div class="panel text-center">
-            <div class="panel-heading">
-              <h4 class="panel-title text-muted font-light"><b>Miembros activos mujeres</b></h4>
-            </div>
-            <div class="panel-body p-t-10">
-              <h2 class="m-t-0 m-b-15"><b>{{miembros_mujeres|default:"0"}}</b></h2>
-              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
-            </div>
-          </div>
-        </div>
+			</div>
 
-       </div>
-      </div>
-    </div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<h4 class="m-t-0">Situación legal y organizativa de la organización <span class="mdi mdi-help-circle"></span></h4>
+							<div id="grafico2" width:'100%' style="height: 350px;"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
 
 </div>
 {% endblock %}
 
 {% block extra_js %}
-	
+<script type="text/javascript">
+Highcharts.chart('grafico1', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Total', 'Adultos', 'Jovenes']
+    },
+    credits: {
+        enabled: false
+    },
+    series: [{
+        name: 'Hombres',
+        data: [{{empleados_org.values.0|default:"0"}}, {{empleados_org.values.2|default:"0"}}, {{empleados_org.values.4|default:"0"}}]
+    }, {
+        name: 'Mujeres',
+        data: [{{empleados_org.values.1|default:"0"}}, {{empleados_org.values.3|default:"0"}}, {{empleados_org.values.5|default:"0"}}]
+    }]
+});
+
+Highcharts.chart('grafico2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Cuenta con personería jurídica', 'Actualmente en operaciones', 'Recibe apoyo de donantes u otras instituciones']
+    },
+    credits: {
+        enabled: false
+    },
+    series: [{
+        name: 'Organizaciones',
+        data: [{{personeria|default:"0"}}, {{en_operaciones|default:"0"}}, {{apoyo|default:"0"}}]
+    }]
+})
+</script>
 {% endblock %}

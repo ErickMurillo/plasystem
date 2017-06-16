@@ -86,10 +86,37 @@ def dashboard(request,template="organizaciones/dashboard.html"):
 
     filtro = _queryset_filtrado(request)
 
-    miembros_hombres = ProductoresProveedores.objects.filter(organizacion__in = filtro[0].values_list(
-                        'organizacion',flat=True)).aggregate(total = Sum('activos_hombre'))['total']
+    # unificar organizaciones de los dos modelos
+    list_ev_org = []
+    for x in filtro[0].values_list('organizacion',flat=True):
+        list_ev_org.append(x)
 
-    miembros_mujeres = ProductoresProveedores.objects.filter(organizacion__in = filtro[0].values_list(
-                        'organizacion',flat=True)).aggregate(total = Sum('activos_mujer'))['total']
+    list_im_org = []
+    for x in filtro[1].values_list('organizacion',flat=True):
+        list_im_org.append(x)
+
+    result_list = list(sorted(set(list_ev_org + list_im_org)))
+
+    # --------
+
+    miembros_hombres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('activos_hombre'))['total']
+
+    miembros_mujeres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('activos_mujer'))['total']
     
+
+    # empleados de la org tiempo completo, preg 22
+    empleados_org = EmpleadosOrganizacion.objects.filter(organizacion__in = result_list,opcion = 1).aggregate(
+                                            total_hombre = Sum('total_hombre'),
+                                            total_mujer = Sum('total_mujer'),
+                                            adultos_hombre = Sum('adultos_hombre'),
+                                            adultos_mujer = Sum('adultos_mujer'),
+                                            jovenes_hombre = Sum('jovenes_hombre'),
+                                            jovenes_mujer = Sum('jovenes_mujer'))
+
+    # situacion legal y organizativa de org
+    personeria = Organizacion.objects.filter(id__in = result_list,personeria = 1).count()
+    en_operaciones = Organizacion.objects.filter(id__in = result_list,en_operaciones = 1).count()
+    apoyo = Organizacion.objects.filter(id__in = result_list,apoyo = 1).count()
+
+
     return render(request, template, locals())
