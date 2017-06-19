@@ -118,5 +118,36 @@ def dashboard(request,template="organizaciones/dashboard.html"):
     en_operaciones = Organizacion.objects.filter(id__in = result_list,en_operaciones = 1).count()
     apoyo = Organizacion.objects.filter(id__in = result_list,apoyo = 1).count()
 
+    # areas que reciben apoyo
+    areas = {}
+    for obj in Areas.objects.all():
+        x = ApoyoDonante.objects.filter(areas = obj, organizacion__in = result_list).count()
+        areas[obj] = x
+
+    # miembros
+    miembros = {}
+    for obj in CHOICE_MIEMBROS:
+        result = MiembrosOficiales.objects.filter(organizacion__in = result_list,opcion = obj[0]).aggregate(
+                                        total_h = Sum('total_hombre'),
+                                        total_m = Sum('total_mujer'),
+                                        activos_h = Sum('activos_hombre'),
+                                        activos_m = Sum('activos_mujer'),
+                                        jovenes_h = Sum('jovenes_hombre'),
+                                        jovenes_m = Sum('jovenes_mujer'))
+
+        miembros[obj[1]] = result['total_h'],result['total_m'],result['activos_h'],result['activos_m'],result['jovenes_h'],result['jovenes_m']
+
+    # productores proveedores
+    productores = []
+    for obj in CHOICE_PROVEEDORES:
+        result = ProductoresProveedores.objects.filter(organizacion__in = result_list,opcion = obj[0]).aggregate(
+                                        total_h = Sum('total_hombre'),
+                                        total_m = Sum('total_mujer'),
+                                        activos_h = Sum('activos_hombre'),
+                                        activos_m = Sum('activos_mujer'),
+                                        jovenes_h = Sum('jovenes_hombre'),
+                                        jovenes_m = Sum('jovenes_mujer'))
+
+        productores.append((result['total_h'],result['total_m'],result['activos_h'],result['activos_m'],result['jovenes_h'],result['jovenes_m']))
 
     return render(request, template, locals())
