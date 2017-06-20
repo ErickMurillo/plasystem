@@ -99,6 +99,9 @@ class ApoyoDonante(models.Model):
     def __unicode__(self):
         return self.institucion.nombre
 
+    class Meta:
+        verbose_name_plural = '17.Recibe apoyo de donantes u otras instituciones'
+
 
 class OrganizacionPertenece(models.Model):
     organizaciones = models.ManyToManyField(Instituciones)
@@ -109,7 +112,7 @@ class OrganizacionPertenece(models.Model):
     #    return self.organizaciones.nombre
 
     class Meta:
-        verbose_name_plural = 'Organizaciones a la que pertenece'
+        verbose_name_plural = '18.Organizaciones a la que pertenece'
 
 CHOICE_MIEMBROS = (
     (1, 'Número de miembros registrados oficialmente'),
@@ -130,7 +133,10 @@ class MiembrosOficiales(models.Model):
 
     organizacion = models.ForeignKey(Organizacion)
 
-    
+    class Meta:
+        verbose_name_plural = '19.Miembros'
+
+
 
 class NumeroCooperativa(models.Model):
     numero_cooperativa = models.IntegerField()
@@ -140,9 +146,12 @@ class NumeroCooperativa(models.Model):
     def __unicode__(self):
         return '%s' % str(self.numero_cooperativa)
 
+    class Meta:
+        verbose_name_plural = '20.Número de cooperativas que son miembros'
+
 CHOICE_PROVEEDORES = (
     (1, 'Número de miembros registrados oficialmente'),
-    
+
     )
 
 class ProductoresProveedores(models.Model):
@@ -156,7 +165,9 @@ class ProductoresProveedores(models.Model):
 
     organizacion = models.ForeignKey(Organizacion)
 
-    
+    class Meta:
+        verbose_name_plural = '21.Productores proveedores no socios'
+
 
 CHOICE_EMPLEADOS = (
     (1, 'Tiempo completo'),
@@ -177,6 +188,10 @@ class EmpleadosOrganizacion(models.Model):
 
     def __unicode__(self):
         return self.get_opcion_display()
+
+    class Meta:
+        verbose_name_plural = '22.Empleados en la organización'
+
 
 CHOICE_TRANSITABLE = (
     (1, 'Transitable todo el tiempo'),
@@ -202,6 +217,9 @@ class Infraestructura(models.Model):
     def __unicode__(self):
         return self.vias_finca
 
+    class Meta:
+        verbose_name_plural = 'III.Información de infraestructura'
+
 CHOICE_SECTOR = (
     (1, 'Agricultura'),
     (2, 'Ganadería'),
@@ -211,12 +229,21 @@ CHOICE_SECTOR = (
 
 class SectoresProductos(models.Model):
     sector = models.IntegerField(choices=CHOICE_SECTOR)
-    producto = models.CharField(max_length=250)
 
     organizacion = models.ForeignKey(Organizacion)
 
     def __unicode__(self):
         return self.get_sector_display()
+
+    class Meta:
+        verbose_name_plural = '31.Sectores'
+
+class Productos(models.Model):
+    producto = models.CharField(max_length=250)
+    sector = models.ForeignKey(SectoresProductos)
+
+    class Meta:
+        verbose_name_plural = 'Productos'
 
 
 class Actividades(models.Model):
@@ -235,6 +262,9 @@ class Actividad(models.Model):
     def __unicode__(self):
         return self.get_actividad_display()
 
+    class Meta:
+        verbose_name_plural = 'Actividad'
+
 class Servicios(models.Model):
     nombre = models.CharField(max_length=250)
 
@@ -250,4 +280,7 @@ class Servicio(models.Model):
 
     def __unicode__(self):
         return self.get_actividad_display()
+
+    class Meta:
+        verbose_name_plural = 'Servicios'
 

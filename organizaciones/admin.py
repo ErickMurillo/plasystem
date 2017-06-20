@@ -1,48 +1,56 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 from .models import *
+from nested_admin import NestedTabularInline,NestedModelAdmin
 
-class ApoyoDonanteInline(admin.TabularInline):
+class ApoyoDonanteInline(NestedTabularInline):
     model = ApoyoDonante
     extra = 1
 
-class OrganizacionPerteneceInline(admin.TabularInline):
+class OrganizacionPerteneceInline(NestedTabularInline):
     model = OrganizacionPertenece
     extra = 1
 
-class MiembrosOficialesInline(admin.TabularInline):
+class MiembrosOficialesInline(NestedTabularInline):
     model = MiembrosOficiales
     extra = 1
 
-class NumeroCooperativaInline(admin.TabularInline):
+class NumeroCooperativaInline(NestedTabularInline):
     model = NumeroCooperativa
     extra = 1
 
-class ProductoresProveedoresInline(admin.TabularInline):
+class ProductoresProveedoresInline(NestedTabularInline):
     model = ProductoresProveedores
     extra = 1
 
-class EmpleadosOrganizacionInline(admin.TabularInline):
+class EmpleadosOrganizacionInline(NestedTabularInline):
     model = EmpleadosOrganizacion
     extra = 1
 
-class InfraestructuraInline(admin.TabularInline):
+class InfraestructuraInline(NestedTabularInline):
     model = Infraestructura
     extra = 1
 
-class SectoresProductosInline(admin.TabularInline):
+class ProductosInline(NestedTabularInline):
+    model = Productos
+    extra = 1
+    max_num = 5
+
+class SectoresInline(NestedTabularInline):
     model = SectoresProductos
     extra = 1
+    inlines = [ProductosInline]
+    max_num = 4
 
-class ActividadInline(admin.TabularInline):
+class ActividadInline(NestedTabularInline):
     model = Actividad
     extra = 1
 
-class ServicioInline(admin.TabularInline):
-    model = Actividad
+class ServicioInline(NestedTabularInline):
+    model = Servicio
     extra = 1
 
-class OrganizacionAdmin(admin.ModelAdmin):
+class OrganizacionAdmin(NestedModelAdmin):
     fieldsets = (
         (None, {
             'fields': (('nombre', 'tipo', 'direccion'),('pais',
@@ -61,7 +69,7 @@ class OrganizacionAdmin(admin.ModelAdmin):
             'fields': (('persona2_contacto','persona2_cargo'),
                       ('persona2_telefono','persona2_correo')),
         }),
-        ('Situación legal y organizativa de la organización', {
+        ('II.Situación legal y organizativa de la organización', {
             'fields': (('personeria','en_operaciones','incorporacion'),
                       ('licencia','tributaria'),'vision','mision','apoyo'),
         }),
@@ -70,7 +78,7 @@ class OrganizacionAdmin(admin.ModelAdmin):
                ApoyoDonanteInline,OrganizacionPerteneceInline,
                MiembrosOficialesInline,NumeroCooperativaInline,
                ProductoresProveedoresInline,EmpleadosOrganizacionInline,
-               InfraestructuraInline,SectoresProductosInline,
+               InfraestructuraInline,SectoresInline,
                ActividadInline,ServicioInline
                ]
 
