@@ -141,5 +141,26 @@ $(document).ready(function(){
       }
     });
 });
+
+
+// org
+  var pais = [];
+  $(document).on('change','#id_pais',function(){
+    $('#id_pais :selected').each(function(i, selected){
+      pais[i] = $(selected).val();
+    });
+    $.getJSON('/organizaciones/ajax/orgs/?ids='+pais.join(","), function(data){
+      $('#id_organizacion').html('');
+      $("#id_organizacion").multiselect('enable');
+      $("#id_organizacion").multiselect('refresh');
+      if(data){
+        $.each(data, function(i, item){
+          $('#id_organizacion').append($('<option></option>').val(item.id).html(item.nombre));
+        });
+        $('#id_organizacion').multiselect('rebuild');
+      }
+    });
+
+  });
 </script>
 {% endblock %}

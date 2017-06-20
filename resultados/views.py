@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from organizaciones.models import *
 from django.db.models import Sum, Count, Avg, F
+import json as simplejson
+
 # Create your views here.
 
 def _queryset_filtrado(request):
@@ -98,10 +100,17 @@ def dashboard(request,template="organizaciones/dashboard.html"):
     result_list = list(sorted(set(list_ev_org + list_im_org)))
 
     # --------
+    orgs = Organizacion.objects.filter(id__in = result_list)
 
-    miembros_hombres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('activos_hombre'))['total']
+    total_hombres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('total_hombre'))['total']
+    total_mujeres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('total_mujer'))['total']
+    
 
-    miembros_mujeres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('activos_mujer'))['total']
+    activos_hombres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('activos_hombre'))['total']
+    activos_mujeres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('activos_mujer'))['total']
+    
+    jovenes_hombres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('jovenes_hombre'))['total']
+    jovenes_mujeres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('jovenes_mujer'))['total']
     
 
     # empleados de la org tiempo completo, preg 22
@@ -112,6 +121,7 @@ def dashboard(request,template="organizaciones/dashboard.html"):
                                             adultos_mujer = Sum('adultos_mujer'),
                                             jovenes_hombre = Sum('jovenes_hombre'),
                                             jovenes_mujer = Sum('jovenes_mujer'))
+    print empleados_org
 
     # situacion legal y organizativa de org
     personeria = Organizacion.objects.filter(id__in = result_list,personeria = 1).count()
@@ -151,3 +161,20 @@ def dashboard(request,template="organizaciones/dashboard.html"):
         productores.append((result['total_h'],result['total_m'],result['activos_h'],result['activos_m'],result['jovenes_h'],result['jovenes_m']))
 
     return render(request, template, locals())
+
+def detail_org(request,template='organizaciones/detalle-org.html', id=None):
+    print request.session['anio']
+
+    return render(request, template, locals())
+
+#ajax
+def get_org(request):
+    ids = request.GET.get('ids', '')
+    if ids:
+        lista = ids.split(',')
+    results = []
+
+    foo = Pais.objects.filter(id__in = lista).order_by('nombre').distinct().values_list('id', flat=True)
+    orgs = Organizacion.objects.filter(pais__id__in=foo).order_by('nombre').values('id', 'nombre')
+
+    return HttpResponse(simplejson.dumps(list(orgs)), content_type = 'application/json')
