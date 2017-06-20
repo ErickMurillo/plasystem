@@ -1,0 +1,137 @@
+{% extends "organizaciones/base-org-dash.html" %}
+
+{% block content %}
+<div class="content">
+	<div class="">
+		<div class="page-header-title">
+			<h4 class="page-title">Detalle </h4>
+		</div>
+	</div>
+
+	<div class="page-content-wrapper ">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<h4 class="m-t-0">Área reciben apoyo <span class="mdi mdi-help-circle"></span></h4>
+							<div id="grafico3" width:'100%' style="height: 350px;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<h4 class="m-t-0">Miembros (directivos de la OP+ indirectos vías Sucursal) <span class="mdi mdi-help-circle"></span></h4>
+							<div id="grafico4" width:'100%' style="height: 350px;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<h4 class="m-t-0">Productores proveedores no socios <span class="mdi mdi-help-circle"></span></h4>
+							<div id="grafico5" width:'100%' style="height: 350px;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+		
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+	Highcharts.chart('grafico3', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: [{% for k in areas.keys %}'{{k}}',{% endfor %}]
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        reversed: true
+    },
+    plotOptions: {
+        series: {
+            stacking: 'normal'
+        }
+    },
+    series: [{
+        name: 'Áreas',
+        data: [{% for v in areas.values %}{{v}},{% endfor %}]
+    }]
+});
+
+Highcharts.chart('grafico4', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Total H', 'Total M','Activos H', 'Activos M', 'Jovenes H', 'Jovenes M']
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        reversed: true
+    },
+    
+    series: [
+    {% for k,v in miembros.items %}
+    	{
+	        name: '{{k}}',
+	        data: [{{v.0|default:"0"}}, {{v.1|default:"0"}}, {{v.2|default:"0"}}, {{v.3|default:"0"}}, {{v.4|default:"0"}},{{v.5|default:"0"}}]
+    	},
+    {% endfor %}]
+});
+
+Highcharts.chart('grafico5', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Número de miembros registrados oficialmente'
+    },
+    xAxis: {
+        categories: ['Hombres', 'Mujeres']
+    },
+    credits: {
+        enabled: false
+    },
+    series: [{
+        name: 'Total',
+        data: [{{productores.0.0|default:"0"}}, {{productores.1|default:"0"}}]
+    }, {
+        name: 'Activos',
+        data: [{{productores.2|default:"0"}}, {{productores.3|default:"0"}}]
+    }, {
+        name: 'Jovenes',
+        data: [{{productores.4|default:"0"}}, {{productores.5|default:"0"}}]
+    }]
+});
+</script>
+{% endblock %}

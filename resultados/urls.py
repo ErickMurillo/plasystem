@@ -6,5 +6,8 @@ from .view2 import *
 urlpatterns = [
     url(r'^$', consulta, name='consulta-org'),
     url(r'^dashboard/$', dashboard, name='dashboard-org'),
-    url(r'^grafo/resultado/$', grafo_comparativo, name='grafo-comparativo'),
+    url(r'^ajax/orgs/$', get_org, name='get-org'),
+    url(r'^dashboard/ficha-organizacion/(?P<id>[0-9])/$', detail_org, name='detail-org'),
+
+	url(r'^grafo/resultado/$', grafo_comparativo, name='grafo-comparativo'),
 ]

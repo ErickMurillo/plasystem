@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from organizaciones.models import *
 from django.db.models import Sum, Count, Avg, F
+import json as simplejson
+
 # Create your views here.
 
 def _queryset_filtrado(request):
@@ -98,10 +100,17 @@ def dashboard(request,template="organizaciones/dashboard.html"):
     result_list = list(sorted(set(list_ev_org + list_im_org)))
 
     # --------
+    orgs = Organizacion.objects.filter(id__in = result_list)
 
-    miembros_hombres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('activos_hombre'))['total']
+    total_hombres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('total_hombre'))['total']
+    total_mujeres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('total_mujer'))['total']
+    
 
-    miembros_mujeres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('activos_mujer'))['total']
+    activos_hombres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('activos_hombre'))['total']
+    activos_mujeres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('activos_mujer'))['total']
+    
+    jovenes_hombres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('jovenes_hombre'))['total']
+    jovenes_mujeres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('jovenes_mujer'))['total']
     
 
     # empleados de la org tiempo completo, preg 22
@@ -113,21 +122,58 @@ def dashboard(request,template="organizaciones/dashboard.html"):
                                             jovenes_hombre = Sum('jovenes_hombre'),
                                             jovenes_mujer = Sum('jovenes_mujer'))
 
+    # servicios y productos
+    sectores = {}
+    for obj in CHOICE_SECTOR:
+        conteo = SectoresProductos.objects.filter(organizacion__in = result_list, sector = obj[0]).count()
+
+        productos = []
+        for x in Productos.objects.filter(sector__sector = obj[0]):
+            prod = ProductosOrg.objects.filter(id = x.producto1.id)
+            productos.append((prod,prod.count()))
+
+        sectores[obj[1]] = conteo,productos
+
+
     # situacion legal y organizativa de org
     personeria = Organizacion.objects.filter(id__in = result_list,personeria = 1).count()
     en_operaciones = Organizacion.objects.filter(id__in = result_list,en_operaciones = 1).count()
     apoyo = Organizacion.objects.filter(id__in = result_list,apoyo = 1).count()
 
+    return render(request, template, locals())
+
+def detail_org(request,template='organizaciones/detalle-org.html', id=None):
+    if request.method == 'POST':
+        mensaje = None
+        form = OrganizacionesForm(request.POST)
+        if form.is_valid():
+            request.session['anio'] = form.cleaned_data['anio']
+            request.session['organizacion'] = form.cleaned_data['organizacion']
+            request.session['pais'] = form.cleaned_data['pais']
+
+            mensaje = "Todas las variables estan correctamente :)"
+            request.session['activo'] = True
+            centinela = 1
+
+            return HttpResponseRedirect('/organizaciones/dashboard/')
+
+        else:
+            centinela = 0
+
+    else:
+        form = OrganizacionesForm()
+        mensaje = "Existen alguno errores"
+
     # areas que reciben apoyo
     areas = {}
     for obj in Areas.objects.all():
-        x = ApoyoDonante.objects.filter(areas = obj, organizacion__in = result_list).count()
+        x = ApoyoDonante.objects.filter(areas = obj, organizacion__id = id).count()
         areas[obj] = x
 
     # miembros
     miembros = {}
     for obj in CHOICE_MIEMBROS:
-        result = MiembrosOficiales.objects.filter(organizacion__in = result_list,opcion = obj[0]).aggregate(
+        result = MiembrosOficiales.objects.filter(organizacion__id = id,opcion = obj[0]).aggregate(
                                         total_h = Sum('total_hombre'),
                                         total_m = Sum('total_mujer'),
                                         activos_h = Sum('activos_hombre'),
@@ -140,7 +186,7 @@ def dashboard(request,template="organizaciones/dashboard.html"):
     # productores proveedores
     productores = []
     for obj in CHOICE_PROVEEDORES:
-        result = ProductoresProveedores.objects.filter(organizacion__in = result_list,opcion = obj[0]).aggregate(
+        result = ProductoresProveedores.objects.filter(organizacion__id = id,opcion = obj[0]).aggregate(
                                         total_h = Sum('total_hombre'),
                                         total_m = Sum('total_mujer'),
                                         activos_h = Sum('activos_hombre'),
@@ -150,4 +196,17 @@ def dashboard(request,template="organizaciones/dashboard.html"):
 
         productores.append((result['total_h'],result['total_m'],result['activos_h'],result['activos_m'],result['jovenes_h'],result['jovenes_m']))
 
+
     return render(request, template, locals())
+
+#ajax
+def get_org(request):
+    ids = request.GET.get('ids', '')
+    if ids:
+        lista = ids.split(',')
+    results = []
+
+    foo = Pais.objects.filter(id__in = lista).order_by('nombre').distinct().values_list('id', flat=True)
+    orgs = Organizacion.objects.filter(pais__id__in=foo).order_by('nombre').values('id', 'nombre')
+
+    return HttpResponse(simplejson.dumps(list(orgs)), content_type = 'application/json')
