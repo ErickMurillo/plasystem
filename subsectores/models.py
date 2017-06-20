@@ -150,8 +150,8 @@ class RegistroPlanAnual(models.Model):
     tipo_actividad = models.IntegerField(choices=CHOICES_TIPO_ACTIVIDAD,
                     help_text='Contribuye al dato del indicador',
                     verbose_name='Esta actividad contribuye')
-    total_metas = models.FloatField(default=0, editable=True, null=True, blank=True)
-    total_presupuesto = models.FloatField(default=0, editable=True, null=True, blank=True)
+    total_metas = models.FloatField(default=0, editable=False, null=True, blank=True)
+    total_presupuesto = models.FloatField(default=0, editable=False, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         total_meta = 0
@@ -172,17 +172,14 @@ class RegistroPlanAnual(models.Model):
         verbose_name_plural = 'Registros planes de actividades anuales'
 
 
-CHOICES_MESES = ((1,'Enero'),(2,'Febrero'),
-                 (3,'Marzo'),(4,'Abril'),
-                 (5,'Mayo'),(6,'Junio'),
-                 (7,'Julio'),(8,'Agosto'),
-                 (9,'Septiembre'),(10,'Octubre'),
-                 (11,'Noviembre'),(12,'Diciembre'),)
+CHOICES_MESES = ((1,'1er trimestre'),(2,'2do trimestre'),
+                 (3,'3er trimestre'),(4,'4to trimestre'),
+                )
 
 @python_2_unicode_compatible
 class RegistroMeses(models.Model):
     registro_anual = models.ForeignKey(RegistroPlanAnual)
-    mes = models.IntegerField(choices=CHOICES_MESES)
+    mes = models.IntegerField(choices=CHOICES_MESES, verbose_name='Trimestres')
     anios = models.IntegerField('años')
     meta = models.FloatField()
     presupuesto = models.FloatField()

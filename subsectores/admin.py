@@ -50,7 +50,7 @@ class RegistroMesesInline(admin.TabularInline):
     form = RegistroMesesForm
     model = RegistroMeses
     extra = 1
-    max_num = 12
+    max_num = 4
 
 class RegistroPlanAnualAdmin(admin.ModelAdmin):
     inlines = [RegistroMesesInline]
