@@ -238,8 +238,18 @@ class SectoresProductos(models.Model):
     class Meta:
         verbose_name_plural = '31.Sectores'
 
+class ProductosOrg(models.Model):
+    nombre = models.CharField(max_length=250)
+
+    def __unicode__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name_plural = 'Productos'
+
 class Productos(models.Model):
-    producto = models.CharField(max_length=250)
+    # producto = models.CharField(max_length=250)
+    producto1 = models.ForeignKey(ProductosOrg)
     sector = models.ForeignKey(SectoresProductos)
 
     class Meta:
