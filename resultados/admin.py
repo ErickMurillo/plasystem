@@ -4,12 +4,12 @@ from .models import *
 class GestionInternaInline(admin.TabularInline):
     model = GestionInterna
     extra = 1
-    max_num = 3
+    max_num = 4
 
 class OperacionesInline(admin.TabularInline):
     model = Operaciones
     extra = 1
-    max_num = 3
+    max_num = 4
 
 class SostenibilidadInline(admin.TabularInline):
     model = Sostenibilidad
@@ -19,32 +19,32 @@ class SostenibilidadInline(admin.TabularInline):
 class GestionFinancieraInline(admin.TabularInline):
     model = GestionFinanciera
     extra = 1
-    max_num = 3
+    max_num = 4
 
 class DesempenoFinancieroInline(admin.TabularInline):
     model = DesempenoFinanciero
     extra = 1
-    max_num = 3
+    max_num = 4
 
 class SuministrosInline(admin.TabularInline):
     model = Suministros
     extra = 1
-    max_num = 3
+    max_num = 6
 
 class MercadosInline(admin.TabularInline):
     model = Mercados
     extra = 1
-    max_num = 3
+    max_num = 4
 
 class RiesgoExternosInline(admin.TabularInline):
     model = RiesgoExternos
     extra = 1
-    max_num = 3
+    max_num = 5
 
 class FacilitadoresInline(admin.TabularInline):
     model = Facilitadores
     extra = 1
-    max_num = 3
+    max_num = 6
 
 class ResultadoEvaluacionAdmin(admin.ModelAdmin):
     inlines = [GestionInternaInline,OperacionesInline,
