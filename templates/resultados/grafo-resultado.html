@@ -1,5 +1,74 @@
-{% extends "base.html" %}
+{% extends "organizaciones/base-org-dash.html" %}
+
+{% block extra_js %}
+<script type="text/javascript">
+	Highcharts.chart('container', {
+    chart: {
+        type: 'areaspline'
+    },
+    title: {
+        text: 'Comparativo por año evaluación SCOPE Pro'
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'left',
+        verticalAlign: 'top',
+        x: 150,
+        y: 100,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+    },
+    xAxis: {
+        categories: [
+            'bloque1',
+            'bloque2',
+            'bloque3',
+            'bloque4',
+            'bloque5',
+            'bloque6',
+            'bloque7',
+            'bloque8',
+            'bloque9',
+        ],
+        plotBands: [{ // visualize the weekend
+            from: 4.5,
+            to: 6.5,
+            color: 'rgba(68, 170, 213, .2)'
+        }]
+    },
+    yAxis: {
+        title: {
+            text: 'valor'
+        }
+    },
+    tooltip: {
+        shared: true,
+        valueSuffix: ' '
+    },
+    credits: {
+        enabled: false
+    },
+    plotOptions: {
+        areaspline: {
+            fillOpacity: 0.5
+        }
+    },
+    series: [
+    {% for k,v in comparativa.items %}
+    	{
+        	name: '{{k}}',
+        	data: {{v}}
+    	},
+    {% endfor %}
+    ]
+});
+</script>
+    
+{% endblock extra_js %}
 
 {% block content %}
+<br><br><br><br><br>
     <p>Hola grafo</p>
+    <div id="container" width:'100%' style="height: 350px;"></div>
 {% endblock content %}
