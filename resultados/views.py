@@ -121,23 +121,59 @@ def dashboard(request,template="organizaciones/dashboard.html"):
                                             adultos_mujer = Sum('adultos_mujer'),
                                             jovenes_hombre = Sum('jovenes_hombre'),
                                             jovenes_mujer = Sum('jovenes_mujer'))
-    print empleados_org
+
+    # servicios y productos
+    sectores = {}
+    for obj in CHOICE_SECTOR:
+        conteo = SectoresProductos.objects.filter(organizacion__in = result_list, sector = obj[0]).count()
+
+        productos = []
+        for x in Productos.objects.filter(sector__sector = obj[0]):
+            prod = ProductosOrg.objects.filter(id = x.producto1.id)
+            productos.append((prod,prod.count()))
+
+        sectores[obj[1]] = conteo,productos
+
 
     # situacion legal y organizativa de org
     personeria = Organizacion.objects.filter(id__in = result_list,personeria = 1).count()
     en_operaciones = Organizacion.objects.filter(id__in = result_list,en_operaciones = 1).count()
     apoyo = Organizacion.objects.filter(id__in = result_list,apoyo = 1).count()
 
+    return render(request, template, locals())
+
+def detail_org(request,template='organizaciones/detalle-org.html', id=None):
+    if request.method == 'POST':
+        mensaje = None
+        form = OrganizacionesForm(request.POST)
+        if form.is_valid():
+            request.session['anio'] = form.cleaned_data['anio']
+            request.session['organizacion'] = form.cleaned_data['organizacion']
+            request.session['pais'] = form.cleaned_data['pais']
+
+            mensaje = "Todas las variables estan correctamente :)"
+            request.session['activo'] = True
+            centinela = 1
+
+            return HttpResponseRedirect('/organizaciones/dashboard/')
+
+        else:
+            centinela = 0
+
+    else:
+        form = OrganizacionesForm()
+        mensaje = "Existen alguno errores"
+
     # areas que reciben apoyo
     areas = {}
     for obj in Areas.objects.all():
-        x = ApoyoDonante.objects.filter(areas = obj, organizacion__in = result_list).count()
+        x = ApoyoDonante.objects.filter(areas = obj, organizacion__id = id).count()
         areas[obj] = x
 
     # miembros
     miembros = {}
     for obj in CHOICE_MIEMBROS:
-        result = MiembrosOficiales.objects.filter(organizacion__in = result_list,opcion = obj[0]).aggregate(
+        result = MiembrosOficiales.objects.filter(organizacion__id = id,opcion = obj[0]).aggregate(
                                         total_h = Sum('total_hombre'),
                                         total_m = Sum('total_mujer'),
                                         activos_h = Sum('activos_hombre'),
@@ -150,7 +186,7 @@ def dashboard(request,template="organizaciones/dashboard.html"):
     # productores proveedores
     productores = []
     for obj in CHOICE_PROVEEDORES:
-        result = ProductoresProveedores.objects.filter(organizacion__in = result_list,opcion = obj[0]).aggregate(
+        result = ProductoresProveedores.objects.filter(organizacion__id = id,opcion = obj[0]).aggregate(
                                         total_h = Sum('total_hombre'),
                                         total_m = Sum('total_mujer'),
                                         activos_h = Sum('activos_hombre'),
@@ -160,10 +196,6 @@ def dashboard(request,template="organizaciones/dashboard.html"):
 
         productores.append((result['total_h'],result['total_m'],result['activos_h'],result['activos_m'],result['jovenes_h'],result['jovenes_m']))
 
-    return render(request, template, locals())
-
-def detail_org(request,template='organizaciones/detalle-org.html', id=None):
-    print request.session['anio']
 
     return render(request, template, locals())
 
