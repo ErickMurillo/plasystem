@@ -164,6 +164,9 @@ def detail_org(request,template='organizaciones/detalle-org.html', id=None):
         form = OrganizacionesForm()
         mensaje = "Existen alguno errores"
 
+    # cooperativas miembros
+    cooprativas = NumeroCooperativa.objects.filter(organizacion_id = id).values_list('numero_cooperativa', flat=True)
+
     # areas que reciben apoyo
     areas = {}
     for obj in Areas.objects.all():
@@ -196,6 +199,9 @@ def detail_org(request,template='organizaciones/detalle-org.html', id=None):
 
         productores.append((result['total_h'],result['total_m'],result['activos_h'],result['activos_m'],result['jovenes_h'],result['jovenes_m']))
 
+
+    # tipo de orgs a las que pertence
+    org_pertenece = OrganizacionPertenece.objects.filter(organizacion__id = id).values_list('organizaciones__nombre',flat=True)
 
     return render(request, template, locals())
 

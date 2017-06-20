@@ -9,7 +9,7 @@ class ApoyoDonanteInline(NestedTabularInline):
 
 class OrganizacionPerteneceInline(NestedTabularInline):
     model = OrganizacionPertenece
-    extra = 1
+    max_num = 1
 
 class MiembrosOficialesInline(NestedTabularInline):
     model = MiembrosOficiales

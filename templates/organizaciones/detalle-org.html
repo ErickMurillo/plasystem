@@ -11,6 +11,20 @@
 	<div class="page-content-wrapper ">
 		<div class="container">
 			<div class="row">
+		        <div class="col-sm-4 col-lg-2">
+		          <div class="panel text-center">
+		            <div class="panel-heading">
+		              <h4 class="panel-title text-muted font-light"><b>Cooperativas que son miembros</b></h4>
+		            </div>
+		            <div class="panel-body p-t-10">
+		              <h2 class="m-t-0 m-b-15"><b>{{cooprativas.0}}</b></h2>
+		              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+		            </div>
+		          </div>
+		        </div>
+		    </div>
+
+			<div class="row">
 				<div class="col-sm-12">
 					<div class="panel panel-primary">
 						<div class="panel-body">
@@ -38,6 +52,21 @@
 						<div class="panel-body">
 							<h4 class="m-t-0">Productores proveedores no socios <span class="mdi mdi-help-circle"></span></h4>
 							<div id="grafico5" width:'100%' style="height: 350px;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<h4 class="m-t-0">Tipo de organizaciones a las que pertenece <span class="mdi mdi-help-circle"></span></h4>
+							<ul>
+								{% for org in org_pertenece %}
+									<li>{{org}}</li>
+								{% endfor %}
+							</ul>
 						</div>
 					</div>
 				</div>
@@ -133,5 +162,6 @@ Highcharts.chart('grafico5', {
         data: [{{productores.4|default:"0"}}, {{productores.5|default:"0"}}]
     }]
 });
+
 </script>
 {% endblock %}
