@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 from organizaciones.models import *
 from multiselectfield import MultiSelectField
+from productores.models import Cultivo
 
 # Create your models here.
 class Digitador(models.Model):
@@ -36,9 +37,10 @@ class ResultadosEvaluacion(models.Model):
         verbose_name_plural = 'V. Resultados de evaluación SCOPE Pro'
 
 CHOICE_GESTION = (
-        (1, 'Gobernabilidad'),
-        (2, 'Organización interna'),
-        (3, 'Planificación de negocios')
+        (1, 'Total Gestion interna'),
+        (2, 'Gobernabilidad'),
+        (3, 'Organización interna'),
+        (4, 'Planificación de negocios')
     )
 
 class GestionInterna(models.Model):
@@ -55,9 +57,10 @@ class GestionInterna(models.Model):
 
 
 CHOICE_OPERACIONES = (
-        (1, 'Logistica, almacenamiento y tecnología'),
-        (2, 'Producción'),
-        (3, 'Procesamiento')
+        (1, 'Total operaciones'),
+        (2, 'Logistica, almacenamiento y tecnología'),
+        (3, 'Producción'),
+        (4, 'Procesamiento')
     )
 
 class Operaciones(models.Model):
@@ -73,8 +76,9 @@ class Operaciones(models.Model):
         verbose_name_plural = '2. Operaciones'
 
 CHOICE_SOSTENIBILIDAD = (
-        (1, 'Aspectos Sociales'),
-        (2, 'Aspectos ambientales')
+        (1, 'Total sostenibilidad'),
+        (2, 'Aspectos Sociales'),
+        (3, 'Aspectos ambientales')
     )
 
 class Sostenibilidad(models.Model):
@@ -91,9 +95,10 @@ class Sostenibilidad(models.Model):
 
 
 CHOICE_GESTION_FINANCIERA = (
-        (1, 'Gestión financiera'),
-        (2, 'Planificación financiera'),
-        (3, 'Registro de información y monitoreo')
+        (1, 'Total gestión financiera'),
+        (2, 'Gestión financiera'),
+        (3, 'Planificación financiera'),
+        (4, 'Registro de información y monitoreo')
     )
 
 class GestionFinanciera(models.Model):
@@ -110,9 +115,10 @@ class GestionFinanciera(models.Model):
 
 
 CHOICE_DESEMPENO_FINANCIERO = (
-        (1, 'Balance General'),
-        (2, 'Estado de resultado'),
-        (3, 'Pérdidas y ganancias')
+        (1, 'Total Desempeño financiero'),
+        (2, 'Balance General'),
+        (3, 'Estado de resultado'),
+        (4, 'Pérdidas y ganancias')
     )
 
 class DesempenoFinanciero(models.Model):
@@ -129,11 +135,12 @@ class DesempenoFinanciero(models.Model):
 
 
 CHOICE_SUMINISTROS = (
-        (1, 'Adquisición'),
-        (2, 'Logística de entrada'),
-        (3, 'Contratación de miembros/agr. Ext.'),
-        (4, 'Supervisión y cap.de productores'),
-        (5, 'Servicios financieros a miembros'),
+        (1, 'Total suministros'),
+        (2, 'Adquisición'),
+        (3, 'Logística de entrada'),
+        (4, 'Contratación de miembros/agr. Ext.'),
+        (5, 'Supervisión y cap.de productores'),
+        (6, 'Servicios financieros a miembros'),
     )
 
 class Suministros(models.Model):
@@ -150,9 +157,10 @@ class Suministros(models.Model):
 
 
 CHOICE_MERCADOS = (
-        (1, 'Riesgo relacionado con el mercado'),
-        (2, 'Logística de salida'),
-        (3, 'Estrategias de mercadeo'),
+        (1, 'Total mercados'),
+        (2, 'Riesgo relacionado con el mercado'),
+        (3, 'Logística de salida'),
+        (4, 'Estrategias de mercadeo'),
     )
 
 class Mercados(models.Model):
@@ -169,10 +177,11 @@ class Mercados(models.Model):
 
 
 CHOICE_RIESGOS_EXTERNOS = (
-        (1, 'Conocimiento de riesgos nat. y climat.'),
-        (2, 'Mitigación de riesgos nat. y climat.'),
-        (3, 'Conocimiento de riesgos biol. y amb.'),
-        (4, 'Mitigación de riesgos biológicos y amb.')
+        (1, 'Total riesgo externo'),
+        (2, 'Conocimiento de riesgos nat. y climat.'),
+        (3, 'Mitigación de riesgos nat. y climat.'),
+        (4, 'Conocimiento de riesgos biol. y amb.'),
+        (5, 'Mitigación de riesgos biológicos y amb.')
     )
 
 class RiesgoExternos(models.Model):
@@ -189,11 +198,12 @@ class RiesgoExternos(models.Model):
 
 
 CHOICE_FACILITADORES = (
-        (1, 'Desarrolladores de capacidades y ONG'),
-        (2, 'Proveedores de servicios'),
-        (3, 'Organizaciones del sector'),
-        (4, 'Comunidad'),
-        (5, 'Gobierno y regulaciones')
+        (1, 'Total facilitadores'),
+        (2, 'Desarrolladores de capacidades y ONG'),
+        (3, 'Proveedores de servicios'),
+        (4, 'Organizaciones del sector'),
+        (5, 'Comunidad'),
+        (6, 'Gobierno y regulaciones')
     )
 
 class Facilitadores(models.Model):
@@ -239,16 +249,13 @@ CHOICES_34_1 = (
         (1, 'a) Producen y comercializan de forma colectiva'),
         (2, 'b) Producen productos sanos'),
         (3, 'c) Tienen contratos de largo plazo'),
-        (4, 'c.1) Contrato escrito'),
-        (5, 'c.2) Contrato verbal'),
-        (6, 'c.3.) Periodo del contrato')
     )
 
 class ProducenComercializan(models.Model):
     opcion = models.IntegerField(choices=CHOICES_34_1)
     cantidad_hombres = models.IntegerField()
     cantidad_mujeres = models.IntegerField()
-    cultivo = models.CharField(max_length=250)
+    cultivo = models.ForeignKey(Cultivo)
     area_hombre_sembrada = models.FloatField()
     area_mujer_sembrada = models.FloatField()
     area_hombre_cosechada = models.FloatField()
@@ -262,6 +269,20 @@ class ProducenComercializan(models.Model):
 
     class Meta:
         verbose_name_plural = '34.1 Productores que producen y comercializan de forma colectiva'
+
+CHOICE_CONTRATO = (
+        (1, 'c.1) Contrato escrito'),
+        (2, 'c.2) Contrato verbal'),
+    )
+
+class AcuerdoComercial(models.Model):
+    tipo_contrato = models.IntegerField(choices=CHOICE_CONTRATO, null=True, blank=True)
+    periodo = models.CharField('c.3.Periodo del contrato', max_length=150, null=True, blank=True)
+
+    resultado_implementacion = models.ForeignKey(ResultadosImplementacion)
+
+    class Meta:
+        verbose_name_plural = 'Acuerdo comerciales'
 
 
 CHOICE_TIPO_MERCADO = (
@@ -277,8 +298,10 @@ CHOICE_TIPO_MERCADO = (
     )
 
 class IncrementoAbastecimiento(models.Model):
-    comprador = models.FloatField()
-    tipo_mercado = MultiSelectField(choices = CHOICE_TIPO_MERCADO)
+    comprador = models.CharField(max_length=250)
+    cantidad_hombres = models.IntegerField()
+    cantidad_mujeres = models.IntegerField()
+    tipo_mercado = models.IntegerField(choices = CHOICE_TIPO_MERCADO)
 
     resultado_implementacion = models.ForeignKey(ResultadosImplementacion)
 
@@ -290,13 +313,22 @@ CHOICE_AUMENTADO_INGRESOS = (
         (1, 'Café'),
         (2, 'Cacao'),
         (3, 'Hostalizas'),
-        
+
     )
 
 
 class AumentadoIngresos(models.Model):
     opcion = models.IntegerField(choices=CHOICE_AUMENTADO_INGRESOS)
-    valor = models.FloatField()
+    cantidad_hombres = models.IntegerField()
+    cantidad_mujeres = models.IntegerField()
+    area_hombre_sembrada = models.FloatField()
+    area_mujer_sembrada = models.FloatField()
+    area_hombre_cosechada = models.FloatField()
+    area_mujer_cosechada = models.FloatField()
+    unidad_medida = models.CharField(max_length=50)
+    cantidad = models.FloatField()
+    cantidad_certificada = models.FloatField()
+    precio_promedio = models.FloatField()
 
     resultado_implementacion = models.ForeignKey(ResultadosImplementacion)
 
@@ -305,7 +337,16 @@ class AumentadoIngresos(models.Model):
 
 
 class AumentadoProductividad(models.Model):
-    valor = models.FloatField()
+    cantidad_hombres = models.IntegerField()
+    cantidad_mujeres = models.IntegerField()
+    area_hombre_sembrada = models.FloatField()
+    area_mujer_sembrada = models.FloatField()
+    area_hombre_cosechada = models.FloatField()
+    area_mujer_cosechada = models.FloatField()
+    unidad_medida = models.CharField(max_length=50)
+    cantidad = models.FloatField()
+    cantidad_certificada = models.FloatField()
+    precio_promedio = models.FloatField()
 
     resultado_implementacion = models.ForeignKey(ResultadosImplementacion)
 
