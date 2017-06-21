@@ -164,6 +164,8 @@ def detail_org(request,template='organizaciones/detalle-org.html', id=None):
         form = OrganizacionesForm()
         mensaje = "Existen alguno errores"
 
+    org = Organizacion.objects.get(id = id)
+
     # cooperativas miembros
     cooprativas = NumeroCooperativa.objects.filter(organizacion_id = id).values_list('numero_cooperativa', flat=True)
 
@@ -202,6 +204,27 @@ def detail_org(request,template='organizaciones/detalle-org.html', id=None):
 
     # tipo de orgs a las que pertence
     org_pertenece = OrganizacionPertenece.objects.filter(organizacion__id = id).values_list('organizaciones__nombre',flat=True)
+
+    # empleados de la org
+    empleados = {}
+    for obj in CHOICE_EMPLEADOS:
+        result = EmpleadosOrganizacion.objects.filter(organizacion__id = id,opcion = obj[0]).aggregate(
+                                        total_h = Sum('total_hombre'),
+                                        total_m = Sum('total_mujer'),
+                                        adultos_h = Sum('adultos_hombre'),
+                                        adultos_m = Sum('adultos_mujer'),
+                                        jovenes_h = Sum('jovenes_hombre'),
+                                        jovenes_m = Sum('jovenes_mujer'))
+
+        empleados[obj[1]] = result['total_h'],result['total_m'],result['adultos_h'],result['adultos_m'],result['jovenes_h'],result['jovenes_m']
+
+    # scope pro
+    years = request.session['anio']
+    dic_anios = {}
+    for year in years:
+        gestion_interna = GestionInterna.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+
+        dic_anios[year] = gestion_interna
 
     return render(request, template, locals())
 

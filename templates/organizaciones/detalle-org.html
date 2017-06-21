@@ -4,7 +4,7 @@
 <div class="content">
 	<div class="">
 		<div class="page-header-title">
-			<h4 class="page-title">Detalle </h4>
+			<h4 class="page-title">Detalle {{org.nombre}}</h4>
 		</div>
 	</div>
 
@@ -71,6 +71,29 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<h4 class="m-t-0">Empleados de la organización <span class="mdi mdi-help-circle"></span></h4>
+							<div id="grafico6" width:'100%' style="height: 350px;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-body">
+                            <h4 class="m-t-0">Evaluación SCOPE Pro consolidado por bloque <span class="mdi mdi-help-circle"></span></h4>
+                            <div id="grafico7" width:'100%' style="height: 350px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 		</div>
 	</div>
 </div>
@@ -163,5 +186,89 @@ Highcharts.chart('grafico5', {
     }]
 });
 
+Highcharts.chart('grafico6', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Total H', 'Total M','Adultos H', 'Adultos M', 'Jovenes H', 'Jovenes M']
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        reversed: true
+    },
+    
+    series: [
+    {% for k,v in empleados.items %}
+    	{
+	        name: '{{k}}',
+	        data: [{{v.0|default:"0"}}, {{v.1|default:"0"}}, {{v.2|default:"0"}}, {{v.3|default:"0"}}, {{v.4|default:"0"}},{{v.5|default:"0"}}]
+    	},
+    {% endfor %}]
+});
+
+        
+
+
+Highcharts.chart('grafico7', {
+
+    chart: {
+        polar: true,
+        type: 'line'
+    },
+
+    title: {
+        text: '',
+        x: -80
+    },
+
+    pane: {
+        size: '80%'
+    },
+
+    xAxis: {
+        categories: ['Gestión Interna', 'Marketing', 'Development', 'Customer Support',
+                'Information Technology', 'Administration'],
+        tickmarkPlacement: 'on',
+        lineWidth: 0
+    },
+
+    yAxis: {
+        gridLineInterpolation: 'polygon',
+        lineWidth: 0,
+        min: 0
+    },
+
+    tooltip: {
+        shared: true,
+        pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
+    },
+
+    legend: {
+        align: 'right',
+        verticalAlign: 'top',
+        y: 70,
+        layout: 'vertical'
+    },
+
+    series: [{
+        name: 'Allocated Budget',
+        data: [43000, 19000, 60000, 35000, 17000, 10000],
+        pointPlacement: 'on'
+    }, {
+        name: 'Actual Spending',
+        data: [50000, 39000, 42000, 31000, 26000, 14000],
+        pointPlacement: 'on'
+    }]
+
+});
 </script>
 {% endblock %}
