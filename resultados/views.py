@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from organizaciones.models import *
 from django.db.models import Sum, Count, Avg, F
 import json as simplejson
+import collections
 
 # Create your views here.
 
@@ -164,6 +165,8 @@ def detail_org(request,template='organizaciones/detalle-org.html', id=None):
         form = OrganizacionesForm()
         mensaje = "Existen alguno errores"
 
+    org = Organizacion.objects.get(id = id)
+
     # cooperativas miembros
     cooprativas = NumeroCooperativa.objects.filter(organizacion_id = id).values_list('numero_cooperativa', flat=True)
 
@@ -202,6 +205,35 @@ def detail_org(request,template='organizaciones/detalle-org.html', id=None):
 
     # tipo de orgs a las que pertence
     org_pertenece = OrganizacionPertenece.objects.filter(organizacion__id = id).values_list('organizaciones__nombre',flat=True)
+
+    # empleados de la org
+    empleados = {}
+    for obj in CHOICE_EMPLEADOS:
+        result = EmpleadosOrganizacion.objects.filter(organizacion__id = id,opcion = obj[0]).aggregate(
+                                        total_h = Sum('total_hombre'),
+                                        total_m = Sum('total_mujer'),
+                                        adultos_h = Sum('adultos_hombre'),
+                                        adultos_m = Sum('adultos_mujer'),
+                                        jovenes_h = Sum('jovenes_hombre'),
+                                        jovenes_m = Sum('jovenes_mujer'))
+
+        empleados[obj[1]] = result['total_h'],result['total_m'],result['adultos_h'],result['adultos_m'],result['jovenes_h'],result['jovenes_m']
+
+    # scope pro
+    years = request.session['anio']
+    dic_anios = collections.OrderedDict()
+    for year in years:
+        gestion_interna = GestionInterna.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        operaciones = Operaciones.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        sostenibilidad = Sostenibilidad.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        gestion_financiera = GestionFinanciera.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        desempeno_financiero = DesempenoFinanciero.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        suministros = Suministros.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        mercados = Mercados.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        riesgo_externos = RiesgoExternos.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        facilitadores = Facilitadores.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+
+        dic_anios[year] = gestion_interna, operaciones, sostenibilidad, gestion_financiera, desempeno_financiero, suministros, mercados, riesgo_externos, facilitadores
 
     return render(request, template, locals())
 
