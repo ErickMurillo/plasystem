@@ -235,8 +235,8 @@ Highcharts.chart('grafico7', {
     },
 
     xAxis: {
-        categories: ['Gestión Interna', 'Marketing', 'Development', 'Customer Support',
-                'Information Technology', 'Administration'],
+        categories: ['Gestión Interna', 'Operaciones', 'Sostenibilidad', 'Gestión Financiera',
+                'Desempeño Financiero', 'Suministros', 'Mercados', 'Riesgos Externos', 'Facilitadores'],
         tickmarkPlacement: 'on',
         lineWidth: 0
     },
@@ -249,7 +249,7 @@ Highcharts.chart('grafico7', {
 
     tooltip: {
         shared: true,
-        pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
+        pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.1f}</b><br/>'
     },
 
     legend: {
@@ -259,15 +259,15 @@ Highcharts.chart('grafico7', {
         layout: 'vertical'
     },
 
-    series: [{
-        name: 'Allocated Budget',
-        data: [43000, 19000, 60000, 35000, 17000, 10000],
-        pointPlacement: 'on'
-    }, {
-        name: 'Actual Spending',
-        data: [50000, 39000, 42000, 31000, 26000, 14000],
-        pointPlacement: 'on'
-    }]
+    series: [
+    {% for k,v in dic_anios.items %}
+        {
+            name: '{{k}}',
+            data: [{% for x in v %}{{x.0|default:"0"}},{% endfor %}],
+            pointPlacement: 'on'
+        },
+    {% endfor %}
+    ]
 
 });
 </script>

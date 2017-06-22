@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from organizaciones.models import *
 from django.db.models import Sum, Count, Avg, F
 import json as simplejson
+import collections
 
 # Create your views here.
 
@@ -220,11 +221,19 @@ def detail_org(request,template='organizaciones/detalle-org.html', id=None):
 
     # scope pro
     years = request.session['anio']
-    dic_anios = {}
+    dic_anios = collections.OrderedDict()
     for year in years:
         gestion_interna = GestionInterna.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        operaciones = Operaciones.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        sostenibilidad = Sostenibilidad.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        gestion_financiera = GestionFinanciera.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        desempeno_financiero = DesempenoFinanciero.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        suministros = Suministros.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        mercados = Mercados.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        riesgo_externos = RiesgoExternos.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        facilitadores = Facilitadores.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
 
-        dic_anios[year] = gestion_interna
+        dic_anios[year] = gestion_interna, operaciones, sostenibilidad, gestion_financiera, desempeno_financiero, suministros, mercados, riesgo_externos, facilitadores
 
     return render(request, template, locals())
 
