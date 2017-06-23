@@ -269,9 +269,6 @@ class Actividad(models.Model):
 
     organizacion = models.ForeignKey(Organizacion)
 
-    def __unicode__(self):
-        return self.get_actividad_display()
-
     class Meta:
         verbose_name_plural = 'Actividad'
 
@@ -287,9 +284,6 @@ class Servicio(models.Model):
     no_socios = models.IntegerField(choices=CHOICE_SI_NO)
 
     organizacion = models.ForeignKey(Organizacion)
-
-    def __unicode__(self):
-        return self.get_actividad_display()
 
     class Meta:
         verbose_name_plural = 'Servicios'

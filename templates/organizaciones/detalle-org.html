@@ -84,11 +84,80 @@
 			</div>
 
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                     <div class="panel panel-primary">
                         <div class="panel-body">
                             <h4 class="m-t-0">Evaluación SCOPE Pro consolidado por bloque <span class="mdi mdi-help-circle"></span></h4>
                             <div id="grafico7" width:'100%' style="height: 350px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-body">
+                            <h4 class="m-t-0">Evaluación SCOPE Pro consolidado por bloque <span class="mdi mdi-help-circle"></span></h4>
+                            <style type="text/css">
+                                .tabla {
+                                  height: 350px;
+                                  overflow: auto;  
+                                }
+                            </style>
+                            <div class="tabla">
+                                {% include "organizaciones/tabla_scope.html" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-body">
+                            <h4 class="m-t-0">Actividades <span class="mdi mdi-help-circle"></span></h4>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Actividades</th>
+                                        <th>Socios</th>
+                                        <th>No socios</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for k,v in actividades.items %}
+                                    <tr>
+                                        <td>{{k}}</td>
+                                        <td>{% if v.0.0 == 1 %}Si{% else %}No{% endif %}</td>
+                                        <td>{% if v.1.0 == 1 %}Si{% else %}No{% endif %}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-body">
+                            <h4 class="m-t-0">Servicios <span class="mdi mdi-help-circle"></span></h4>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Servicios</th>
+                                        <th>Socios</th>
+                                        <th>No socios</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for k,v in servicios.items %}
+                                    <tr>
+                                        <td>{{k}}</td>
+                                        <td>{% if v.0.0 == 1 %}Si{% else %}No{% endif %}</td>
+                                        <td>{% if v.1.0 == 1 %}Si{% else %}No{% endif %}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

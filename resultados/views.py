@@ -222,18 +222,36 @@ def detail_org(request,template='organizaciones/detalle-org.html', id=None):
     # scope pro
     years = request.session['anio']
     dic_anios = collections.OrderedDict()
+    scope_pro = collections.OrderedDict()
     for year in years:
-        gestion_interna = GestionInterna.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
-        operaciones = Operaciones.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
-        sostenibilidad = Sostenibilidad.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
-        gestion_financiera = GestionFinanciera.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
-        desempeno_financiero = DesempenoFinanciero.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
-        suministros = Suministros.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
-        mercados = Mercados.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
-        riesgo_externos = RiesgoExternos.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
-        facilitadores = Facilitadores.objects.filter(opciones = 1,resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        gestion_interna = GestionInterna.objects.filter(opciones__in = [1,2,3,4],resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        operaciones = Operaciones.objects.filter(opciones__in = [1,2,3,4],resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        sostenibilidad = Sostenibilidad.objects.filter(opciones__in = [1,2,3],resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        gestion_financiera = GestionFinanciera.objects.filter(opciones__in = [1,2,3,4],resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        desempeno_financiero = DesempenoFinanciero.objects.filter(opciones__in = [1,2,3,4],resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        suministros = Suministros.objects.filter(opciones__in = [1,2,3,4,5,6],resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        mercados = Mercados.objects.filter(opciones__in = [1,2,3,4],resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        riesgo_externos = RiesgoExternos.objects.filter(opciones__in = [1,2,3,4,5],resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
+        facilitadores = Facilitadores.objects.filter(opciones__in = [1,2,3,4,6],resultado__year = year, resultado__organizacion__id = id).values_list('valor',flat=True)
 
         dic_anios[year] = gestion_interna, operaciones, sostenibilidad, gestion_financiera, desempeno_financiero, suministros, mercados, riesgo_externos, facilitadores
+
+
+    # actividades
+    actividades = {}
+    for act in Actividades.objects.all():
+        socios = Actividad.objects.filter(actividad = act,organizacion__id = id).values_list('socios',flat=True)
+        no_socios = Actividad.objects.filter(actividad = act,organizacion__id = id).values_list('no_socios',flat=True)
+
+        actividades[act] = socios,no_socios
+
+    # servicios
+    servicios = {}
+    for serv in Servicios.objects.all():
+        socios = Servicio.objects.filter(servicio = serv,organizacion__id = id).values_list('socios',flat=True)
+        no_socios = Servicio.objects.filter(servicio = serv,organizacion__id = id).values_list('no_socios',flat=True)
+
+        servicios[serv] = socios,no_socios
 
     return render(request, template, locals())
 
