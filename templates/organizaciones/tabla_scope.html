@@ -1,0 +1,258 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            {% for k in dic_anios.keys %}
+                <th>{{k}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Total Gestión interna</b></td>
+            {% for v in dic_anios.values %}
+                <td>{{v.0.0|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Gobernabilidad</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.0.1|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Organización interna</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.0.2|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Planificación de negocios</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.0.3|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td><b>Total operaciones</b></td>
+            {% for v in dic_anios.values %}
+                <td>{{v.1.0|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Logistica, almacenamiento y tecnología</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.1.1|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Producción</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.1.2|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Procesamiento</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.1.3|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td><b>Total sostenibilidad</b></td>
+            {% for v in dic_anios.values %}
+                <td>{{v.2.0|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Aspectos Sociales</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.2.1|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Aspectos ambientales</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.2.2|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+
+        <tr>
+            <td><b>Total gestión financiera</b></td>
+            {% for v in dic_anios.values %}
+                <td>{{v.3.0|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Gestión financiera</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.3.1|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Planificación financiera</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.3.2|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Registro de información y monitoreo</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.3.3|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+
+        <tr>
+            <td><b>Total Desempeño financiero</b></td>
+            {% for v in dic_anios.values %}
+                <td>{{v.4.0|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Balance General</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.4.1|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Estado de resultado</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.4.2|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Pérdidas y ganancias</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.4.3|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+
+        <tr>
+            <td><b>Total suministros</b></td>
+            {% for v in dic_anios.values %}
+                <td>{{v.5.0|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Adquisición</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.5.1|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Logística de entrada</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.5.2|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Contratación de miembros/agr. Ext.</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.5.3|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Supervisión y cap.de productores</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.5.4|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Servicios financieros a miembros</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.5.5|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+
+        <tr>
+            <td><b>Total mercados</b></td>
+            {% for v in dic_anios.values %}
+                <td>{{v.6.0|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Riesgo relacionado con el mercado</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.6.0|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Logística de salida</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.6.1|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Estrategias de mercadeo</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.6.2|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        
+        <tr>
+            <td><b>Total riesgo externo</b></td>
+            {% for v in dic_anios.values %}
+                <td>{{v.7.0|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Conocimiento de riesgos nat. y climat.</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.7.1|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Mitigación de riesgos nat. y climat.</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.7.2|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Conocimiento de riesgos biol. y amb.</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.7.3|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Mitigación de riesgos biológicos y amb.</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.7.4|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+
+        <tr>
+            <td><b>Total facilitadores</b></td>
+            {% for v in dic_anios.values %}
+                <td>{{v.8.0|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Desarrolladores de capacidades y ONG</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.8.1|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Proveedores de servicios</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.8.2|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Organizaciones del sector</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.8.3|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Comunidad</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.8.4|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Gobierno y regulaciones</td>
+            {% for v in dic_anios.values %}
+                <td>{{v.8.5|default:"0"}}</td> 
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>
