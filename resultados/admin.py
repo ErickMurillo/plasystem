@@ -61,6 +61,7 @@ admin.site.register(ResultadosEvaluacion, ResultadoEvaluacionAdmin)
 class ProducenComercializanInline(admin.TabularInline):
     model = ProducenComercializan
     extra = 1
+    max_num = 3
 
 class AcuerdoComercialInline(admin.TabularInline):
     model = AcuerdoComercial
@@ -78,6 +79,7 @@ class AumentadoIngresosInline(admin.TabularInline):
 class AumentadoProductividadInline(admin.TabularInline):
     model = AumentadoProductividad
     extra = 1
+    max_num = 1
 
 class ResultadosImplementacionAdmin(admin.ModelAdmin):
     inlines = [ProducenComercializanInline,AcuerdoComercialInline,
