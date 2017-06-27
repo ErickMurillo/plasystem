@@ -20,10 +20,10 @@ def organizaciones():
     org_implementacion = []
 
     for org in ResultadosEvaluacion.objects.order_by('organizacion').distinct():
-        org_evaluacion.append((org.id,org.organizacion.nombre))
+        org_evaluacion.append((org.organizacion.id,org.organizacion.nombre))
 
     for org in ResultadosImplementacion.objects.order_by('organizacion').distinct():
-        org_implementacion.append((org.id,org.organizacion.nombre))
+        org_implementacion.append((org.organizacion.id,org.organizacion.nombre))
     
     return list(sorted(set(org_evaluacion + org_implementacion)))
 

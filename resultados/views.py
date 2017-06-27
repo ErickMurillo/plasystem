@@ -20,7 +20,7 @@ def _queryset_filtrado(request):
         params['organizacion__in'] = request.session['organizacion']
 
     if request.session['pais']:
-        params['pais'] = request.session['pais']
+        params['organizacion__pais'] = request.session['pais']
 
 
 	unvalid_keys = []
@@ -91,9 +91,9 @@ def dashboard(request,template="organizaciones/dashboard.html"):
         if request.GET.get('pais', ''):
             filtro = []
             id_pais = request.GET.get('pais', '')
-            a = ResultadosEvaluacion.objects.filter(pais = id_pais)
+            a = ResultadosEvaluacion.objects.filter(organizacion__pais = id_pais)
             filtro.append(a)
-            b = ResultadosImplementacion.objects.filter(pais = id_pais)
+            b = ResultadosImplementacion.objects.filter(organizacion__pais = id_pais)
             filtro.append(b)
     else:
         filtro = _queryset_filtrado(request)
