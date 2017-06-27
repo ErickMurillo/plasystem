@@ -20,7 +20,6 @@ class Digitador(models.Model):
 class ResultadosEvaluacion(models.Model):
     digitador = models.ForeignKey(Digitador)
     fecha = models.DateField()
-    pais = models.ForeignKey('lugar.pais')
     organizacion = models.ForeignKey(Organizacion)
 
     year = models.IntegerField(editable=False)
@@ -226,7 +225,6 @@ CHOICE_PARA_QUIEN = ((1, 'Adultos mayores de 35 años'),(2, 'Jóvenes menores de
 class ResultadosImplementacion(models.Model):
     digitador = models.ForeignKey(Digitador)
     fecha = models.DateField()
-    pais = models.ForeignKey('lugar.pais')
     organizacion = models.ForeignKey(Organizacion)
     para_quien = models.IntegerField(choices=CHOICE_PARA_QUIEN)
 
