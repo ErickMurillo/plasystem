@@ -14,14 +14,17 @@ class OrganizacionPerteneceInline(NestedTabularInline):
 class MiembrosOficialesInline(NestedTabularInline):
     model = MiembrosOficiales
     extra = 1
+    max_num = 2
 
 class NumeroCooperativaInline(NestedTabularInline):
     model = NumeroCooperativa
     extra = 1
+    max_num = 1
 
 class ProductoresProveedoresInline(NestedTabularInline):
     model = ProductoresProveedores
     extra = 1
+    max_num = 1
 
 class EmpleadosOrganizacionInline(NestedTabularInline):
     model = EmpleadosOrganizacion

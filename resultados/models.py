@@ -286,15 +286,15 @@ class AcuerdoComercial(models.Model):
 
 
 CHOICE_TIPO_MERCADO = (
-        ('uno', 'Tradicional'),
-        ('dos', 'Feria'),
-        ('tres', 'Local'),
-        ('cuatro', 'Empresa comercializadora'),
-        ('cinco', 'Empresa procesadora'),
-        ('seis', 'Empresas exportadoras'),
-        ('siete', 'Supermercado'),
-        ('ocho', 'Cadena de restaurantes'),
-        ('nueve', 'Intermediarios'),
+        (1, 'Tradicional'),
+        (2, 'Feria'),
+        (3, 'Local'),
+        (4, 'Empresa comercializadora'),
+        (5, 'Empresa procesadora'),
+        (6, 'Empresas exportadoras'),
+        (7, 'Supermercado'),
+        (8, 'Cadena de restaurantes'),
+        (9, 'Intermediarios'),
     )
 
 class IncrementoAbastecimiento(models.Model):
