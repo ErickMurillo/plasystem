@@ -42,9 +42,9 @@
 
             <ul class="nav navbar-nav nav-pais">
               {% if not request.session.anio %}
-              <li {% if '?pais=1' in request.get_full_path %}class="active"{% endif %}><a href="/productores/dashboard/?pais=1">Nicaragua</a></li>
-              <li {% if '?pais=2' in request.get_full_path  %}class="active"{% endif %}><a href="/productores/dashboard/?pais=2">Honduras</a></li>
-              <li {% if '?pais=3' in request.get_full_path  %}class="active"{% endif %}><a href="/productores/dashboard/?pais=3">Guatemala</a></li>
+              <li {% if '?pais=1' in request.get_full_path %}class="active"{% endif %}><a href="/organizaciones/dashboard/?pais=1">Nicaragua</a></li>
+              <li {% if '?pais=2' in request.get_full_path  %}class="active"{% endif %}><a href="/organizaciones/dashboard/?pais=2">Honduras</a></li>
+              <li {% if '?pais=3' in request.get_full_path  %}class="active"{% endif %}><a href="/organizaciones/dashboard/?pais=3">Guatemala</a></li>
               {% else %}
               <li class="active"><a href="#">{{request.session.pais}}</a></li>
               {% endif %}

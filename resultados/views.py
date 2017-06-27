@@ -87,7 +87,16 @@ def dashboard(request,template="organizaciones/dashboard.html"):
         form = OrganizacionesForm()
         mensaje = "Existen alguno errores"
 
-    filtro = _queryset_filtrado(request)
+    if 'anio' not in request.session:
+        if request.GET.get('pais', ''):
+            filtro = []
+            id_pais = request.GET.get('pais', '')
+            a = ResultadosEvaluacion.objects.filter(pais = id_pais)
+            filtro.append(a)
+            b = ResultadosImplementacion.objects.filter(pais = id_pais)
+            filtro.append(b)
+    else:
+        filtro = _queryset_filtrado(request)
 
     # unificar organizaciones de los dos modelos
     list_ev_org = []
@@ -220,7 +229,11 @@ def detail_org(request,template='organizaciones/detalle-org.html', id=None):
         empleados[obj[1]] = result['total_h'],result['total_m'],result['adultos_h'],result['adultos_m'],result['jovenes_h'],result['jovenes_m']
 
     # scope pro
-    years = request.session['anio']
+    if 'anio' not in request.session:
+        years = anios_encuestas()
+    else:
+        years = request.session['anio']
+
     dic_anios = collections.OrderedDict()
     scope_pro = collections.OrderedDict()
     for year in years:
@@ -266,3 +279,15 @@ def get_org(request):
     orgs = Organizacion.objects.filter(pais__id__in=foo).order_by('nombre').values('id', 'nombre')
 
     return HttpResponse(simplejson.dumps(list(orgs)), content_type = 'application/json')
+
+def anios_encuestas():
+    years_evaluacion = []
+    years_implementacion = []
+
+    for en in ResultadosEvaluacion.objects.order_by('year').values_list('year', flat=True):
+        years_evaluacion.append(en)
+
+    for en in ResultadosImplementacion.objects.order_by('year').values_list('year', flat=True):
+        years_implementacion.append(en)
+
+    return list(sorted(set(years_evaluacion + years_implementacion)))
