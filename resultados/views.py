@@ -7,6 +7,7 @@ from organizaciones.models import *
 from django.db.models import Sum, Count, Avg, F
 import json as simplejson
 import collections
+from productores.models import Cultivo
 
 # Create your views here.
 
@@ -114,14 +115,14 @@ def dashboard(request,template="organizaciones/dashboard.html"):
 
     total_hombres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('total_hombre'))['total']
     total_mujeres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('total_mujer'))['total']
-    
+
 
     activos_hombres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('activos_hombre'))['total']
     activos_mujeres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('activos_mujer'))['total']
-    
+
     jovenes_hombres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('jovenes_hombre'))['total']
     jovenes_mujeres = ProductoresProveedores.objects.filter(organizacion__in = result_list).aggregate(total = Sum('jovenes_mujer'))['total']
-    
+
 
     # empleados de la org tiempo completo, preg 22
     empleados_org = EmpleadosOrganizacion.objects.filter(organizacion__in = result_list,opcion = 1).aggregate(
@@ -149,6 +150,23 @@ def dashboard(request,template="organizaciones/dashboard.html"):
     personeria = Organizacion.objects.filter(id__in = result_list,personeria = 1).count()
     en_operaciones = Organizacion.objects.filter(id__in = result_list,en_operaciones = 1).count()
     apoyo = Organizacion.objects.filter(id__in = result_list,apoyo = 1).count()
+
+    #salida grafo carlos resultado implementacion
+    grafo_barra_cultivo = {}
+    for obj in Cultivo.objects.all():
+        grafo_barra_cultivo[obj] = {}
+        for culti in CHOICES_34_1:
+            try:
+                cantidad = ProducenComercializan.objects.filter(cultivo=obj,
+                                                        opcion=culti[0]).aggregate(a=Sum('cantidad'))['a']
+                cantidad_cer = ProducenComercializan.objects.filter(cultivo=obj,
+                                                    opcion=culti[0]).aggregate(b=Sum('cantidad_certificada'))['b']
+                total = cantidad + cantidad_cer
+            except:
+                total = 0
+            if total > 0:
+                grafo_barra_cultivo[obj][culti[1]] = total
+    print grafo_barra_cultivo
 
     return render(request, template, locals())
 
