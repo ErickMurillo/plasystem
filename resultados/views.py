@@ -153,19 +153,46 @@ def dashboard(request,template="organizaciones/dashboard.html"):
 
     #salida grafo carlos resultado implementacion
     grafo_barra_cultivo = {}
+    grafo_linea_promedio = {}
     for obj in Cultivo.objects.all():
         grafo_barra_cultivo[obj] = {}
         for culti in CHOICES_34_1:
             try:
-                cantidad = ProducenComercializan.objects.filter(cultivo=obj,
-                                                        opcion=culti[0]).aggregate(a=Sum('cantidad'))['a']
-                cantidad_cer = ProducenComercializan.objects.filter(cultivo=obj,
-                                                    opcion=culti[0]).aggregate(b=Sum('cantidad_certificada'))['b']
-                total = cantidad + cantidad_cer
+                cantidad_a = ProducenComercializan.objects.filter(cultivo=obj,
+                                                        opcion=1).aggregate(a=Sum('cantidad'))['a']
+                cantidad_cer_a = ProducenComercializan.objects.filter(cultivo=obj,
+                                                    opcion=1).aggregate(b=Sum('cantidad_certificada'))['b']
+                total_a = cantidad_a + cantidad_cer_a
+                promedio_precio_a = ProducenComercializan.objects.filter(cultivo=obj,
+                                                        opcion=1).aggregate(c=Avg('precio_promedio'))['c']
             except:
-                total = 0
-            if total > 0:
-                grafo_barra_cultivo[obj][culti[1]] = total
+                total_a = 0
+                promedio_precio_a = 0
+            try:
+                cantidad_b = ProducenComercializan.objects.filter(cultivo=obj,
+                                                        opcion=2).aggregate(a=Sum('cantidad'))['a']
+                cantidad_cer_b = ProducenComercializan.objects.filter(cultivo=obj,
+                                                    opcion=2).aggregate(b=Sum('cantidad_certificada'))['b']
+                total_b = cantidad_b + cantidad_cer_b
+                promedio_precio_b = ProducenComercializan.objects.filter(cultivo=obj,
+                                                        opcion=2).aggregate(c=Avg('precio_promedio'))['c']
+            except:
+                total_b = 0
+                promedio_precio_b = 0
+            try:
+                cantidad_c = ProducenComercializan.objects.filter(cultivo=obj,
+                                                        opcion=3).aggregate(a=Sum('cantidad'))['a']
+                cantidad_cer_c = ProducenComercializan.objects.filter(cultivo=obj,
+                                                    opcion=3).aggregate(b=Sum('cantidad_certificada'))['b']
+                total_c = cantidad_c + cantidad_cer_c
+                promedio_precio_c = ProducenComercializan.objects.filter(cultivo=obj,
+                                                        opcion=3).aggregate(c=Avg('precio_promedio'))['c']
+            except:
+                total_c = 0
+                promedio_precio_c = 0
+
+            grafo_barra_cultivo[obj][culti[1]] = [total_a, total_b,total_c]
+            #grafo_linea_promedio[obj][culti[1]] = (promedio_precio_a,promedio_precio_b,promedio_precio_c)
     print grafo_barra_cultivo
 
     return render(request, template, locals())

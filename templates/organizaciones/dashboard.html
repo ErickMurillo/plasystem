@@ -151,6 +151,17 @@
 					</div>
 				</div>
 			</div>
+
+		<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<h4 class="m-t-0">Resultados implementación del programa <span class="mdi mdi-help-circle"></span>
+							</h4>
+							<div id="grafocontainer" width:'100%' style="height: 350px;"></div>
+						</div>
+					</div>
+				</div>
 		</div>
 	</div>
 
@@ -252,5 +263,43 @@ Highcharts.chart('grafico6', {
         {% endfor %}]
     }
 });
+
+//carlos grafo
+Highcharts.chart('grafocontainer', {
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: [{% for k,v in grafo_barra_cultivo.items %}'{{k}}',{% endfor %}]
+    },
+
+    series: [
+    {
+        type: 'column',
+        name: 'a) Producen y comercializan de forma colectiva',
+        data: [3, 2, 1]
+    }, {
+        type: 'column',
+        name: 'b) Producen productos sanos',
+        data: [2, 3, 5]
+    }, {
+        type: 'column',
+        name: 'c) Tienen contratos de largo plazo',
+        data: [4, 3, 3]
+    }, {
+        type: 'spline',
+        name: 'Promedio precio',
+        data: [3, 2.67, 3],
+        marker: {
+            lineWidth: 2,
+            lineColor: Highcharts.getOptions().colors[3],
+            fillColor: 'white'
+        }
+    }]
+});
+
+
+
+
 </script>
 {% endblock %}
