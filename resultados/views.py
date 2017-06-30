@@ -357,7 +357,10 @@ def detail_org(request,template='organizaciones/detalle-org.html', id=None):
             valor_mujer = AumentadoIngresos.objects.filter(resultado_implementacion__organizacion__id=id,
                                             resultado_implementacion__year=year[0],
                                             opcion=obj[0]).aggregate(mujer=Avg('cantidad_mujeres'))['mujer']
-            suma_valores = valor_hombre + valor_mujer
+            try:
+                suma_valores = valor_hombre + valor_mujer
+            except:
+                suma_valores = 0
             if suma_valores > 0:
                 grafo_incremento[obj[1]] = suma_valores
 
