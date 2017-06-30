@@ -192,7 +192,7 @@ def dashboard(request,template="organizaciones/dashboard.html"):
                 promedio_precio_c = 0
 
             grafo_barra_cultivo[obj][culti[1]] = [total_a, total_b,total_c]
-            #grafo_linea_promedio[obj][culti[1]] = (promedio_precio_a,promedio_precio_b,promedio_precio_c)
+            #grafo_linea_promedio[obj][culti[1]] = (promedio_precio_a,promedio_precio_b,promedio_precio_c)  
 
     return render(request, template, locals())
 
