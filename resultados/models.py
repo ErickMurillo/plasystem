@@ -327,6 +327,7 @@ class AumentadoIngresos(models.Model):
     cantidad = models.FloatField()
     cantidad_certificada = models.FloatField()
     precio_promedio = models.FloatField()
+    precio_promedio_certificada = models.FloatField(default=0)
 
     resultado_implementacion = models.ForeignKey(ResultadosImplementacion)
 
@@ -345,6 +346,7 @@ class AumentadoProductividad(models.Model):
     cantidad = models.FloatField()
     cantidad_certificada = models.FloatField()
     precio_promedio = models.FloatField()
+    precio_promedio_certificada = models.FloatField(default=0)
 
     resultado_implementacion = models.ForeignKey(ResultadosImplementacion)
 
