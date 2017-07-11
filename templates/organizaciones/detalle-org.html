@@ -430,7 +430,7 @@ Highcharts.chart('container', {
     {% for k,v in comparativa_dict.items %}
         {
             name: '{{k}}',
-            data: {{v}}
+            data: {{v|default:'0'}}
         },
     {% endfor %}
     ]
