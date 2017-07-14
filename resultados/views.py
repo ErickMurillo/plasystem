@@ -4,11 +4,11 @@ from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from organizaciones.models import *
-from django.db.models import Sum, Count, Avg, F
+from django.db.models import Sum, Count, Avg, F, Value as V
 import json as simplejson
 import collections
 from productores.models import Cultivo
-
+from django.db.models.functions import Coalesce
 # Create your views here.
 
 def _queryset_filtrado(request):
@@ -158,33 +158,16 @@ def dashboard(request,template="organizaciones/dashboard.html"):
         grafo_barra_cultivo[obj] = {}
         for culti in CHOICES_34_1:
             try:
-                cantidad_a = ProducenComercializan.objects.filter(cultivo=obj,
-                                                        opcion=1).aggregate(a=Sum('cantidad'))['a']
+                cantidad = ProducenComercializan.objects.filter(cultivo=obj,
+                                            opcion=culti[0]).aggregate(a=Coalesce(Sum('cantidad'),V(0)))['a']
                 
-                promedio_precio_a = ProducenComercializan.objects.filter(cultivo=obj,
-                                                        opcion=1).aggregate(c=Avg('precio_promedio'))['c']
+                promedio_precio = ProducenComercializan.objects.filter(cultivo=obj,
+                                            opcion=culti[0]).aggregate(c=Coalesce(Avg('precio_promedio'),V(0)))['c']
             except:
-                cantidad_a = 0
-                promedio_precio_a = 0
-            try:
-                cantidad_b = ProducenComercializan.objects.filter(cultivo=obj,
-                                                        opcion=2).aggregate(a=Sum('cantidad'))['a']
-                
-                promedio_precio_b = ProducenComercializan.objects.filter(cultivo=obj,
-                                                        opcion=2).aggregate(c=Avg('precio_promedio'))['c']
-            except:
-                cantidad_b = 0
-                promedio_precio_b = 0
-            try:
-                cantidad_c = ProducenComercializan.objects.filter(cultivo=obj,
-                                                        opcion=3).aggregate(a=Sum('cantidad'))['a']
-                promedio_precio_c = ProducenComercializan.objects.filter(cultivo=obj,
-                                                        opcion=3).aggregate(c=Avg('precio_promedio'))['c']
-            except:
-                cantidad_c = 0
-                promedio_precio_c = 0
+                cantidad = 0
+                promedio_precio = 0
 
-            grafo_barra_cultivo[obj][culti[1]] = [cantidad_a, cantidad_b,cantidad_c]
+            grafo_barra_cultivo[obj][culti[1]] = cantidad
             #grafo_linea_promedio[obj][culti[1]] = (promedio_precio_a,promedio_precio_b,promedio_precio_c)  
     print grafo_barra_cultivo
     return render(request, template, locals())
