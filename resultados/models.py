@@ -258,10 +258,10 @@ class ProducenComercializan(models.Model):
     area_mujer_sembrada = models.FloatField()
     area_hombre_cosechada = models.FloatField()
     area_mujer_cosechada = models.FloatField()
-    unidad_medida = models.CharField(max_length=50)
     cantidad = models.FloatField()
     cantidad_certificada = models.FloatField()
     precio_promedio = models.FloatField()
+    precio_promedio_certificada = models.FloatField(default=0)
 
     resultado_implementacion = models.ForeignKey(ResultadosImplementacion)
 

@@ -160,40 +160,33 @@ def dashboard(request,template="organizaciones/dashboard.html"):
             try:
                 cantidad_a = ProducenComercializan.objects.filter(cultivo=obj,
                                                         opcion=1).aggregate(a=Sum('cantidad'))['a']
-                cantidad_cer_a = ProducenComercializan.objects.filter(cultivo=obj,
-                                                    opcion=1).aggregate(b=Sum('cantidad_certificada'))['b']
-                total_a = cantidad_a + cantidad_cer_a
+                
                 promedio_precio_a = ProducenComercializan.objects.filter(cultivo=obj,
                                                         opcion=1).aggregate(c=Avg('precio_promedio'))['c']
             except:
-                total_a = 0
+                cantidad_a = 0
                 promedio_precio_a = 0
             try:
                 cantidad_b = ProducenComercializan.objects.filter(cultivo=obj,
                                                         opcion=2).aggregate(a=Sum('cantidad'))['a']
-                cantidad_cer_b = ProducenComercializan.objects.filter(cultivo=obj,
-                                                    opcion=2).aggregate(b=Sum('cantidad_certificada'))['b']
-                total_b = cantidad_b + cantidad_cer_b
+                
                 promedio_precio_b = ProducenComercializan.objects.filter(cultivo=obj,
                                                         opcion=2).aggregate(c=Avg('precio_promedio'))['c']
             except:
-                total_b = 0
+                cantidad_b = 0
                 promedio_precio_b = 0
             try:
                 cantidad_c = ProducenComercializan.objects.filter(cultivo=obj,
                                                         opcion=3).aggregate(a=Sum('cantidad'))['a']
-                cantidad_cer_c = ProducenComercializan.objects.filter(cultivo=obj,
-                                                    opcion=3).aggregate(b=Sum('cantidad_certificada'))['b']
-                total_c = cantidad_c + cantidad_cer_c
                 promedio_precio_c = ProducenComercializan.objects.filter(cultivo=obj,
                                                         opcion=3).aggregate(c=Avg('precio_promedio'))['c']
             except:
-                total_c = 0
+                cantidad_c = 0
                 promedio_precio_c = 0
 
-            grafo_barra_cultivo[obj][culti[1]] = [total_a, total_b,total_c]
+            grafo_barra_cultivo[obj][culti[1]] = [cantidad_a, cantidad_b,cantidad_c]
             #grafo_linea_promedio[obj][culti[1]] = (promedio_precio_a,promedio_precio_b,promedio_precio_c)  
-
+    print grafo_barra_cultivo
     return render(request, template, locals())
 
 def detail_org(request,template='organizaciones/detalle-org.html', id=None):
@@ -330,8 +323,8 @@ def detail_org(request,template='organizaciones/detalle-org.html', id=None):
         bloque8 = RiesgoExternos.objects.filter(resultado__year=anio[0],resultado__organizacion__id=id,opciones=1).aggregate(average=Avg('valor'))['average']
         bloque9 = Facilitadores.objects.filter(resultado__year=anio[0],resultado__organizacion__id=id,opciones=1).aggregate(average=Avg('valor'))['average']
 
-
-        comparativa_dict[anio[1]] = [bloque1,bloque2,bloque3,bloque4,bloque5,bloque6,
+        if bloque1 >= 0 and bloque2 >= 0 and bloque3 >= 0 and bloque4 >= 0 and bloque5 >= 0 and bloque6 >= 0 and bloque7 >= 0 and bloque8 >= 0 and bloque9 >= 0:
+            comparativa_dict[anio[1]] = [bloque1,bloque2,bloque3,bloque4,bloque5,bloque6,
                                     bloque7,bloque8,bloque9]
 
     grafo_volumen = {}
@@ -339,7 +332,6 @@ def detail_org(request,template='organizaciones/detalle-org.html', id=None):
         valor = IncrementoAbastecimiento.objects.filter(resultado_implementacion__organizacion__id=id,tipo_mercado=obj[0]).count()
         if valor > 0:
             grafo_volumen[obj[1]] = valor
-
 
     years2 = []
     for en in ResultadosImplementacion.objects.order_by('year').values_list('year', flat=True):

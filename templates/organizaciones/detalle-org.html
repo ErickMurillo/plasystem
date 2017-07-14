@@ -430,7 +430,7 @@ Highcharts.chart('container', {
     {% for k,v in comparativa_dict.items %}
         {
             name: '{{k}}',
-            data: {{v|default:'0'}}
+            data: {{v}}
         },
     {% endfor %}
     ]
@@ -502,7 +502,7 @@ Highcharts.chart('container2', {
 
     yAxis: {
         title: {
-            text: 'Number of Employees'
+            text: 'Cantidad de productores'
         }
     },
     legend: {
