@@ -58,7 +58,7 @@ class OrganizacionAdmin(NestedModelAdmin):
         (None, {
             'fields': (('nombre', 'tipo', 'direccion'),('pais',
                        'departamento','municipio'),('oficina_numero',
-                       'oficina_correo'),'sitio_web')
+                       'oficina_correo'),('sitio_web','tipo_rubro'))
         }),
         ('Redes Sociales', {
             'fields': (('red_social1','red_social2'),
@@ -85,6 +85,8 @@ class OrganizacionAdmin(NestedModelAdmin):
                ActividadInline,ServicioInline
                ]
 
+    class Media:
+         css = {'all': ('css/pretty.css',)}
 
 admin.site.register(Organizacion, OrganizacionAdmin)
 admin.site.register(TipoOrganizacion)

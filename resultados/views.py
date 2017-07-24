@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import *
 from .forms import *
 from django.contrib.auth.decorators import login_required
@@ -340,6 +340,18 @@ def detail_org(request,template='organizaciones/detalle-org.html', id=None):
 
     return render(request, template, locals())
 
+def lista_organizacion(request, template="organizaciones/lista_org.html"):
+
+    todas = Organizacion.objects.order_by('-nombre')
+
+    return render(request, template, locals())
+
+def detalle_organizacion(request, pk=None, template="organizaciones/detalle_organizacion.html"):
+
+    detalle = get_object_or_404(Organizacion, pk=pk)
+    print detalle
+
+    return render(request, template, locals())
 #ajax
 def get_org(request):
     ids = request.GET.get('ids', '')

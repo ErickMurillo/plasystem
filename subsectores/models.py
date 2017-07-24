@@ -127,7 +127,7 @@ class CategoriaGastos(models.Model):
 
     class Meta:
         verbose_name = 'Categoria de gasto'
-        verbose_name_plural = 'Categorias de gatos'
+        verbose_name_plural = 'Categorias de gastos'
 
 
 CHOICES_TIPO_ACTIVIDAD = ((1,'Contribuye'),(2,'No contribuye'),)

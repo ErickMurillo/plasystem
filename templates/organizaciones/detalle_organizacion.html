@@ -1,0 +1,42 @@
+{% extends "organizaciones/base-org-dash.html" %}
+
+{% block content %}
+
+<div class="content">
+<ul>
+	<li>{{detalle.nombre}}</li>
+	<li>{{detalle.tipo}}</li>
+	<li>{{detalle.pais}}</li>
+	<li>{{detalle.departamento}}</li>
+	<li>{{detalle.municipio}}</li>
+	<li>{{detalle.direccion}}</li>
+	<li>{{detalle.oficina_numero}}</li>
+	<li>{{detalle.oficina_correo}}</li>
+	<li>{{detalle.sitio_web}}</li>
+	<h6>Redes sociales</h6>
+	<li>{{detalle.red_social1}}</li>
+	<li>{{detalle.red_social2}}</li>
+	<li>{{detalle.red_social3}}</li>
+	<li>{{detalle.red_social4}}</li>
+	<h6>personas de contactos</h6>
+	<li>{{detalle.persona1_contacto}}</li>
+	<li>{{detalle.persona1_cargo}}</li>
+	<li>{{detalle.persona2_telefono}}</li>
+	<li>{{detalle.persona2_correo}}</li>
+	<h6>Otra personas de contacto</h6>
+	<li>{{detalle.persona2_contacto}}</li>
+	<li>{{detalle.persona2_cargo}}</li>
+	<li>{{detalle.persona2_telefono}}</li>
+	<li>{{detalle.persona2_correo}}</li>
+	<h6>Situacion legal de la organizacion</h6>
+	<li>{{detalle.get_personeria_display}}</li>
+	<li>{{detalle.get_en_operaciones_display}}</li>
+	<li>{{detalle.licencia}}</li>
+	<li>{{detalle.tributaria}}</li>
+	<li>{{detalle.vision}}</li>
+	<li>{{detalle.mision}}</li>
+	<li>{{detalle.get_apoyo_display}}</li>
+</ul>
+</div>
+
+{% endblock content%}

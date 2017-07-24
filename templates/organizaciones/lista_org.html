@@ -1,0 +1,14 @@
+{% extends "organizaciones/base-org-dash.html" %}
+
+{% block content %}
+
+<div class="content">
+
+	<ul>
+		{% for obj in todas %}
+			<li><a href="/organizaciones/ver/organizacion/{{obj.id}}">{{obj.nombre}}</a></li>
+		{% endfor %}
+	</ul>
+</div>
+
+{% endblock content%}

@@ -28,6 +28,8 @@ CHOICE_SI_NO = (
         (2, 'No'),
     )
 
+CULTIVO_CHOICES = ((1,'Café'),(2,'Cacao'),(3,'Hortaliza'))
+
 @python_2_unicode_compatible
 class Organizacion(models.Model):
     nombre = models.CharField(max_length = 200)
@@ -39,6 +41,9 @@ class Organizacion(models.Model):
     oficina_numero = models.CharField(max_length=12, null=True, blank=True)
     oficina_correo = models.EmailField(max_length=254, null=True, blank=True)
     sitio_web = models.URLField(null=True, blank=True)
+    tipo_rubro = models.IntegerField(choices=CULTIVO_CHOICES, 
+                                     verbose_name='Tipo de rubro que es apoyado',
+                                     null=True, blank=True)
     #redes sociales
     red_social1 = models.CharField('Red Social 1', max_length=250, null=True, blank=True)
     red_social2 = models.CharField('Red Social 2', max_length=250, null=True, blank=True)
@@ -121,14 +126,14 @@ CHOICE_MIEMBROS = (
 
 class MiembrosOficiales(models.Model):
     opcion = models.IntegerField(choices=CHOICE_MIEMBROS)
-    total_hombre = models.IntegerField()
-    total_mujer = models.IntegerField()
-    activos_hombre = models.IntegerField()
-    activos_mujer = models.IntegerField()
-    jovenes_hombre = models.IntegerField()
-    jovenes_mujer = models.IntegerField()
-    inactivos_hombre = models.IntegerField()
-    inactivos_mujer = models.IntegerField()
+    total_hombre = models.IntegerField('Total de hombres')
+    total_mujer = models.IntegerField('Total de mujeres')
+    activos_hombre = models.IntegerField('Hombres activos')
+    activos_mujer = models.IntegerField('Mujeres activas')
+    jovenes_hombre = models.IntegerField('Hombres jóvenes')
+    jovenes_mujer = models.IntegerField('Mujeres jóvenes')
+    inactivos_hombre = models.IntegerField('Hombres inactivos')
+    inactivos_mujer = models.IntegerField('Mujeres inactivos')
 
 
     organizacion = models.ForeignKey(Organizacion)
@@ -156,12 +161,12 @@ CHOICE_PROVEEDORES = (
 
 class ProductoresProveedores(models.Model):
     opcion = models.IntegerField(choices=CHOICE_PROVEEDORES)
-    total_hombre = models.IntegerField()
-    total_mujer = models.IntegerField()
-    activos_hombre = models.IntegerField()
-    activos_mujer = models.IntegerField()
-    jovenes_hombre = models.IntegerField()
-    jovenes_mujer = models.IntegerField()
+    total_hombre = models.IntegerField('Total de hombres')
+    total_mujer = models.IntegerField('Total de mujeres')
+    activos_hombre = models.IntegerField('Hombres activos')
+    activos_mujer = models.IntegerField('Mujeres activos')
+    jovenes_hombre = models.IntegerField('Hombres jóvenes')
+    jovenes_mujer = models.IntegerField('Mujeres jóvenes')
 
     organizacion = models.ForeignKey(Organizacion)
 
@@ -177,12 +182,12 @@ CHOICE_EMPLEADOS = (
 
 class EmpleadosOrganizacion(models.Model):
     opcion = models.IntegerField(choices=CHOICE_EMPLEADOS)
-    total_hombre = models.IntegerField()
-    total_mujer = models.IntegerField()
-    adultos_hombre = models.IntegerField()
-    adultos_mujer = models.IntegerField()
-    jovenes_hombre = models.IntegerField()
-    jovenes_mujer = models.IntegerField()
+    total_hombre = models.IntegerField('Total de hombres')
+    total_mujer = models.IntegerField('Total de mujeres')
+    adultos_hombre = models.IntegerField('Hombres adultos')
+    adultos_mujer = models.IntegerField('Mujeres adultos')
+    jovenes_hombre = models.IntegerField('Hombres jóvenes')
+    jovenes_mujer = models.IntegerField('Mujeres jóvenes')
 
     organizacion = models.ForeignKey(Organizacion)
 
