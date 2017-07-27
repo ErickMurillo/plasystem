@@ -12,8 +12,14 @@ class ObjetivosInline(NestedTabularInline):
     extra = 1
     inlines = [IndicadoresInline]
 
-class DatosGeneralesAdmin(NestedModelAdmin):
+class IntervencionInline(NestedTabularInline):
+    model = Intervenciones
+    extra = 1
     inlines = [ObjetivosInline]
+
+
+class DatosGeneralesAdmin(NestedModelAdmin):
+    inlines = [IntervencionInline]
     list_display = ('nombre','fecha_inicio','fecha_finalizacion','pais','responsable')
     search_fields = ('nombre','responsable')
     list_filter = ('pais',)
@@ -39,11 +45,11 @@ class TasaCambioPaisAnualAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(GruposMetas)
 admin.site.register(DatosGenerales, DatosGeneralesAdmin)
-admin.site.register(ObjetivosResultados)
-admin.site.register(Indicadores)
+#admin.site.register(ObjetivosResultados)
+#admin.site.register(Indicadores)
 admin.site.register(Monedas)
 admin.site.register(TipoCambiosMonedaPais, TipoCambiosMonedaPaisAdmin)
-admin.site.register(TasaCambioPaisAnual,TasaCambioPaisAnualAdmin)
+#admin.site.register(TasaCambioPaisAnual,TasaCambioPaisAnualAdmin)
 #register for plan anual
 
 class RegistroMesesInline(admin.TabularInline):
@@ -70,4 +76,4 @@ class RegistroPlanAnualAdmin(admin.ModelAdmin):
 
 admin.site.register(CategoriaGastos)
 admin.site.register(RegistroPlanAnual, RegistroPlanAnualAdmin)
-admin.site.register(RegistroMeses)
+#admin.site.register(RegistroMeses)

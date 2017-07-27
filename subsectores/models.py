@@ -74,6 +74,7 @@ class DatosGenerales(models.Model):
         sort=True
     )
     grupo = models.ManyToManyField(GruposMetas)
+    macro_objetivo = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return '%s - %s' % (self.nombre, self.pais.nombre)
@@ -84,17 +85,30 @@ class DatosGenerales(models.Model):
 
 
 @python_2_unicode_compatible
-class ObjetivosResultados(models.Model):
+class Intervenciones(models.Model):
     proyecto = models.ForeignKey(DatosGenerales)
-    objetivo_corto = models.CharField(max_length=25, help_text='25 caracteres maximo')
-    objetivo_completo = models.TextField()
+    intervencion_corto = models.CharField(max_length=25, help_text='25 caracteres maximo')
+    intervencion_completo = models.TextField()
 
     def __str__(self):
-        return self.objetivo_corto
+        return self.intervencion_corto
 
     class Meta:
-        verbose_name = 'Objectivo de resultado'
-        verbose_name_plural = 'Objectivo de resultados'
+        verbose_name = 'Intervención'
+        verbose_name_plural = 'Intervenciones'
+
+@python_2_unicode_compatible
+class ObjetivosResultados(models.Model):
+    intervencion = models.ForeignKey(Intervenciones)
+    resultado_corto = models.CharField(max_length=25, help_text='25 caracteres maximo')
+    resultado_completo = models.TextField()
+
+    def __str__(self):
+        return self.resultado_corto
+
+    class Meta:
+        verbose_name = 'Resultado'
+        verbose_name_plural = 'Resultados'
 
 
 @python_2_unicode_compatible
@@ -135,17 +149,19 @@ CHOICES_TIPO_ACTIVIDAD = ((1,'Contribuye'),(2,'No contribuye'),)
 @python_2_unicode_compatible
 class RegistroPlanAnual(models.Model):
     proyecto = models.ForeignKey(DatosGenerales)
-    #indicador = models.ForeignKey(Indicadores)
-    indicador = ChainedForeignKey(
-        Indicadores,
-        chained_field="proyecto",
-        chained_model_field="objetivo",
-        show_all=False,
-        auto_choose=True,
-        sort=True
-    )
+    intervencion = models.ForeignKey(Intervenciones)
+    resultado = models.ForeignKey(ObjetivosResultados)
+    indicador = models.ForeignKey(Indicadores)
+    # indicador = ChainedForeignKey(
+    #     Indicadores,
+    #     chained_field="proyecto",
+    #     chained_model_field="objetivo",
+    #     show_all=False,
+    #     auto_choose=True,
+    #     sort=True
+    # )
     nombre = models.CharField('Nombre de la actividad', max_length=250, help_text='Nombre completo de la actividad')
-    categoria = models.ForeignKey(CategoriaGastos, verbose_name='Categoria de gatos')
+    categoria = models.ForeignKey(CategoriaGastos, verbose_name='Categoria de gastos')
     codigo_financiero = models.CharField(max_length=50)
     tipo_actividad = models.IntegerField(choices=CHOICES_TIPO_ACTIVIDAD,
                     help_text='Contribuye al dato del indicador',
