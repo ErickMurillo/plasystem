@@ -149,17 +149,31 @@ CHOICES_TIPO_ACTIVIDAD = ((1,'Contribuye'),(2,'No contribuye'),)
 @python_2_unicode_compatible
 class RegistroPlanAnual(models.Model):
     proyecto = models.ForeignKey(DatosGenerales)
-    intervencion = models.ForeignKey(Intervenciones)
-    resultado = models.ForeignKey(ObjetivosResultados)
-    indicador = models.ForeignKey(Indicadores)
-    # indicador = ChainedForeignKey(
-    #     Indicadores,
-    #     chained_field="proyecto",
-    #     chained_model_field="objetivo",
-    #     show_all=False,
-    #     auto_choose=True,
-    #     sort=True
-    # )
+    intervencion = ChainedForeignKey(
+        Intervenciones,
+        chained_field="proyecto",
+        chained_model_field="proyecto",
+        show_all=False,
+        auto_choose=True,
+        sort=True
+    )
+    resultado = ChainedForeignKey(
+        ObjetivosResultados,
+        chained_field="intervencion",
+        chained_model_field="intervencion",
+        show_all=False,
+        auto_choose=True,
+        sort=True
+    )
+    #indicador = models.ForeignKey(Indicadores)
+    indicador = ChainedForeignKey(
+        Indicadores,
+        chained_field="resultado",
+        chained_model_field="objetivo",
+        show_all=False,
+        auto_choose=True,
+        sort=True
+    )
     nombre = models.CharField('Nombre de la actividad', max_length=250, help_text='Nombre completo de la actividad')
     categoria = models.ForeignKey(CategoriaGastos, verbose_name='Categoria de gastos')
     codigo_financiero = models.CharField(max_length=50)
@@ -206,3 +220,22 @@ class RegistroMeses(models.Model):
     class Meta:
         verbose_name = 'Registro de mes'
         verbose_name_plural = 'Registro de meses'
+
+#ahora viene el modelo raro de uriza
+
+CHOICE_MOMENTOS_INDICADOR = ( (1, 'Proceso'), (2, 'Desarrollo'), (3, 'Cumplido') )
+
+# class InformeMensual(models.Model):
+#     fecha = models.DateField()
+#     elaborado = models.CharField('Informe elaborado por:', max_length=50)
+#     proyecto = models.ForeignKey(DatosGenerales)
+#     intervencion = models.ForeignKey(Intervenciones)
+#     resultado = models.ForeignKey(ObjetivosResultados)
+#     indicador = models.ForeignKey(Indicadores)
+#     alcanzados_mes = models.IntegerField()
+#     gastos_mes = models.IntegerField()
+#     momento_indicador = models.IntegerField(choices=CHOICE_MOMENTOS_INDICADOR)
+#     resultado = models.IntegerField()
+#     informacion_cualitativa = models.TextField()
+#     subir_archivo = models.FileField(upload_to=None)
+
