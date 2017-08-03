@@ -31,4 +31,5 @@ urlpatterns = [
     url(r'^$', index, name='index'),
     url(r'^productores/', include('productores.urls')),
     url(r'^organizaciones/', include('resultados.urls')),
+    url(r'^subsectores/', include('subsectores.urls')),
 ]
