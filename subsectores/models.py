@@ -225,17 +225,24 @@ class RegistroMeses(models.Model):
 
 CHOICE_MOMENTOS_INDICADOR = ( (1, 'Proceso'), (2, 'Desarrollo'), (3, 'Cumplido') )
 
-# class InformeMensual(models.Model):
-#     fecha = models.DateField()
-#     elaborado = models.CharField('Informe elaborado por:', max_length=50)
-#     proyecto = models.ForeignKey(DatosGenerales)
-#     intervencion = models.ForeignKey(Intervenciones)
-#     resultado = models.ForeignKey(ObjetivosResultados)
-#     indicador = models.ForeignKey(Indicadores)
-#     alcanzados_mes = models.IntegerField()
-#     gastos_mes = models.IntegerField()
-#     momento_indicador = models.IntegerField(choices=CHOICE_MOMENTOS_INDICADOR)
-#     resultado = models.IntegerField()
-#     informacion_cualitativa = models.TextField()
-#     subir_archivo = models.FileField(upload_to=None)
+class InformeMensual(models.Model):
+    fecha = models.DateField()
+    elaborado = models.CharField('Informe elaborado por:', max_length=50)
+    proyecto = models.ForeignKey(DatosGenerales)
+    intervencion = models.ForeignKey(Intervenciones)
+    resultado = models.ForeignKey(ObjetivosResultados)
+    indicador = models.ForeignKey(Indicadores)
+    alcanzados_mes = models.IntegerField()
+    gastos_mes = models.IntegerField()
+    momento_indicador = models.IntegerField(choices=CHOICE_MOMENTOS_INDICADOR)
+    resultado = models.IntegerField()
+    informacion_cualitativa = models.TextField()
+    subir_archivo = models.FileField(upload_to='/media/informeMensual/')
+
+    def __str__(self):
+        return self.elaborado
+
+    class Meta:
+        verbose_name='Informe mensual'
+        verbose_name_plural ='Informes mensuales'
 
