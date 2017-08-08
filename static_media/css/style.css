@@ -3799,3 +3799,35 @@ File: Responsive
     display: none !important;
   }
 }
+/**********
+Lista de organizaciones
+************/
+
+.norg select{
+  display: none;
+}
+
+.filtro tr th select.form-control{
+  width: 100%;
+}
+.panel-list{
+  min-height:500px;
+}
+.list{
+  list-style: none;
+}
+.border-rigth{
+  border-right: 1px solid #eee;
+}
+.ph-costum{
+  padding: 1px 0px;
+}
+ .nav.nav-tabs.tab-costum > li > a{
+  line-height: 40px;
+}
+.nav.nav-tabs.tab-costum > li.active > a{
+  background: #276126;
+}
+.nav.nav-tabs.tab-costum > li> a{
+  color: white !important;
+}

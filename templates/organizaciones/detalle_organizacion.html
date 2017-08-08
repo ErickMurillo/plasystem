@@ -1,42 +1,149 @@
-{% extends "organizaciones/base-org-dash.html" %}
-
+{% extends "base.html" %}
+{% block extra_css %}
+	<link href="/static/css/mediabtn.css" rel="stylesheet" type="text/css">
+{% endblock %}
 {% block content %}
 
 <div class="content">
-<ul>
-	<li>{{detalle.nombre}}</li>
-	<li>{{detalle.tipo}}</li>
-	<li>{{detalle.pais}}</li>
-	<li>{{detalle.departamento}}</li>
-	<li>{{detalle.municipio}}</li>
-	<li>{{detalle.direccion}}</li>
-	<li>{{detalle.oficina_numero}}</li>
-	<li>{{detalle.oficina_correo}}</li>
-	<li>{{detalle.sitio_web}}</li>
-	<h6>Redes sociales</h6>
-	<li>{{detalle.red_social1}}</li>
-	<li>{{detalle.red_social2}}</li>
-	<li>{{detalle.red_social3}}</li>
-	<li>{{detalle.red_social4}}</li>
-	<h6>personas de contactos</h6>
-	<li>{{detalle.persona1_contacto}}</li>
-	<li>{{detalle.persona1_cargo}}</li>
-	<li>{{detalle.persona2_telefono}}</li>
-	<li>{{detalle.persona2_correo}}</li>
-	<h6>Otra personas de contacto</h6>
-	<li>{{detalle.persona2_contacto}}</li>
-	<li>{{detalle.persona2_cargo}}</li>
-	<li>{{detalle.persona2_telefono}}</li>
-	<li>{{detalle.persona2_correo}}</li>
-	<h6>Situacion legal de la organizacion</h6>
-	<li>{{detalle.get_personeria_display}}</li>
-	<li>{{detalle.get_en_operaciones_display}}</li>
-	<li>{{detalle.licencia}}</li>
-	<li>{{detalle.tributaria}}</li>
-	<li>{{detalle.vision}}</li>
-	<li>{{detalle.mision}}</li>
-	<li>{{detalle.get_apoyo_display}}</li>
-</ul>
+
+ 
+           	<div class="row">
+           		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+           			<div class="panel panel-primary">
+						<div class="panel-heading">
+							{{detalle.nombre}}
+						</div>
+						<div class="panel-body">
+							
+							<p><b>Dirección: </b>{{detalle.direccion}}</p>
+				          	<ul class="list-inline">
+				                <li>
+				                    <i class="fa fa-map-marker"></i> {{detalle.pais}} </li>
+				                <li>
+				                    <i class="fa fa-map-marker"></i> {{detalle.departamento}} </li>
+				                <li>
+				                    <i class="fa fa-map-marker"></i> {{detalle.municipio.nombre}} </li>
+				                <li>
+				                    <i class="fa fa-briefcase"></i> {{detalle.tipo}} </li>
+
+				            </ul>
+				            <br>
+				            <p><b>Contacto: </b></p>
+		           			<ul class="list-inline">
+				                <li>
+				                    <i class="fa fa-phone"></i> {{detalle.oficina_numero}} </li>
+				                <li>
+				                    <i class="fa fa-envelope"></i><a href="mailto:{{detalle.oficina_correo}}"> {{detalle.oficina_correo}}</a>  </li>
+				                <li>
+				                    <i class="fa fa-globe"></i> <a href="{{detalle.sitio_web}} ">{{detalle.sitio_web}} </a></li>
+
+				            </ul>
+							
+						</div>
+					</div>
+           			
+           		</div>
+           		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							 Situacion legal de la organizacion 
+						</div>
+						<div class="panel-body">
+							
+							<p><b>Cuenta con personería Jurídica: </b>{{detalle.get_personeria_display}}</p>
+							<p><b>En operaciones: </b>{{detalle.get_en_operaciones_display}}</p>
+							<p><b>Año de incorporación: </b>{{detalle.incorporacion}}</p>
+							<p><b>No. de licencia empresarial: </b>{{detalle.licencia}}</p>
+							<p><b>Apoyo: </b>{{detalle.get_apoyo_display}}</p>
+							
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-2">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							Redes sociales <i class="fa fa-external-link"></i>
+						</div>
+						<div class="panel-body">
+							<ul class="list">
+								<li><a href="{{detalle.red_social2}}" target="_blank">Red social 1</a></li>
+								<li><a href="{{detalle.red_social2}}" target="_blank">Red social 2</a></li>
+								<li><a href="{{detalle.red_social2}}" target="_blank">Red social 3</a></li>
+								<li><a href="{{detalle.red_social2}}" target="_blank">Red social 4</a></li>
+
+							</ul>
+						</div>
+					</div>
+				</div>
+           	</div>
+	        <!--<div class="text-letf">
+
+			    <a href="{{detalle.red_social1}}" class="btn btn-social-icon btn-linkedin">
+			    <i class="fa fa-link"></i></a> 
+			    <a href="{{detalle.red_social2}}" class="btn btn-social-icon btn-linkedin">
+			    <i class="fa fa-link"></i></a>
+			    <a href="{{detalle.red_social3}}" class="btn btn-social-icon btn-linkedin">
+			    <i class="fa fa-link"></i></a>
+			    <a href="{{detalle.red_social4}}" class="btn btn-social-icon btn-linkedin">
+			    <i class="fa fa-link"></i></a>
+
+			</div>-->
+			<div class="row">
+				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+					
+						<div class="panel panel-primary">
+							<div class="panel-heading ph-costum">
+								 <ul class="nav nav-tabs tab-costum" role="tablist">
+									<li role="presentation" class="active">
+										<a href="#home" aria-controls="home" role="tab" data-toggle="tab">Visión</a>
+									</li>
+									<li role="presentation">
+										<a href="#tab" aria-controls="tab" role="tab" data-toggle="tab">Misión</a>
+									</li>
+								</ul>
+							</div>
+							<div class="panel-body tab-content">
+								
+								<div role="tabpanel" class="tab-pane active" id="home">{{detalle.vision}}</div>
+								<div role="tabpanel" class="tab-pane" id="tab">{{detalle.mision}}</div>
+								
+							</div>
+						</div>
+					
+				</div>
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-6">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<i class="fa fa-edit"></i> Personas de contacto 
+						</div>
+						<div class="panel-body">
+							
+							<div class="row">
+								<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 border-rigth">
+									<p><b>{{detalle.persona1_contacto}}</b></p>
+									<p><b><i class="fa fa-briefcase"></i> Cargo: </b> {{detalle.persona1_cargo}}</p>
+									<p><b><i class="fa fa-phone"></i> Teléfono:</b> {{detalle.persona1_telefono}} </p>
+									<p><b><i class="fa fa-envelope"></i> Correo: </b> <a href="mailto:{{detalle.persona1_correo}}">{{detalle.persona1_correo}}</a></p>
+								</div>
+								<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+									<p><b>{{detalle.persona2_contacto}}</b></p>
+									<p><b><i class="fa fa-briefcase"></i> Cargo: </b> {{detalle.persona2_cargo}}</p>
+									<p><b><i class="fa fa-phone"></i> Teléfono:</b> {{detalle.persona2_telefono}}</p>
+									<p><b><i class="fa fa-envelope"></i> Correo: </b> <a href="mailto:{{detalle.persona2_correo}}">{{detalle.persona2_correo}}</a></p>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<br>
+			<br>
+		
+
+
+
 </div>
 
 {% endblock content%}

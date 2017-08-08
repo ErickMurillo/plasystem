@@ -1,14 +1,87 @@
-{% extends "organizaciones/base-org-dash.html" %}
-
+{% extends "base.html" %}
+{% block extra_css %}
+	<link href="/static/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="/static/css/mediabtn.css" rel="stylesheet" type="text/css">
+{% endblock %}
 {% block content %}
 
 <div class="content">
+	<div class="panel panel-primary panel-list">
+            <div class="panel-body">
+              <h4 class="m-t-0">Lista de organizaciones</h4>
+              <table id="example" class="table" cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						<th>Nombhe</th>
+						<th>País</th>
+						<th>Tipo</th>
+						<th>Rubro</tr>
+					</tr>
+				</thead>
+				<!--<thead class="filtro">
+		            <tr>
+		                <th>Nombre</th>
+						<th>País</th>
+						<th>Tipo</th>
+						<th>Rubro</tr>
+		            </tr>
+		        </thead>-->
+				<tbody>
+					{% for obj in todas %}
+						<tr>
+							<td><a href="/organizaciones/ver/organizacion/{{obj.id}}">{{obj.nombre}}</a></td>
+							<td>{{obj.pais}}</td>
+							<td>{{obj.tipo}}</td>
+							<td>
+								{% if obj.tipo_rubro == 1%}
+									Café
+								{% elif obj.tipo_rubro == 2 %}
+									Cacao
+								{% elif obj.tipo_rubro == 3%}
+									Hortaliza
+								{% else %}
+									Ninguno
+								{% endif %}
+							</td>
 
-	<ul>
-		{% for obj in todas %}
-			<li><a href="/organizaciones/ver/organizacion/{{obj.id}}">{{obj.nombre}}</a></li>
-		{% endfor %}
-	</ul>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+        </div>
+    </div>
+			
 </div>
+{% block extra_js %}
+	<script src="/static/js/jquery.dataTables.js"></script>
+  	<script src="/static/js/dataTables.bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+		    var table = $('#example').DataTable(
+		    
+		 
+		    
+		    
+		    );
+		 
+		    $("#example .filtro th").each( function ( i ) {
+		        var select = $('<select class="form-control"><option value=""></option></select>')
+		            .prependTo( $(this).empty() )
+		            .on( 'change', function () {
+		                var val = $(this).val();
+		 
+		                table.column( i )
+		                    .search( val ? '^'+$(this).val()+'$' : val, true, false )
+		                    .draw();
+		            } );
+		 
+		        table.column( i ).data().unique().sort().each( function ( d, j ) {
+		            select.append( '<option value="'+d+'">'+d+'</option>' )
+		        } );
+		    } );
+		} );
+	</script>
 
+
+{% endblock %}
 {% endblock content%}
