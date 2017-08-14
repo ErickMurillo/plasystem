@@ -76,4 +76,4 @@ class RegistroPlanAnualAdmin(admin.ModelAdmin):
 
 admin.site.register(CategoriaGastos)
 admin.site.register(RegistroPlanAnual, RegistroPlanAnualAdmin)
-#admin.site.register(RegistroMeses)
+admin.site.register(InformeMensual)

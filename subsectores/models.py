@@ -229,13 +229,38 @@ class InformeMensual(models.Model):
     fecha = models.DateField()
     elaborado = models.CharField('Informe elaborado por:', max_length=50)
     proyecto = models.ForeignKey(DatosGenerales)
-    intervencion = models.ForeignKey(Intervenciones)
-    resultado = models.ForeignKey(ObjetivosResultados)
-    indicador = models.ForeignKey(Indicadores)
+    #intervencion = models.ForeignKey(Intervenciones)
+    #resultado = models.ForeignKey(ObjetivosResultados)
+    #indicador = models.ForeignKey(Indicadores)
+    intervencion = ChainedForeignKey(
+        Intervenciones,
+        chained_field="proyecto",
+        chained_model_field="proyecto",
+        show_all=False,
+        auto_choose=True,
+        sort=True
+    )
+    resultado = ChainedForeignKey(
+        ObjetivosResultados,
+        chained_field="intervencion",
+        chained_model_field="intervencion",
+        show_all=False,
+        auto_choose=True,
+        sort=True
+    )
+    #indicador = models.ForeignKey(Indicadores)
+    indicador = ChainedForeignKey(
+        Indicadores,
+        chained_field="resultado",
+        chained_model_field="objetivo",
+        show_all=False,
+        auto_choose=True,
+        sort=True
+    )
     alcanzados_mes = models.IntegerField()
     gastos_mes = models.IntegerField()
     momento_indicador = models.IntegerField(choices=CHOICE_MOMENTOS_INDICADOR)
-    resultado = models.IntegerField()
+    resultados = models.IntegerField()
     informacion_cualitativa = models.TextField()
     subir_archivo = models.FileField(upload_to='/media/informeMensual/')
 
