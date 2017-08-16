@@ -1,18 +1,22 @@
 from django.contrib import admin
 from .models import *
-from nested_admin import NestedTabularInline,NestedModelAdmin
+from nested_inline.admin import NestedStackedInline, NestedTabularInline, NestedModelAdmin
 from .forms import *
 
-class IndicadoresInline(NestedTabularInline):
+class IndicadoresInline(NestedStackedInline):
     model = Indicadores
     extra = 1
+    fk_name = 'objetivo'
+    can_delete = True
 
-class ObjetivosInline(NestedTabularInline):
+class ObjetivosInline(NestedStackedInline):
     model = ObjetivosResultados
     extra = 1
+    fk_name = 'intervencion'
     inlines = [IndicadoresInline]
+    can_delete = True
 
-class IntervencionInline(NestedTabularInline):
+class IntervencionInline(NestedStackedInline):
     model = Intervenciones
     extra = 1
     inlines = [ObjetivosInline]

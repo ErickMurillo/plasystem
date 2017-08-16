@@ -29,7 +29,8 @@ INSTALLED_APPS = [
     'resultados',
     'smart_selects',
     'multiselectfield',
-    'nested_admin',
+    #'nested_admin',
+    'nested_inline',
 ]
 
 MIDDLEWARE = [
