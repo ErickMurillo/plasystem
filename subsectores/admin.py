@@ -80,4 +80,12 @@ class RegistroPlanAnualAdmin(admin.ModelAdmin):
 
 admin.site.register(CategoriaGastos)
 admin.site.register(RegistroPlanAnual, RegistroPlanAnualAdmin)
-admin.site.register(InformeMensual)
+
+class InformeMensualAdmin(admin.ModelAdmin):
+    list_display = ('fecha','proyecto','intervencion','resultado', 'indicador')
+    fields = (('fecha', 'elaborado', 'proyecto'),
+              ('intervencion','resultado','indicador'),
+              ('alcanzados_mes','gastos_mes','momento_indicador'),
+              'resultados','informacion_cualitativa','subir_archivo')
+
+admin.site.register(InformeMensual,InformeMensualAdmin)
