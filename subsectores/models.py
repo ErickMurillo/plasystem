@@ -262,7 +262,7 @@ class InformeMensual(models.Model):
     momento_indicador = models.IntegerField(choices=CHOICE_MOMENTOS_INDICADOR)
     resultados = models.IntegerField()
     informacion_cualitativa = models.TextField()
-    subir_archivo = models.FileField(upload_to='/media/informeMensual/')
+    subir_archivo = models.FileField(upload_to='informeMensual')
 
     def __str__(self):
         return self.elaborado
