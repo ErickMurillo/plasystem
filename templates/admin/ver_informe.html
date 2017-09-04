@@ -26,6 +26,34 @@
 
 {% block content %}
   <div id="content-main">
+  <table>
+    <tbody>
+        <tr>
+            <td><strong>Nombre proyecto:</strong> {{proyecto}}</td>
+        </tr>
+        <tr>
+            <td><strong>Fecha de inicio:</strong> {{proyecto.fecha_inicio}}</td>
+        </tr>
+        <tr>
+            <td><strong>Fecha de finalizacion:</strong> {{proyecto.fecha_finalizacion}}</td>
+        </tr>
+        <tr>
+            <td><strong>Pais:</strong> {{proyecto.pais}}</td>
+        </tr>
+        <tr>
+            <td><strong>Responsable:</strong> {{proyecto.responsable}}</td>
+        </tr>
+        <tr>
+            <td><strong>Moneda:</strong> {{proyecto.moneda}}</td>
+        </tr>
+        <tr>
+            <td><strong>Grupo:</strong> {{proyecto.grupo}}</td>
+        </tr>
+        <tr>
+            <td><strong>Macro objetivo:</strong> {{proyecto.macro_objetivo}}</td>
+        </tr>
+    </tbody>
+  </table>
    <h2>Registro plan anual ({{proyecto}})
    <p></p>
     <table border="1" width="100%">
