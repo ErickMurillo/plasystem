@@ -3071,7 +3071,6 @@ File: Menu
   float: left;
 }
 .profile .profile-username {
-  margin-left: 45px;
   display: block;
 }
 .dropdown-menu-lg {
@@ -3798,4 +3797,46 @@ File: Responsive
   .hide-phone {
     display: none !important;
   }
+}
+/**********
+Lista de organizaciones
+************/
+
+.norg select{
+  display: none;
+}
+
+.filtro tr th select.form-control{
+  width: 100%;
+}
+.panel-list{
+  min-height:500px;
+}
+.list{
+  list-style: none;
+}
+.border-rigth{
+  border-right: 1px solid #eee;
+}
+.ph-costum{
+  padding: 1px 0px;
+}
+ .nav.nav-tabs.tab-costum > li > a{
+  line-height: 40px;
+}
+.nav.nav-tabs.tab-costum > li.active > a{
+  background: #276126;
+}
+.nav.nav-tabs.tab-costum > li> a{
+  color: white !important;
+}
+.profile .profile-username{
+  margin-top: 7px;
+}
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover{
+  background: #5cb45b;
+}
+.navbar-dashboard .nav-pais li a:hover{
+  background: #5cb45b;
+  color: white !important;
 }

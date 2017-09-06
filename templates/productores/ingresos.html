@@ -102,9 +102,9 @@
               <div class="tab-content">
                 {% for key,values in anios.items %}
                 <div role="tabpanel" class="tab-pane {% if forloop.first %}active{% endif %}" id="{{key}}-cultivos">
-                  <div class="row">
-                    <div id="result"></div>
-                    <table id="table-sparkline">
+                  
+                    
+                    <table class="table" id="table-sparkline">
                       <thead>
                         <tr>
                           <th>Cultivo</th>
@@ -146,7 +146,7 @@
                         </tr>
                       </tbody>
                     </table>
-                  </div>
+                 
                 </div>
                 {% endfor %}
               </div>

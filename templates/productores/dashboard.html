@@ -89,7 +89,7 @@
           <div class="panel panel-primary">
             <div class="panel-body">
               <h4 class="m-t-0">Ingresos del productor por cultivo <span class="mdi mdi-help-circle"></span><span class="more-ind"> <a href="{% if '/productores/dashboard/?pais=' in request.get_full_path %}/productores/dashboard/ingresos/?pais={{id_pais}}{% else %}/productores/dashboard/ingresos/{% endif %}">+indicadores</a> </span></h4>
-              <div id="grafico1"></div>
+              <div id="grafico1" width='100%'></div>
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@
                     <div id="grafico2" width:'100%' style="height: 350px;"></div>
                   </div>
                   <div role="tabpanel" class="tab-pane" id="cacao">
-                    <div id="grafico2-1" width:'100%' style="height: 350px;"></div>
+                    <div id="grafico2-1" width='100%' style="height: 350px;"></div>
                   </div>
                   <div role="tabpanel" class="tab-pane" id="hortaliza">
                     <div id="grafico2-2" width:'100%' style="height: 350px;"></div>
