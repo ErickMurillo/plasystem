@@ -55,16 +55,18 @@
 
             <ul class="nav navbar-nav navbar-right pull-right">
 
-              <li class="hidden-xs">
-                <a href="#" id="btn-fullscreen" class="waves-effect waves-light notification-icon-box"><i class="mdi mdi-fullscreen"></i></a>
+              <li class="">
+                <a href="/" id="btn-fullscreen" class="waves-effect waves-light profile">Inicio</a>
+              </li>
+
+              <li class="">
+                <a href="/productores/" id="btn-fullscreen" class="waves-effect waves-light profile">Consultar</a>
               </li>
               <li class="dropdown">
                 <a href="" class="dropdown-toggle profile waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
-                  <img src="/static/nuevo/avatar-1.jpg" alt="user-img" class="img-circle">
-                  <span class="profile-username">
                     {% if user.get_full_name %}{{user.get_full_name}}{% else %}{{ user.username }}{% endif %} <br>
                     <!--<small>Gerente</small>-->
-                  </span>
+
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="/admin"> Administrador</a></li>

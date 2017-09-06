@@ -3071,7 +3071,6 @@ File: Menu
   float: left;
 }
 .profile .profile-username {
-  margin-left: 45px;
   display: block;
 }
 .dropdown-menu-lg {
@@ -3829,5 +3828,15 @@ Lista de organizaciones
   background: #276126;
 }
 .nav.nav-tabs.tab-costum > li> a{
+  color: white !important;
+}
+.profile .profile-username{
+  margin-top: 7px;
+}
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover{
+  background: #5cb45b;
+}
+.navbar-dashboard .nav-pais li a:hover{
+  background: #5cb45b;
   color: white !important;
 }
