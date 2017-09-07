@@ -34,10 +34,21 @@
             </tr>
         </tbody>
       </table>
-       <h2>Registro plan anual ({{proyecto}})
-       <p></p>
-        <table  class="table" border="1" width="100%">
+  <h5>Intervenciones</h5>
+  {% for obj in proyecto.intervenciones_set.all %}
+        {{obj}}
+        <h6>Resultado</h6>
+        {% for resultado in obj.objetivosresultados_set.all %}
+              <strong>{{resultado}}</strong> <br>
+              <h6>Indicadores</h6>
+                {% for indicador in resultado.indicadores_set.all %}
+                    {{indicador}} <br>
+                {% endfor %}
+        {% endfor %}
+  {% endfor %}
+       <h6>Registro plan anual ({{proyecto}})</h6>
 
+        <table  class="table"  width="100%">
           <tr>
             <th>Actividad</th>
             <th>Categoria</th>
@@ -59,6 +70,32 @@
           </tr>
           {% endfor %}
         </table>
+
+      <h2>Informe mensual</h2>
+      {% for obj in proyecto.informemensual_set.all %}
+          <table  class="table"  width="100%">
+          <tr>
+            <th>Elaborado</th>
+            <th>Fecha</th>
+            <th>indicador</th>
+            <th>Alcanze mensual</th>
+            <th>Gasto mensual</th>
+            <th>Momento del indicador</th>
+            <th>Informacion caulitativa</th>
+            <th>Archivo adjunto</th>
+          </tr>
+          <tr>
+            <td>{{obj.elaborado}}</td>
+            <td>{{obj.fecha}}</td>
+            <td>{{obj.indicador}}</td>
+            <td>{{obj.alcanzados_mes}}</td>
+            <td>{{obj.gastos_mes}}</td>
+            <td>{{obj.momento_indicador}}</td>
+            <td>{{obj.informacion_cualitativa}}</td>
+            <td><a href="/media/{{obj.subir_archivo}}">{% if obj.subir_archivo %}Descargar{%else%}No existe adjunto{% endif %}</a></td>
+          </tr>
+        </table>
+      {% endfor %}
 
       </div>
     </div>
