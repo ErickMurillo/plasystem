@@ -4,6 +4,10 @@ from .forms import *
 # Create your views here.
 
 
+def consulta_proyectos(request, template='subsectores/consulta_proyectos.html'):
+	proyectos = DatosGenerales.objects.all()
+	return render(request, template, locals())
+
 def list_informe(request, template='admin/lista_informe_plan_anual.html'):
 	plan_anual = Componentes.objects.all()
 	return render(request, template, locals())

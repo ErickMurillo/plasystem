@@ -67,7 +67,7 @@ class RegistroPlanAnualAdmin(admin.ModelAdmin):
     list_display = ('proyecto','nombre','mostrar_informe_url')
 
     def mostrar_informe_url(self, obj):
-        return '<a href="/ver/plan/%s">Ver Informe</a>' % (obj.proyecto.id)
+        return '<a href="/subsectores/ver/plan/%s">Ver Informe</a>' % (obj.proyecto.id)
     mostrar_informe_url.allow_tags = True
 
     # def save_model(self, request, obj, form, change):
