@@ -35,6 +35,8 @@ urlpatterns = [
     url(r'^productores/', include('productores.urls')),
     url(r'^organizaciones/', include('resultados.urls')),
     url(r'^subsectores/', include('subsectores.urls')),
+    url(r'^mapa-index/$', obtener_lista, name='obtener-lista'),
+    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += staticfiles_urlpatterns()

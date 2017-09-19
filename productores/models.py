@@ -127,7 +127,8 @@ class AreaFinca(models.Model):
         verbose_name_plural = '9. Área total de propiedad/finca'
 
 DISTRIBUCION_CHOICES = (('Bosque','Bosque'),('Potrero','Potrero'),('Cultivo anual','Cultivo anual'),('Cultivo asociado','Cultivo asociado'),
-                        ('Plantación forestal','Plantación forestal'),('Sistema agroforestal','Sistema agroforestal'),('Sistema silvopastoril','Sistema silvopastoril'))
+                        ('Plantación forestal','Plantación forestal'),('Sistema agroforestal','Sistema agroforestal'),('Sistema silvopastoril','Sistema silvopastoril'),
+                        ('Otros','Otros'))
 
 class DistribucionFinca(models.Model):
     encuesta = models.ForeignKey(Encuesta)
@@ -233,6 +234,16 @@ class BPA(models.Model):
     class Meta:
         verbose_name = '11. ¿Si tiene Buenas Prácticas Agrícolas (BPA), indique el tipo de prácticas que implementa'
         verbose_name_plural = '11. ¿Si tiene Buenas Prácticas Agrícolas (BPA), indique el tipo de prácticas que implementa'
+
+SISTEMA_CACAO = (('Semilla','Semilla'),('Injerto','Injerto'),('Mixto','Mixto'))
+
+class SistemaCacao(models.Model):
+    encuesta = models.ForeignKey(Encuesta)
+    sistema = models.CharField(max_length = 50,choices = SISTEMA_CACAO)
+
+    class Meta:
+        verbose_name = 'Sistema de cacao'
+        verbose_name_plural = 'Sistema de cacao'
 
 UNIDAD_MEDIDA = (('Libra','Libra'),('Unidad','Unidad'),('Docena','Docena'),('Quintal','Quintal'))
 
