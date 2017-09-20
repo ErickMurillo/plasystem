@@ -1,124 +1,126 @@
 {% extends "base.html" %}
 
 {% block extra_css %}
+<style type="text/css">
+@media only screen and (max-width: 6000px) and (min-width: 700px) {
 
+   .footer3 {background-color: #2a323c;color: white;padding: 20px;width: 100%;position: absolute;bottom: 0px;}
+}
+</style>
 {% endblock %}
 <link rel="stylesheet" href="static/css/bootstrap-multiselect.css">
 {% block content %}
-<style type="text/css">
-  .footer3 {background-color: #2a323c;color: white;padding: 20px;width: 100%;position: absolute;bottom: 0px;}
-  .footer3 a{color: white;}
-</style>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-color panel-primary panel-pages">
 
-<div class="wrapper-page2">
-    <div class="panel panel-color panel-primary panel-pages">
+            <div class="panel-body">
 
-        <div class="panel-body">
-
-            <form class="form-horizontal m-t-20" action="." method="post">{% csrf_token %}
-                <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="form-group">
-                            <label class="col-md-6 control-label">Año</label>
-                            <div class="col-md-6">
-                                {{form.anio}}
+                <form class="form-horizontal m-t-20" action="." method="post">{% csrf_token %}
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="col-md-6 control-label">Año</label>
+                                <div class="col-md-6">
+                                    {{form.anio}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="col-md-6 control-label">Sexo</label>
+                                <div class="col-md-6">
+                                    {{form.sexo}}
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="form-group">
-                            <label class="col-md-6 control-label">Sexo</label>
-                            <div class="col-md-6">
-                                {{form.sexo}}
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="col-md-6 control-label">País</label>
+                                <div class="col-md-6">
+                                    {{form.pais}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="col-md-6 control-label">Edad</label>
+                                <div class="col-md-6">
+                                  {{form.edad}}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="form-group">
-                            <label class="col-md-6 control-label">País</label>
-                            <div class="col-md-6">
-                                {{form.pais}}
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="col-md-6 control-label">Departamento</label>
+                                <div class="col-md-6">
+                                    {{form.departamento}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="col-md-6 control-label">Municipio</label>
+                                <div class="col-md-6">
+                                    {{form.municipio}}
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="form-group">
-                            <label class="col-md-6 control-label">Edad</label>
-                            <div class="col-md-6">
-                              {{form.edad}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="form-group">
-                            <label class="col-md-6 control-label">Departamento</label>
-                            <div class="col-md-6">
-                                {{form.departamento}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="form-group">
-                            <label class="col-md-6 control-label">Municipio</label>
-                            <div class="col-md-6">
-                                {{form.municipio}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--<div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-612col-lg-12">
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Comunidad</label>
-                            <div class="col-md-9">
-                                <select class="form-control">
-                                    <option>2017</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Organización</label>
-                            <div class="col-md-9">
-                                {{form.organizacion}}
-                            </div>
-                        </div>
-                    </div>
-                    <!--<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="form-group">
-                            <label class="col-md-6 control-label">Rubro</label>
-                            <div class="col-md-6">
-                                <select class="form-control">
-                                    <option>2017</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
+                    <!--<div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-612col-lg-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Comunidad</label>
+                                <div class="col-md-9">
+                                    <select class="form-control">
+                                        <option>2017</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>-->
-                </div>
-
-                <div class="form-group text-center m-t-40">
-                    <div class="col-xs-12">
-                        <button class="btn btn-primary pull-right waves-effect waves-light" type="submit">Consultar</button>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Organización</label>
+                                <div class="col-md-3">
+                                    {{form.organizacion}}
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="col-md-6 control-label">Rubro</label>
+                                <div class="col-md-6">
+                                    <select class="form-control">
+                                        <option>2017</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>-->
                     </div>
-                </div>
-            </form>
-        </div>
 
+                    <div class="form-group text-center m-t-40">
+                        <div class="col-xs-12">
+                            <button class="btn btn-primary pull-right waves-effect waves-light" type="submit">Consultar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
     </div>
 </div>
 {% endblock %}
@@ -307,5 +309,10 @@
     });
 
   });
+</script>
+<script type="text/javascript">
+    $( ".navbar-default ul li" ).removeClass( "active" );
+    $( ".navbar-default ul li.prod" ).addClass( "active" );
+
 </script>
 {% endblock %}

@@ -4,6 +4,18 @@ File: Main Css File
 */
 /*  Google Fonts */
 @import url('https://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700|Roboto:500|Crete+Round:400i');
+@font-face {
+  font-family: "Museo300-Regular";
+  src: url("../fonts/Museo300-Regular.ttf");
+}
+@font-face {
+  font-family: "Museo500-Regular";
+  src: url("../fonts/Museo500-Regular.ttf");
+}
+@font-face {
+  font-family: "Museo700-Regular";
+  src: url("../fonts/Museo500-Regular.ttf");
+}
 /*
  - Buttons
   - Panels
@@ -31,8 +43,9 @@ File: Main Css File
 ===================*/
 body {
   background: #f5f5f5;
-  font-family: 'PT Sans Caption', sans-serif;
+  font-family: 'Museo300-Regular', sans-serif;
   margin: 0;
+  font-size: 16px;
 }
 html {
   overflow-x: hidden;
@@ -191,13 +204,13 @@ a:focus {
   margin-bottom: 15px;
   margin-top: 5px;
 }
-.dropdown-menu {
+/* .dropdown-menu {
   padding: 4px 0;
   border: 0;
 }
 .dropdown-menu > li > a {
   padding: 6px 20px;
-}
+} */
 .bg-primary {
   background-color: #5cb45b !important;
 }
@@ -1328,6 +1341,7 @@ File: Components
 .btn-brown,
 .btn-teal {
   color: #ffffff !important;
+  font-family: "Museo700-Regular";
 }
 .btn-default {
   background-color: #ffffff;
@@ -1346,8 +1360,8 @@ File: Components
   border: 1px solid rgba(42, 50, 60, 0.2) !important;
 }
 .btn-primary {
-  background-color: #5cb45b !important;
-  border: 1px solid #5cb45b !important;
+  background-color: #B5BD00 !important;
+  border: 1px solid #B5BD00 !important;
 }
 .btn-primary:hover,
 .btn-primary:focus,
@@ -1358,8 +1372,8 @@ File: Components
 .btn-primary:focus,
 .btn-primary:hover,
 .open > .dropdown-toggle.btn-primary {
-  background-color: #4ea84d !important;
-  border: 1px solid #4ea84d !important;
+  background-color: #3D3935 !important;
+  border: 1px solid #3D3935 !important;
 }
 .btn-success {
   background-color: #109df3 !important;
@@ -2889,7 +2903,7 @@ File: Pages
 ===================*/
 .gmaps,
 .gmaps-panaroma {
-  height: 300px;
+  height: 250px;
   background: #eeeeee;
   border-radius: 3px;
 }
@@ -3548,8 +3562,8 @@ File: nuevo css
 
 .footer2 {background-color: #2a323c;color: white;padding: 20px;width: 100%;position: absolute;bottom: 0px;}
 .footer2 a{color: white;}
-.footer3 {background-color: #2a323c;color: white;padding: 20px;}
-.footer3 a{color: white;}
+.footer3 {background-color: #3D3935;color: white;padding: 20px;}
+.footer3 a{color: #b5bd00;}
 .wrapper-page2 {
     margin: 2.5% auto;
     width: 40%;
@@ -3594,21 +3608,18 @@ File: nuevo css
 }
 .apps h4{
   text-align: center;
-  padding-bottom: 10px;
 }
 .apps .descripcion{
   min-height: 160px;
+  font-size: 15px;
+  margin: 0px 10px;
 }
-.apps-img{
-  margin-bottom: 20px;
-}
+
 
 .btn-apps{
   margin-top: 20px;
 }
-.btn-apps button{
-  margin-bottom: 10px
-}
+
 .nav-pais li{
     font-size: 14px;
     padding: 20px 10px;
@@ -3727,6 +3738,7 @@ File: Responsive
     right: 0;
     z-index: 99;
   }
+
 }
 @media (min-width: 768px) and (max-width: 991px) {
   body {
@@ -3756,13 +3768,13 @@ File: Responsive
   .wrapper-page {
     width: 90%;
   }
-  .navbar-nav .open .dropdown-menu {
+/*   .navbar-nav .open .dropdown-menu {
     background-color: #ffffff;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
     left: auto;
     position: absolute;
     right: 0;
-  }
+  } */
   .footer {
     left: 0 !important;
   }
@@ -3839,4 +3851,34 @@ Lista de organizaciones
 .navbar-dashboard .nav-pais li a:hover{
   background: #5cb45b;
   color: white !important;
+}
+
+/****************************************************/
+/*-----------------INDEX
+/***************************************************/
+
+.titulo-icon h4, .titulo-icon img{
+    display: inline-block;
+}
+.titulo-icon img{
+    margin: 10px 20px;
+    width: 70px;
+}
+.descripcion .texto{
+    min-height: 105px;
+}
+.index-body{
+    padding-bottom: 0px !important; 
+}
+.navbar-nav>li>a, .dropdown-menu > li > a{
+    line-height: 30px;
+    font-family: "Museo700-Regular";
+    font-size: 15px;
+}
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover{
+    background: #b5bd00;
+    color: white !important;
+}
+.navbar{
+    min-height:60px;
 }
