@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from productores.models import *
+from reportes.models import *
 import json as simplejson
 from django.http import HttpResponse
 
@@ -17,6 +18,12 @@ def index(request,template="index.html"):
         del request.session['edad']
     except:
         pass
+    return render(request, template, locals())
+
+@login_required
+def list_reportes(request,template="reportes.html"):
+    object_list = Reporte.objects.all().order_by('fecha_elaborado')
+    
     return render(request, template, locals())
 
 #obtener puntos en el mapa

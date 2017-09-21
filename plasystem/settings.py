@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'subsectores',
     'lugar',
     'resultados',
+    'reportes',
     'smart_selects',
     'multiselectfield',
     #'nested_admin',

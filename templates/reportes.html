@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+	{% for obj in object_list %}
+		Titulo: {{obj.titulo}}
+		Fecha elaborado: {{obj.fecha_elaborado}}
+		Donante: {{obj.donante}}
+		Subsector: {{obj.subsector}}
+		Pais: {{obj.pais}}
+		<a href="{{obj.archivo}}" download>Descargar</a>
+		<hr>
+	{% endfor %}
+</div>
+{% endblock content %}
