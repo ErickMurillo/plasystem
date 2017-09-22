@@ -248,7 +248,7 @@ a:focus {
   color: #f03154;
 }
 .text-muted {
-  color: #898989;
+  color: #3d3935;
 }
 .text-primary {
   color: #5cb45b;
@@ -3475,7 +3475,7 @@ body.fixed-left .side-menu.left {
   color: #f7b543;
 }
 .page-header-title {
-  background-color: #2a323c;
+  background-color: #3d3935;
   margin: -20px -5px 23px -5px;
   padding: 10px 15px 100px 20px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
@@ -3620,17 +3620,7 @@ File: nuevo css
   margin-top: 20px;
 }
 
-.nav-pais li{
-    font-size: 14px;
-    padding: 20px 10px;
-}
-.navbar-dashboard .nav-pais li a{
-    font-size: 14px;
-    padding: 5px 10px;
-    border: 1px solid #5cb45b;
-    border-radius: 5px;
-    color: #5cb45b !important;
-}
+
 .navbar-dashboard .navbar-nav>.active>a{
 
     background: #5cb45b;
@@ -3871,7 +3861,7 @@ Lista de organizaciones
     padding-bottom: 0px !important; 
 }
 .navbar-nav>li>a, .dropdown-menu > li > a{
-    line-height: 30px;
+    line-height: 31px;
     font-family: "Museo700-Regular";
     font-size: 15px;
 }
@@ -3881,4 +3871,35 @@ Lista de organizaciones
 }
 .navbar{
     min-height:60px;
+}
+
+/****************************************************/
+/*----------------Dashboard
+/*****************************************************/
+.principal-dashboard{
+    margin-top: 80px;
+    font-family: "Museo700-Regular";
+    font-size: 15px;
+}
+
+.page-header-title .breadcrumb {
+    margin: 0 7px;
+}
+.page-header-title .breadcrumb>.active {
+    color: #b5bd00;
+}
+.nav-pais li{
+    font-size: 14px;
+    padding: 0px 10px;
+    margin: 3px 0px;
+}
+.nav-pais>li>a{
+    font-size: 15px;
+    border: 1px solid #b5bd00;
+    color: white !important;
+}
+.nav-pais>li.active>a{
+    background: #b5bd00;
+    border: 1px solid #b5bd00;
+    color: white !important;
 }

@@ -17,70 +17,59 @@
 <body class="fixed-left">
 
   <!-- Begin page -->
-  <div id="wrapper">
-
-    <!-- Top Bar Start -->
-    <div class="topbar">
-      <!-- LOGO -->
-      <div class="topbar-left">
-        <div class="text-center">
-          <a href="index.html" class="logo"><img src="/static/nuevo/logoveco.png" alt=""></a>
-          <!--<a href="index.html" class="logo"><img src="/static/images/logo_white_2.png" height="28"></a>-->
-          <!--<a href="index.html" class="logo-sm"><img src="/static/images/logo_sm.png" height="36"></a>-->
-        </div>
-      </div>
-      <!-- Button mobile view to collapse sidebar menu -->
-      <div class="navbar navbar-default navbar-dashboard" role="navigation">
-        <div class="container">
-          <div class="">
-            <div class="pull-left">
-              <button type="button" class="button-menu-mobile open-left waves-effect waves-light">
-                <i class="ion-navicon"></i>
-              </button>
-              <span class="clearfix"></span>
+<div id="wrapper">
+<div class="topbar">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/"><img src="/static/nuevo/logo_veco_mesoamerica.png" alt=""></a>
             </div>
 
-            <ul class="hidden-xs nav navbar-nav nav-pais">
-              {% if not request.session.anio %}
-              <li {% if '?pais=1' in request.get_full_path %}class="active"{% endif %}><a href="/productores/dashboard/?pais=1">Nicaragua</a></li>
-              <li {% if '?pais=2' in request.get_full_path  %}class="active"{% endif %}><a href="/productores/dashboard/?pais=2">Honduras</a></li>
-              <li {% if '?pais=3' in request.get_full_path  %}class="active"{% endif %}><a href="/productores/dashboard/?pais=3">Guatemala</a></li>
-              {% else %}
-              <li class="active"><a href="#">{{request.session.pais}}</a></li>
-              {% endif %}
-            </ul>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="inicio active">
+                        <a href="/" id="" class="waves-effect  profile">Inicio</a>
+                    </li>
 
-
-            <ul class="nav navbar-nav navbar-right pull-right">
-              <li class="">
-                <a href="/"  class="waves-effect waves-light profile">Inicio</a>
-              </li>
-
-              <li class="">
-                <a href="/productores/"  class="waves-effect waves-light profile">Consultar</a>
-              </li>
-              <li class="dropdown">
-                <a href="" class="dropdown-toggle profile waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
-                  
-                    {% if user.get_full_name %}{{user.get_full_name}}{% else %}{{ user.username }}{% endif %} <br>
-                    <!--<small>Gerente</small>-->
-                 
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a href="/admin"> Administrador</a></li>
-                    <li><a href="/logout"> Cerrar sesion</a></li>
+                    <li class="prod">
+                        <a href="/productores/"  class="waves-effect  profile">Productores</a>
+                    </li>
+                    <li class="sub disabled">
+                        <a href="#"  class="waves-effect  profile">Subsectores</a>
+                    </li>
+                    <li class="org">
+                        <a href="/organizaciones/"  class="waves-effect  profile">Organizaciones</a>
+                    </li>
+                    <li class="rep disabled">
+                        <a href="#" class="waves-effect  profile">Reportes </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true">
+                            {% if user.get_full_name %}<i class="fa fa-user" aria-hidden="true"> </i> {{user.get_full_name}}{% else %}<i class="fa fa-user" aria-hidden="true"> </i> {{ user.username }}{% endif %} <b class="caret"></b><!--<small>Gerente</small>-->
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/admin"> Administrador</a></li>
+                            <li><a href="/logout"> Cerrar sesion</a></li>
+                        </ul>
+                    </li>
                 </ul>
-              </li>
-            </ul>
-          </div>
-          <!--/.nav-collapse -->
-        </div>
-      </div>
+        </div><!-- /.navbar-collapse -->
     </div>
+</nav>
+</div>
+
     <!-- Top Bar End -->
 
 
-    <!-- ========== Left Sidebar Start ========== -->
+    <!-- ========== Left Sidebar Start ========== 
 
     <div class="left side-menu" style="overflow: inherit;">
       <div class="sidebar-inner slimscrollleft" style="overflow: inherit;">
@@ -93,7 +82,7 @@
 
           </div>
         </div>
-        <!--- Divider -->
+
 
 
         <div id="sidebar-menu">
@@ -132,13 +121,13 @@
         </div>
 
         <div class="clearfix"></div>
-      </div> <!-- end sidebarinner -->
+      </div>
     </div>
-    <!-- Left Sidebar End -->
+ Left Sidebar End -->
 
     <!-- Start right Content here -->
 
-    <div class="content-page">
+    <div class="principal-dashboard">
 
       {% block content %}{% endblock %}
 
