@@ -3697,17 +3697,20 @@ File: nuevo css
   font-weight: bold;
 }
 .green-title{
-  color: #5cb45b;
-  font-weight: bold;
+  color: #9eab05;
+  font-family: "Museo500-Regular";
+  font-size: 16px;
 }
 .listdata-prod{
   list-style: none;
   padding: 0px;
+  font-family: "Museo500-Regular";
   
 }
 .listdata-prod li{
   display: inline-block;
   padding: 0px 10px;
+  font-family: "Museo500-Regular";
 }
 .data-prod small{
   display: block;
@@ -3828,7 +3831,7 @@ Lista de organizaciones
   line-height: 40px;
 }
 .nav.nav-tabs.tab-costum > li.active > a{
-  background: #276126;
+  background: #b5bd00;
 }
 .nav.nav-tabs.tab-costum > li> a{
   color: white !important;
@@ -3887,7 +3890,7 @@ Lista de organizaciones
     margin: 0 7px;
 }
 .page-header-title .breadcrumb>.active {
-    color: #b5bd00;
+    color: #9eab05;
 }
 .nav-pais li{
     font-size: 14px;
@@ -3914,4 +3917,17 @@ Lista de organizaciones
     -webkit-box-shadow: 0 8px 6px -6px rgba(61, 57, 53, 0.7);
     -moz-box-shadow: 0 8px 6px -6px rgba(61, 57, 53, 0.7);
     box-shadow: 0 8px 6px -6px rgba(61, 57, 53, 0.7);
+}
+/****************************************************/
+/*----------------Organizacion
+/*****************************************************/
+.list-org li{
+  list-style: none;
+}
+.span-green .fa, .span-green b{
+  color: #9eab05;
+}
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
+    background-color: #b5bd00;
+    border-color: #b5bd00;
 }

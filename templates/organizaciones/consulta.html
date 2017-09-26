@@ -14,6 +14,9 @@
     <div class="panel panel-color panel-primary panel-pages">
 
         <div class="panel-body">
+            <h4 class="m-t-0">
+                Consulta organizaciones
+            </h4>
 
             <form class="form-horizontal m-t-20" action="." method="post">{% csrf_token %}
                 <div class="row">
@@ -48,7 +51,10 @@
                 </div>
 
                 <div class="form-group text-center m-t-40">
-                    <div class="col-xs-12">
+                    <div class="col-xs-6">
+                        <a class="btn btn-primary pull-left waves-effect waves-light" href="/organizaciones/ver/organizaciones/">Lista de organizaciones</a>
+                    </div>
+                    <div class="col-xs-6">
                         <button class="btn btn-primary pull-right waves-effect waves-light" type="submit">Consultar</button>
                     </div>
                 </div>

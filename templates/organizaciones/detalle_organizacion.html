@@ -10,10 +10,10 @@
            	<div class="row">
            		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
            			<div class="panel panel-primary">
-						<div class="panel-heading">
-							{{detalle.nombre}}
-						</div>
 						<div class="panel-body">
+							<h4 class="m-t-0">
+								{{detalle.nombre}}
+							</h4>
 							
 							<p><b>Dirección: </b>{{detalle.direccion}}</p>
 				          	<ul class="list-inline">
@@ -45,10 +45,10 @@
            		</div>
            		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 					<div class="panel panel-primary">
-						<div class="panel-heading">
-							 Situacion legal de la organizacion 
-						</div>
 						<div class="panel-body">
+							<h4 class="m-t-0">
+								Situacion legal de la organizacion 
+							</h4>
 							
 							<p><b>Cuenta con personería Jurídica: </b>{{detalle.get_personeria_display}}</p>
 							<p><b>En operaciones: </b>{{detalle.get_en_operaciones_display}}</p>
@@ -61,10 +61,11 @@
 				</div>
 				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-2">
 					<div class="panel panel-primary">
-						<div class="panel-heading">
-							Redes sociales <i class="fa fa-external-link"></i>
-						</div>
+
 						<div class="panel-body">
+							<h4 class="m-t-0">
+								Redes sociales <i class="fa fa-external-link"></i>
+							</h4>
 							<ul class="list">
 								<li><a href="{{detalle.red_social2}}" target="_blank">Red social 1</a></li>
 								<li><a href="{{detalle.red_social2}}" target="_blank">Red social 2</a></li>
@@ -113,11 +114,10 @@
 				</div>
 				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-6">
 					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<i class="fa fa-edit"></i> Personas de contacto 
-						</div>
 						<div class="panel-body">
-							
+							<h4 class="m-t-0">
+								<i class="fa fa-edit"></i> Personas de contacto 
+							</h4>
 							<div class="row">
 								<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 border-rigth">
 									<p><b>{{detalle.persona1_contacto}}</b></p>
