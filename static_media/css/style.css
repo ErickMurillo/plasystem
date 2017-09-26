@@ -452,7 +452,7 @@ a:focus {
   white-space: nowrap;
 }
 .nav.nav-tabs > li.active > a {
-  background-color: #5cb45b;
+  background-color: #b5bd00;
   color: #ffffff !important;
   border: 0;
 }
@@ -466,11 +466,11 @@ a:focus {
   border: none;
   color: #333333 !important;
   cursor: pointer;
-  line-height: 50px;
+  line-height: 40px;
   font-weight: 500;
-  padding-left: 20px;
-  padding-right: 20px;
-  font-family: 'Roboto', sans-serif;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-family: "Museo500-Regular", sans-serif;
 }
 .nav.nav-tabs > li > a:hover,
 .nav.tabs-vertical > li > a:hover {
@@ -694,6 +694,8 @@ a:focus {
 }
 .m-t-0 {
   margin-top: 0px;
+  font-family: "Museo500-Regular";
+
 }
 .m-t-10 {
   margin-top: 10px !important;
@@ -744,7 +746,8 @@ a:focus {
   line-height: 34px;
 }
 .font-light {
-  font-weight: 300;
+    font-weight: 300;
+    font-family: "Museo300-Regular";
 }
 .wrapper-md {
   padding: 20px;
@@ -1508,7 +1511,7 @@ File: Components
   color: #ffffff;
 }
 .panel-primary > .panel-heading {
-  background-color: #5cb45b;
+  background-color: #fff;
 }
 .panel-success > .panel-heading {
   background-color: #109df3;
@@ -3629,19 +3632,17 @@ File: nuevo css
 .side-cosultar{
     margin: 20px 60px !important;
 }
-.more-ind{
-    float: right;
-}
+
 .more-ind a{
     font-size: 13px;
     padding: 5px 10px;
-    border: 1px solid #5cb45b;
-    border-radius: 5px;
-    color: #5cb45b;
+    border: 1px solid #b5bd00;
+    color: #3d3935;
+    cursor: pointer;
 }
 .more-ind a:hover{
   color: white;
-  background: #5cb45b;
+  background: #b5bd00;
 }
 .link-prod{
     font-size: 13px;
@@ -3890,11 +3891,17 @@ Lista de organizaciones
 }
 .nav-pais li{
     font-size: 14px;
-    padding: 0px 10px;
+    padding: 0px 5px;
     margin: 3px 0px;
+    display: inline-block;
 }
 .nav-pais>li>a{
     font-size: 15px;
+    border: 1px solid #b5bd00;
+    color: white !important;
+}
+.nav-pais>li>a:hover{
+    background: #b5bd00;
     border: 1px solid #b5bd00;
     color: white !important;
 }
@@ -3902,4 +3909,9 @@ Lista de organizaciones
     background: #b5bd00;
     border: 1px solid #b5bd00;
     color: white !important;
+}
+.navbar-fixed-top {
+    -webkit-box-shadow: 0 8px 6px -6px rgba(61, 57, 53, 0.7);
+    -moz-box-shadow: 0 8px 6px -6px rgba(61, 57, 53, 0.7);
+    box-shadow: 0 8px 6px -6px rgba(61, 57, 53, 0.7);
 }

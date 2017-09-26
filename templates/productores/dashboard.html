@@ -3,343 +3,376 @@
 
 {% block content %}
 <div class="content">
-  <div class="">
-    <div class="page-header-title">
-        
-        <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                <ol class="breadcrumb">
-                    <li>
-                        <a href="#">Inicio</a>
-                    </li>
-                    <li>
-                        <a href="/productores/">Consulta</a>
-                    </li>
-                    <li class="active">Productores</li>
-                </ol>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
-                <ul class=" nav navbar-nav pull-right nav-pais">
-                  {% if not request.session.anio %}
-                  <li {% if '?pais=1' in request.get_full_path %}class="active"{% endif %}><a href="/productores/dashboard/?pais=1">
-                    
-                  Nicaragua</a></li>
-                  <li><a href="/productores/dashboard/?pais=2">Honduras</a></li>
-                  <li {% if '?pais=3' in request.get_full_path  %}class="active"{% endif %}><a href="/productores/dashboard/?pais=3">Guatemala</a></li>
-                  {% else %}
-                  <li class="active"><a href="#">{{request.session.pais}}</a></li>
-                  {% endif %}
-                </ul>
-            </div>
-        </div>
-    </div>
-    
-  </div>
+    <div class="">
+        <div class="page-header-title">
 
-  <div class="page-content-wrapper ">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    {% if not request.session.anio %}
 
-    <div class="container">
-
-      <div class="row">
-        <div class="col-xs-6 col-sm-4 col-lg-2">
-          <div class="panel text-center">
-            <div class="panel-heading">
-              <h4 class="panel-title text-muted font-light"><b>Familias</b></h4>
-            </div>
-            <div class="panel-body p-t-10">
-              <h2 class="m-t-0 m-b-15"><b>{{familias}}</b></h2>
-              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-xs-6 col-sm-4 col-lg-2">
-          <div class="panel text-center">
-            <div class="panel-heading">
-              <h4 class="panel-title text-muted font-light"><b>Hombres</b></h4>
-            </div>
-            <div class="panel-body p-t-10">
-              <h2 class="m-t-0 m-b-15"><b>{{hombres}}</b></h2>
-              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-xs-6 col-sm-4 col-lg-2">
-          <div class="panel text-center">
-            <div class="panel-heading">
-              <h4 class="panel-title text-muted font-light"><b>Mujeres</b></h4>
-            </div>
-            <div class="panel-body p-t-10">
-              <h2 class="m-t-0 m-b-15"><b>{{mujeres}}</b></h2>
-              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-xs-6 col-sm-4 col-lg-2">
-          <div class="panel text-center">
-            <div class="panel-heading">
-              <h4 class="panel-title text-muted font-light"><b>Menores de 35</b></h4>
-            </div>
-            <div class="panel-body p-t-10">
-              <h2 class="m-t-0 m-b-15"><b>{{menores_35}}</b></h2>
-              <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-xs-6 col-sm-4 col-lg-2">
-          <div class="panel text-center">
-            <div class="panel-heading">
-              <h4 class="panel-title text-muted font-light"><b>Hectareas</b></h4>
-            </div>
-            <div class="panel-body p-t-10">
-              <h2 class="m-t-0 m-b-15"><b>{{hectareas}}</b></h2>
-              <p class="text-muted m-b-0 m-t-20"><b>Promedio</b></p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-xs-6 col-sm-4 col-lg-2">
-          <div class="panel text-center">
-            <div class="panel-heading">
-              <h4 class="panel-title text-muted font-light"><b>Certificación</b></h4>
-            </div>
-            <div class="panel-body p-t-10">
-              <h2 class="m-t-0 m-b-15"><b>{{certificacion}}</b></h2>
-              <p class="text-muted m-b-0 m-t-20"><b>Productores</b></p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="panel panel-primary">
-            <div class="panel-body">
-              <h4 class="m-t-0">Ingresos del productor por cultivo <span class="mdi mdi-help-circle"></span><span class="more-ind"> <a href="{% if '/productores/dashboard/?pais=' in request.get_full_path %}/productores/dashboard/ingresos/?pais={{id_pais}}{% else %}/productores/dashboard/ingresos/{% endif %}">+indicadores</a> </span></h4>
-              <div id="grafico1" width='100%'></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-6">
-          <div class="panel panel-primary">
-            <div class="panel-body">
-              <h4 class="m-t-0">Distribución de áreas sembradas y cosechadas por cultivo <span class="mdi mdi-help-circle"></span>
-                  <span class="more-ind"> <a href="{% if '/productores/dashboard/?pais=' in request.get_full_path %}/productores/dashboard/distribucion/?pais={{id_pais}}{% else %}/productores/dashboard/distribucion/{% endif %}">+indicadores</a> </span></h4>
-
-              <div role="tabpanel tabs-grafico">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
-                  <li role="presentation" class="active">
-                    <a href="#café" aria-controls="café" role="tab" data-toggle="tab">Café</a>
-                  </li>
-                  <li role="presentation">
-                    <a href="#cacao" aria-controls="cacao" role="tab" data-toggle="tab">Cacao</a>
-                  </li>
-                  <li role="presentation">
-                    <a href="#hortaliza" aria-controls="hortaliza" role="tab" data-toggle="tab">Hortalizas</a>
-                  </li>
-                </ul>
-
-                <!-- Tab panes -->
-                <div class="tab-content">
-                  <div role="tabpanel" class="tab-pane active" id="café">
-                    <div id="grafico2" width:'100%' style="height: 350px;"></div>
-                  </div>
-                  <div role="tabpanel" class="tab-pane" id="cacao">
-                    <div id="grafico2-1" width='100%' style="height: 350px;"></div>
-                  </div>
-                  <div role="tabpanel" class="tab-pane" id="hortaliza">
-                    <div id="grafico2-2" width:'100%' style="height: 350px;"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <!-- end row -->
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="panel panel-primary">
-            <div class="panel-body">
-              <h4 class="m-t-0">Cantidad de productores con producción sustentable, practicas MIP y BPA <span class="mdi mdi-help-circle"></span></h4>
-              <div id="grafico3" width:'100%' style="height: 350px;"></div>
-
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <!-- end row -->
-
-
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="panel panel-primary">
-            <div class="panel-body">
-              <h4 class="m-t-0">Aumento del índice de producción sustentable <span class="mdi mdi-help-circle"></span></h4>
-
-              <div id="grafico4" width:'100%' style="height: 350px;"></div>
-              <br>
-              <h4 class="m-t-0 text-center">Indice total <span class="n-dash">{{indice|floatformat:'0'}}</span> en el año {{last_year}}</h4>
-
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6">
-          <div class="panel panel-primary">
-            <div class="panel-body">
-              <h4 class="m-t-0">Aumento del índice de manejo de plaga <span class="mdi mdi-help-circle"></span></h4>
-              <div role="tabpanel tabs-grafico">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
-                  <li role="presentation" class="active">
-                    <a href="#café-2" aria-controls="café-2" role="tab" data-toggle="tab">Café</a>
-                  </li>
-                  <li role="presentation">
-                    <a href="#cacao-2" aria-controls="cacao-2" role="tab" data-toggle="tab">Cacao</a>
-                  </li>
-                  <li role="presentation">
-                    <a href="#hortaliza-2" aria-controls="hortaliza-2" role="tab" data-toggle="tab">Hortalizas</a>
-                  </li>
-                </ul>
-
-                <!-- Tab panes -->
-                <div class="tab-content">
-                  <div role="tabpanel" class="tab-pane active" id="café-2">
-                    <div id="grafico8-1" width:'100%' style="height: 350px;"></div>
-                    <br>
-                    {% for k,v in dicc_indice.items %}
-                    {% if k == 'Cacao' %}
-                    <h4 class="m-t-0 text-center">Indice total <span class="n-dash">{{v.0|floatformat:'0'}}</span> en el año {{v.1}}</h4>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="#">Inicio</a>
+                        </li>
+                        <li class="active">Dashboard productores</li>
+                    </ol>
+                    {% else %}
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="#">Inicio</a>
+                        </li>
+                        <li>
+                            <a href="/productores/">Consulta</a>
+                        </li>
+                        <li class="active">Productores</li>
+                    </ol>
                     {% endif %}
-                    {% endfor %}
-                  </div>
-                  <div role="tabpanel" class="tab-pane" id="cacao-2">
-                    <div id="grafico8-2" width:'100%' style="height: 350px;"></div>
-                    <br>
-                    {% for k,v in dicc_indice.items %}
-                    {% if k == 'Café' %}
-                    <h4 class="m-t-0 text-center">Indice total <span class="n-dash">{{v.0|floatformat:'0'}}</span> en el año {{v.1}}</h4>
-                    {% endif %}
-                    {% endfor %}
-                  </div>
-                  <div role="tabpanel" class="tab-pane" id="hortaliza-2">
-                    <div id="grafico8-3" width:'100%' style="height: 350px;"></div>
-                    <br>
-                    {% for k,v in dicc_indice.items %}
-                    {% if k == 'Hortalizas' %}
-                    <h4 class="m-t-0 text-center">Indice total <span class="n-dash">{{v.0|floatformat:'0'}}</span> en el año {{v.1}}</h4>
-                    {% endif %}
-                    {% endfor %}
-                  </div>
                 </div>
-              </div>
+                <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+                    <ul class=" nav navbar-nav pull-right nav-pais">
+                        {% if not request.session.anio %}
+                        <li {% if '?pais=1' in request.get_full_path %}class="active"{% endif %}><a href="/productores/dashboard/?pais=1">
 
+                            Nicaragua</a></li>
+                            <li><a href="/productores/dashboard/?pais=2">Honduras</a></li>
+                            <li {% if '?pais=3' in request.get_full_path  %}class="active"{% endif %}><a href="/productores/dashboard/?pais=3">Guatemala</a></li>
+                            {% else %}
+                            <li class="active"><a href="#">{{request.session.pais}}</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
             </div>
-          </div>
+
         </div>
 
-      </div>
-      <!-- end row -->
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="panel panel-primary">
-            <div class="panel-body">
-              <h4 class="m-t-0">Incremento del margen bruto <span class="mdi mdi-help-circle"></span></h4>
-              <div role="tabpanel tabs-grafico">
-              <!-- Nav tabs -->
-              <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active">
-                  <a href="#café-margen" aria-controls="café" role="tab" data-toggle="tab">Café</a>
-                </li>
-                <li role="presentation">
-                  <a href="#cacao-margen" aria-controls="cacao" role="tab" data-toggle="tab">Cacao</a>
-                </li>
-                <li role="presentation">
-                  <a href="#hortaliza-margen" aria-controls="hortaliza" role="tab" data-toggle="tab">Hortalizas</a>
-                </li>
-              </ul>
+        <div class="page-content-wrapper ">
 
-              <!-- Tab panes -->
-              <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="café-margen">
-                  <div id="grafico5-cafe" style="height: 150px;"></div>
-                  <div id="grafico6-cafe" style="height: 150px;"></div>
-                  <div id="grafico7-cafe" style="height: 150px;"></div>
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4 col-lg-2">
+                        <div class="panel text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title text-muted font-light"><b>Familias</b></h4>
+                            </div>
+                            <div class="panel-body p-t-10">
+                                <h2 class="m-t-0 m-b-15"><b>{{familias}}</b></h2>
+                                <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-lg-2">
+                        <div class="panel text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title text-muted font-light"><b>Hombres</b></h4>
+                            </div>
+                            <div class="panel-body p-t-10">
+                                <h2 class="m-t-0 m-b-15"><b>{{hombres}}</b></h2>
+                                <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-lg-2">
+                        <div class="panel text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title text-muted font-light"><b>Mujeres</b></h4>
+                            </div>
+                            <div class="panel-body p-t-10">
+                                <h2 class="m-t-0 m-b-15"><b>{{mujeres}}</b></h2>
+                                <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-lg-2">
+                        <div class="panel text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title text-muted font-light"><b>Menores de 35</b></h4>
+                            </div>
+                            <div class="panel-body p-t-10">
+                                <h2 class="m-t-0 m-b-15"><b>{{menores_35}}</b></h2>
+                                <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-lg-2">
+                        <div class="panel text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title text-muted font-light"><b>Hectareas</b></h4>
+                            </div>
+                            <div class="panel-body p-t-10">
+                                <h2 class="m-t-0 m-b-15"><b>{{hectareas}}</b></h2>
+                                <p class="text-muted m-b-0 m-t-20"><b>Promedio</b></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-lg-2">
+                        <div class="panel text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title text-muted font-light"><b>Certificación</b></h4>
+                            </div>
+                            <div class="panel-body p-t-10">
+                                <h2 class="m-t-0 m-b-15"><b>{{certificacion}}</b></h2>
+                                <p class="text-muted m-b-0 m-t-20"><b>Productores</b></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="cacao-margen">
-                  <div id="grafico5-cacao" style="height: 150px;"></div>
-                  <div id="grafico6-cacao" style="height: 150px;"></div>
-                  <div id="grafico7-cacao" style="height: 150px;"></div>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="hortaliza-margen">
-                  <div id="grafico5-horta" style="height: 150px;"></div>
-                  <div id="grafico6-horta" style="height: 150px;"></div>
-                  <div id="grafico7-horta" style="height: 150px;"></div>
-                </div>
-              </div>
-              </div>
 
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- end row -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="m-t-0">Ingresos del productor por cultivo 
+                                    <!--<span class="mdi mdi-help-circle"></span>-->
+                                </h4>
+                                <small class="more-ind">
+                                    <a href="{% if '/productores/dashboard/?pais=' in request.get_full_path %}/productores/dashboard/ingresos/?pais={{id_pais}}{% else %}/productores/dashboard/ingresos/{% endif %}">+indicadores</a> 
+                                </small>
+                            </div>
+                            <div class="panel-body">
+                                
+                                <div id="grafico1" width='100%'></div>
+                            </div>
+                        </div>
+                    </div>
 
-      <!-- end row -->
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="panel panel-primary">
-            <div class="panel-body">
-              <h4 class="m-t-0">Rendimiento promedio<span class="mdi mdi-help-circle"></span>
-              </h4>
+                    <div class="col-sm-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="m-t-0">Distribución de áreas sembradas y cosechadas por cultivo
+                                    <!--<span class="mdi mdi-help-circle"></span>-->
+                                </h4>
+                                <small class="more-ind">
+                                    <a href="{% if '/productores/dashboard/?pais=' in request.get_full_path %}/productores/dashboard/distribucion/?pais={{id_pais}}{% else %}/productores/dashboard/distribucion/{% endif %}">+ indicadores</a>
+                                </small>
+                            </div>
+                            <div class="panel-body">
 
-              <div role="tabpanel tabs-grafico">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
-                  <li role="presentation" class="active">
-                    <a href="#café-r" aria-controls="café" role="tab" data-toggle="tab">Café</a>
-                  </li>
-                  <li role="presentation">
-                    <a href="#cacao-r" aria-controls="cacao" role="tab" data-toggle="tab">Cacao</a>
-                  </li>
-                  <li role="presentation">
-                    <a href="#hortaliza-r" aria-controls="hortaliza" role="tab" data-toggle="tab">Hortalizas</a>
-                  </li>
-                </ul>
+                                    <div role="tabpanel tabs-grafico">
+                                        <!-- Nav tabs -->
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li role="presentation" class="active">
+                                                <a href="#café" aria-controls="café" role="tab" data-toggle="tab">Café</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#cacao" aria-controls="cacao" role="tab" data-toggle="tab">Cacao</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#hortaliza" aria-controls="hortaliza" role="tab" data-toggle="tab">Hortalizas</a>
+                                            </li>
+                                        </ul>
 
-                <!-- Tab panes -->
-                <div class="tab-content">
-                  <div role="tabpanel" class="tab-pane active" id="café-r">
-                    <div id="grafico10" width:'100%' style="height: 350px;"></div>
-                  </div>
-                  <div role="tabpanel" class="tab-pane" id="cacao-r">
-                    <div id="grafico11" width:'100%' style="height: 350px;"></div>
-                  </div>
-                  <div role="tabpanel" class="tab-pane" id="hortaliza-r">
-                    <div id="grafico12" width:'100%' style="height: 350px;"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- end 12 -->
-      </div><!-- end row -->
+                                        <!-- Tab panes -->
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="café">
+                                                <div id="grafico2" width:'100%' style="height: 350px;"></div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="cacao">
+                                                <div id="grafico2-1" width='100%' style="height: 350px;"></div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="hortaliza">
+                                                <div id="grafico2-2" width:'100%' style="height: 350px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- end row -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-primary">
+                                <div class="panel-body">
+                                    <h4 class="m-t-0">Cantidad de productores con producción sustentable, practicas MIP y BPA 
+                                        <!--<span class="mdi mdi-help-circle"></span>-->
+                                    </h4>
+                                    <div id="grafico3" width:'100%' style="height: 350px;"></div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- end row -->
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="panel panel-primary">
+                                <div class="panel-body">
+                                    <h4 class="m-t-0">Aumento del índice de producción sustentable 
+                                        <!--<span class="mdi mdi-help-circle"></span>-->
+                                    </h4>
+
+                                    <div id="grafico4" width:'100%' style="height: 350px;"></div>
+                                    <br>
+                                    <h4 class="m-t-0 text-center">Indice total <span class="n-dash">{{indice|floatformat:'0'}}</span> en el año {{last_year}}</h4>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="panel panel-primary">
+                                <div class="panel-body">
+                                    <h4 class="m-t-0">Aumento del índice de manejo de plaga 
+                                    <!--<span class="mdi mdi-help-circle"></span>-->
+                                    </h4>
+                                    <div role="tabpanel tabs-grafico">
+                                        <!-- Nav tabs -->
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li role="presentation" class="active">
+                                                <a href="#café-2" aria-controls="café-2" role="tab" data-toggle="tab">Café</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#cacao-2" aria-controls="cacao-2" role="tab" data-toggle="tab">Cacao</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#hortaliza-2" aria-controls="hortaliza-2" role="tab" data-toggle="tab">Hortalizas</a>
+                                            </li>
+                                        </ul>
+
+                                        <!-- Tab panes -->
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="café-2">
+                                                <div id="grafico8-1" width:'100%' style="height: 350px;"></div>
+                                                <br>
+                                                {% for k,v in dicc_indice.items %}
+                                                {% if k == 'Cacao' %}
+                                                <h4 class="m-t-0 text-center">Indice total <span class="n-dash">{{v.0|floatformat:'0'}}</span> en el año {{v.1}}</h4>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="cacao-2">
+                                                <div id="grafico8-2" width:'100%' style="height: 350px;"></div>
+                                                <br>
+                                                {% for k,v in dicc_indice.items %}
+                                                {% if k == 'Café' %}
+                                                <h4 class="m-t-0 text-center">Indice total <span class="n-dash">{{v.0|floatformat:'0'}}</span> en el año {{v.1}}</h4>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="hortaliza-2">
+                                                <div id="grafico8-3" width:'100%' style="height: 350px;"></div>
+                                                <br>
+                                                {% for k,v in dicc_indice.items %}
+                                                {% if k == 'Hortalizas' %}
+                                                <h4 class="m-t-0 text-center">Indice total <span class="n-dash">{{v.0|floatformat:'0'}}</span> en el año {{v.1}}</h4>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- end row -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-primary">
+                                <div class="panel-body">
+                                    <h4 class="m-t-0">Incremento del margen bruto 
+                                    <!--<span class="mdi mdi-help-circle"></span>-->
+                                    </h4>
+                                    <div role="tabpanel tabs-grafico">
+                                        <!-- Nav tabs -->
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li role="presentation" class="active">
+                                                <a href="#café-margen" aria-controls="café" role="tab" data-toggle="tab">Café</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#cacao-margen" aria-controls="cacao" role="tab" data-toggle="tab">Cacao</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#hortaliza-margen" aria-controls="hortaliza" role="tab" data-toggle="tab">Hortalizas</a>
+                                            </li>
+                                        </ul>
+
+                                        <!-- Tab panes -->
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="café-margen">
+                                                <div id="grafico5-cafe" style="height: 150px;"></div>
+                                                <div id="grafico6-cafe" style="height: 150px;"></div>
+                                                <div id="grafico7-cafe" style="height: 150px;"></div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="cacao-margen">
+                                                <div id="grafico5-cacao" style="height: 150px;"></div>
+                                                <div id="grafico6-cacao" style="height: 150px;"></div>
+                                                <div id="grafico7-cacao" style="height: 150px;"></div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="hortaliza-margen">
+                                                <div id="grafico5-horta" style="height: 150px;"></div>
+                                                <div id="grafico6-horta" style="height: 150px;"></div>
+                                                <div id="grafico7-horta" style="height: 150px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end row -->
+
+                    <!-- end row -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-primary">
+                                <div class="panel-body">
+                                    <h4 class="m-t-0">Rendimiento promedio
+                                    <!--<span class="mdi mdi-help-circle"></span>-->
+                                    </h4>
+
+                                    <div role="tabpanel tabs-grafico">
+                                        <!-- Nav tabs -->
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li role="presentation" class="active">
+                                                <a href="#café-r" aria-controls="café" role="tab" data-toggle="tab">Café</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#cacao-r" aria-controls="cacao" role="tab" data-toggle="tab">Cacao</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#hortaliza-r" aria-controls="hortaliza" role="tab" data-toggle="tab">Hortalizas</a>
+                                            </li>
+                                        </ul>
+
+                                        <!-- Tab panes -->
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="café-r">
+                                                <div id="grafico10" width:'100%' style="height: 350px;"></div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="cacao-r">
+                                                <div id="grafico11" width:'100%' style="height: 350px;"></div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="hortaliza-r">
+                                                <div id="grafico12" width:'100%' style="height: 350px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end 12 -->
+                    </div><!-- end row -->
 
 
 
-    </div><!-- container -->
+                </div><!-- container -->
 
 
-  </div> <!-- Page content Wrapper -->
+            </div> <!-- Page content Wrapper -->
 
-</div> <!-- content -->
+        </div> <!-- content -->
 
 {% endblock %}
 <!-- Start content -->
