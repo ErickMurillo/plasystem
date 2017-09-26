@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 from .models import *
-from nested_admin import NestedTabularInline,NestedModelAdmin
+from nested_inline.admin import NestedStackedInline, NestedTabularInline, NestedModelAdmin
+
 
 class ApoyoDonanteInline(NestedTabularInline):
     model = ApoyoDonante

@@ -1,19 +1,29 @@
 from django.contrib import admin
 from .models import *
-from nested_admin import NestedTabularInline,NestedModelAdmin
+from nested_inline.admin import NestedStackedInline, NestedTabularInline, NestedModelAdmin
 from .forms import *
 
-class IndicadoresInline(NestedTabularInline):
+class IndicadoresInline(NestedStackedInline):
     model = Indicadores
     extra = 1
+    fk_name = 'objetivo'
+    can_delete = True
 
-class ObjetivosInline(NestedTabularInline):
+class ObjetivosInline(NestedStackedInline):
     model = ObjetivosResultados
     extra = 1
+    fk_name = 'intervencion'
     inlines = [IndicadoresInline]
+    can_delete = True
+
+class IntervencionInline(NestedStackedInline):
+    model = Intervenciones
+    extra = 1
+    inlines = [ObjetivosInline]
+
 
 class DatosGeneralesAdmin(NestedModelAdmin):
-    inlines = [ObjetivosInline]
+    inlines = [IntervencionInline]
     list_display = ('nombre','fecha_inicio','fecha_finalizacion','pais','responsable')
     search_fields = ('nombre','responsable')
     list_filter = ('pais',)
@@ -39,11 +49,11 @@ class TasaCambioPaisAnualAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(GruposMetas)
 admin.site.register(DatosGenerales, DatosGeneralesAdmin)
-admin.site.register(ObjetivosResultados)
-admin.site.register(Indicadores)
+#admin.site.register(ObjetivosResultados)
+#admin.site.register(Indicadores)
 admin.site.register(Monedas)
 admin.site.register(TipoCambiosMonedaPais, TipoCambiosMonedaPaisAdmin)
-admin.site.register(TasaCambioPaisAnual,TasaCambioPaisAnualAdmin)
+#admin.site.register(TasaCambioPaisAnual,TasaCambioPaisAnualAdmin)
 #register for plan anual
 
 class RegistroMesesInline(admin.TabularInline):
@@ -57,7 +67,7 @@ class RegistroPlanAnualAdmin(admin.ModelAdmin):
     list_display = ('proyecto','nombre','mostrar_informe_url')
 
     def mostrar_informe_url(self, obj):
-        return '<a href="/ver/plan/%s">Ver Informe</a>' % (obj.proyecto.id)
+        return '<a href="/subsectores/ver/plan/%s">Ver Informe</a>' % (obj.proyecto.id)
     mostrar_informe_url.allow_tags = True
 
     # def save_model(self, request, obj, form, change):
@@ -70,4 +80,12 @@ class RegistroPlanAnualAdmin(admin.ModelAdmin):
 
 admin.site.register(CategoriaGastos)
 admin.site.register(RegistroPlanAnual, RegistroPlanAnualAdmin)
-admin.site.register(RegistroMeses)
+
+class InformeMensualAdmin(admin.ModelAdmin):
+    list_display = ('fecha','proyecto','intervencion','resultado', 'indicador')
+    fields = (('fecha', 'elaborado', 'proyecto'),
+              ('intervencion','resultado','indicador'),
+              ('alcanzados_mes','gastos_mes','momento_indicador'),
+              'resultados','informacion_cualitativa','subir_archivo')
+
+admin.site.register(InformeMensual,InformeMensualAdmin)

@@ -74,6 +74,7 @@ class DatosGenerales(models.Model):
         sort=True
     )
     grupo = models.ManyToManyField(GruposMetas)
+    macro_objetivo = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return '%s - %s' % (self.nombre, self.pais.nombre)
@@ -84,17 +85,30 @@ class DatosGenerales(models.Model):
 
 
 @python_2_unicode_compatible
-class ObjetivosResultados(models.Model):
+class Intervenciones(models.Model):
     proyecto = models.ForeignKey(DatosGenerales)
-    objetivo_corto = models.CharField(max_length=25, help_text='25 caracteres maximo')
-    objetivo_completo = models.TextField()
+    intervencion_corto = models.CharField(max_length=25, help_text='25 caracteres maximo')
+    intervencion_completo = models.TextField()
 
     def __str__(self):
-        return self.objetivo_corto
+        return self.intervencion_corto
 
     class Meta:
-        verbose_name = 'Objectivo de resultado'
-        verbose_name_plural = 'Objectivo de resultados'
+        verbose_name = 'Intervención'
+        verbose_name_plural = 'Intervenciones'
+
+@python_2_unicode_compatible
+class ObjetivosResultados(models.Model):
+    intervencion = models.ForeignKey(Intervenciones)
+    resultado_corto = models.CharField(max_length=25, help_text='25 caracteres maximo')
+    resultado_completo = models.TextField()
+
+    def __str__(self):
+        return self.resultado_corto
+
+    class Meta:
+        verbose_name = 'Resultado'
+        verbose_name_plural = 'Resultados'
 
 
 @python_2_unicode_compatible
@@ -135,17 +149,33 @@ CHOICES_TIPO_ACTIVIDAD = ((1,'Contribuye'),(2,'No contribuye'),)
 @python_2_unicode_compatible
 class RegistroPlanAnual(models.Model):
     proyecto = models.ForeignKey(DatosGenerales)
+    intervencion = ChainedForeignKey(
+        Intervenciones,
+        chained_field="proyecto",
+        chained_model_field="proyecto",
+        show_all=False,
+        auto_choose=True,
+        sort=True
+    )
+    resultado = ChainedForeignKey(
+        ObjetivosResultados,
+        chained_field="intervencion",
+        chained_model_field="intervencion",
+        show_all=False,
+        auto_choose=True,
+        sort=True
+    )
     #indicador = models.ForeignKey(Indicadores)
     indicador = ChainedForeignKey(
         Indicadores,
-        chained_field="proyecto",
+        chained_field="resultado",
         chained_model_field="objetivo",
         show_all=False,
         auto_choose=True,
         sort=True
     )
     nombre = models.CharField('Nombre de la actividad', max_length=250, help_text='Nombre completo de la actividad')
-    categoria = models.ForeignKey(CategoriaGastos, verbose_name='Categoria de gatos')
+    categoria = models.ForeignKey(CategoriaGastos, verbose_name='Categoria de gastos')
     codigo_financiero = models.CharField(max_length=50)
     tipo_actividad = models.IntegerField(choices=CHOICES_TIPO_ACTIVIDAD,
                     help_text='Contribuye al dato del indicador',
@@ -190,3 +220,54 @@ class RegistroMeses(models.Model):
     class Meta:
         verbose_name = 'Registro de mes'
         verbose_name_plural = 'Registro de meses'
+
+#ahora viene el modelo raro de uriza
+
+CHOICE_MOMENTOS_INDICADOR = ( (1, 'Proceso'), (2, 'Desarrollo'), (3, 'Cumplido') )
+
+class InformeMensual(models.Model):
+    fecha = models.DateField()
+    elaborado = models.CharField('Informe elaborado por:', max_length=50)
+    proyecto = models.ForeignKey(DatosGenerales)
+    #intervencion = models.ForeignKey(Intervenciones)
+    #resultado = models.ForeignKey(ObjetivosResultados)
+    #indicador = models.ForeignKey(Indicadores)
+    intervencion = ChainedForeignKey(
+        Intervenciones,
+        chained_field="proyecto",
+        chained_model_field="proyecto",
+        show_all=False,
+        auto_choose=True,
+        sort=True
+    )
+    resultado = ChainedForeignKey(
+        ObjetivosResultados,
+        chained_field="intervencion",
+        chained_model_field="intervencion",
+        show_all=False,
+        auto_choose=True,
+        sort=True
+    )
+    #indicador = models.ForeignKey(Indicadores)
+    indicador = ChainedForeignKey(
+        Indicadores,
+        chained_field="resultado",
+        chained_model_field="objetivo",
+        show_all=False,
+        auto_choose=True,
+        sort=True
+    )
+    alcanzados_mes = models.IntegerField()
+    gastos_mes = models.IntegerField()
+    momento_indicador = models.IntegerField(choices=CHOICE_MOMENTOS_INDICADOR)
+    resultados = models.IntegerField()
+    informacion_cualitativa = models.TextField()
+    subir_archivo = models.FileField(upload_to='informeMensual')
+
+    def __str__(self):
+        return self.elaborado
+
+    class Meta:
+        verbose_name='Informe mensual'
+        verbose_name_plural ='Informes mensuales'
+

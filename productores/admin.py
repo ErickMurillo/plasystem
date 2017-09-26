@@ -2,7 +2,8 @@
 from django.contrib import admin
 
 from .models import *
-from nested_admin import NestedStackedInline,NestedTabularInline,NestedModelAdmin
+from nested_inline.admin import NestedStackedInline, NestedTabularInline, NestedModelAdmin
+
 from .forms import *
 
 # Register your models here.
@@ -41,7 +42,7 @@ class AreaFinca_Inline(NestedTabularInline):
 
 class DistribucionFinca_Inline(NestedTabularInline):
     model = DistribucionFinca
-    max_num = 7
+    max_num = 8
     extra = 1
 
 class Certificacion_Inline(NestedTabularInline):
@@ -66,6 +67,11 @@ class BPAPregunta_Inline(NestedTabularInline):
 
 class BPA_Inline(NestedTabularInline):
     model = BPA
+    can_delete = False
+    max_num = 1
+
+class SistemaCacao_Inline(NestedTabularInline):
+    model = SistemaCacao
     can_delete = False
     max_num = 1
 
@@ -148,7 +154,7 @@ class EncuestaAdmin(NestedModelAdmin):
     date_hierarchy = 'fecha'
 
     inlines = [AreaFinca_Inline,DistribucionFinca_Inline,Certificacion_Inline,TipoCertificacion_Inline,
-                CertificadoEmpresa_Inline,BPAPregunta_Inline,BPA_Inline,Produccion_Inline,DestinoProduccion_Inline,
+                CertificadoEmpresa_Inline,BPAPregunta_Inline,BPA_Inline,SistemaCacao_Inline,Produccion_Inline,DestinoProduccion_Inline,
                 IngresosOtrosCultivos_Inline,IngresosFamilia_Inline,FuenteIngresos_Inline,
                 IngresosActividadesGanaderia_Inline,CondicionesRiegos_Inline,ConservacionSuelo_Inline,
                 UsoEficienteAgua_Inline,GestionRecursosNaturales_Inline,CambioClimatico_Inline,
