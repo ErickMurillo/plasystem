@@ -3903,7 +3903,7 @@ Lista de organizaciones
     border: 1px solid #b5bd00;
     color: white !important;
 }
-.nav-pais>li>a:hover{
+.nav-pais>li>a:hover, .nav-pais>li>a:focus{
     background: #b5bd00;
     border: 1px solid #b5bd00;
     color: white !important;
@@ -3930,4 +3930,7 @@ Lista de organizaciones
 .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
     background-color: #b5bd00;
     border-color: #b5bd00;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+    vertical-align: middle;
 }

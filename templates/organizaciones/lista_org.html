@@ -5,53 +5,57 @@
 {% endblock %}
 {% block content %}
 
-<div class="content">
+<div class="col-md-10 col-md-offset-1">
 	<div class="panel panel-primary panel-list">
-            <div class="panel-body">
-              <h4 class="m-t-0">Lista de organizaciones</h4>
-              <table id="example" class="table" cellspacing="0" width="100%">
-				<thead>
-					<tr>
-						<th>Nombre</th>
-						<th>País</th>
-						<th>Tipo</th>
-						<th>Rubro</tr>
-					</tr>
-				</thead>
-				<!--<thead class="filtro">
-		            <tr>
-		                <th>Nombre</th>
-						<th>País</th>
-						<th>Tipo</th>
-						<th>Rubro</tr>
-		            </tr>
-		        </thead>-->
-				<tbody>
-					{% for obj in todas %}
+        <div class="panel-body">
+          	<h4 class="m-t-0">Lista de organizaciones</h4>
+        	<div class="table-responsive">
+	            <table id="example" class="table" cellspacing="0" width="100%">
+					<thead>
 						<tr>
-							<td><a href="/organizaciones/ver/organizacion/{{obj.id}}">{{obj.nombre}}</a></td>
-							<td>{{obj.pais}}</td>
-							<td>{{obj.tipo}}</td>
-							<td>
-								{% if obj.tipo_rubro == 1%}
-									Café
-								{% elif obj.tipo_rubro == 2 %}
-									Cacao
-								{% elif obj.tipo_rubro == 3%}
-									Hortaliza
-								{% else %}
-									Ninguno
-								{% endif %}
-							</td>
-
+							<th>Nombre</th>
+							<th>País</th>
+							<th>Tipo</th>
+							<th>Rubro</tr>
 						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-        </div>
-    </div>
+					</thead>
+					<!--<thead class="filtro">
+			            <tr>
+			                <th>Nombre</th>
+							<th>País</th>
+							<th>Tipo</th>
+							<th>Rubro</tr>
+			            </tr>
+			        </thead>-->
+					<tbody>
+						{% for obj in todas %}
+							<tr>
+								<td><a href="/organizaciones/ver/organizacion/{{obj.id}}">{{obj.nombre}}</a></td>
+								<td>{{obj.pais}}</td>
+								<td>{{obj.tipo}}</td>
+								<td>
+									{% if obj.tipo_rubro == 1%}
+										Café
+									{% elif obj.tipo_rubro == 2 %}
+										Cacao
+									{% elif obj.tipo_rubro == 3%}
+										Hortaliza
+									{% else %}
+										Ninguno
+									{% endif %}
+								</td>
+
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+    	</div>
+	</div>
 			
 </div>
+
+{% endblock content%}
 {% block extra_js %}
 	<script src="/static/js/jquery.dataTables.js"></script>
   	<script src="/static/js/dataTables.bootstrap.min.js"></script>
@@ -105,4 +109,3 @@
 
 
 {% endblock %}
-{% endblock content%}
