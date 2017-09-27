@@ -13,7 +13,15 @@
                             <a href="/">Inicio</a>
                         </li>
                         <li>
-                            <a href="#">Dashboard productores</a>
+                            <a href="
+                            {% if '?pais=1' in request.get_full_path %}
+                              /productores/dashboard/?pais=1
+                            {% elif '?pais=2' in request.get_full_path %}
+                            /productores/dashboard/?pais=2
+                            {% elif '?pais=3' in request.get_full_path %}
+                            /productores/dashboard/?pais=3
+                            {% endif %}
+                            ">Dashboard productores</a>
                         </li>
                         <li class="active">Ingresos</li>
                     </ol>
@@ -151,40 +159,40 @@
                         <tr>
                           <th>Cultivo</th>
                           <th>Vendido</th>
-                          <th></th>
+                          <!-- <th></th> -->
                           <th>Precio de venta</th>
-                          <th></th>
+                          <!-- <th></th> -->
                           <th>Ingresos</th>
-                          <th></th>
+                          <!-- <th></th> -->
                         </tr>
                       </thead>
                       <tbody id="tbody-sparkline">
                         <tr>
                           <th>Café</th>
                           <td>{{values.28|default:'0'|floatformat:'2'}}</td>
-                          <td data-sparkline="71, 78, 39, 66 "/>
+                          <!-- <td data-sparkline="71, 78, 39, 66 "/> -->
                           <td>{{values.16|default:'0'|floatformat:'2'}}</td>
-                          <td data-sparkline="68, 52, 80, 96 "/>
+                          <!-- <td data-sparkline="68, 52, 80, 96 "/> -->
                           <td>{{values.14|default:'0'|floatformat:'2'}}</td>
-                          <td data-sparkline="3, 26, -41, -30 ; column"/>
+                          <!-- <td data-sparkline="3, 26, -41, -30 ; column"/> -->
                         </tr>
                         <tr>
                           <th>Cacao</th>
                           <td>{{values.29|default:'0'|floatformat:'2'}}</td>
-                          <td data-sparkline="71, 78, 39, 66 "/>
+                          <!-- <td data-sparkline="71, 78, 39, 66 "/> -->
                           <td>{{values.19|default:'0'|floatformat:'2'}}</td>
-                          <td data-sparkline="68, 52, 80, 96 "/>
+                          <!-- <td data-sparkline="68, 52, 80, 96 "/> -->
                           <td>{{values.17|default:'0'|floatformat:'2'}}</td>
-                          <td data-sparkline="3, 26, -41, -30 ; column"/>
+                          <!-- <td data-sparkline="3, 26, -41, -30 ; column"/> -->
                         </tr>
                         <tr>
                           <th>Hortalizas</th>
                           <td>{{values.30|default:'0'|floatformat:'2'}}</td>
-                          <td data-sparkline="71, 78, 39, 66 "/>
+                          <!-- <td data-sparkline="71, 78, 39, 66 "/> -->
                           <td>{{values.22|default:'0'|floatformat:'2'}}</td>
-                          <td data-sparkline="68, 52, 80, 96 "/>
+                          <!-- <td data-sparkline="68, 52, 80, 96 "/> -->
                           <td>{{values.20|default:'0'|floatformat:'2'}}</td>
-                          <td data-sparkline="3, 26, -41, -30 ; column"/>
+                          <!-- <td data-sparkline="3, 26, -41, -30 ; column"/> -->
                         </tr>
                       </tbody>
                     </table>

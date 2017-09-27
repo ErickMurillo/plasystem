@@ -14,7 +14,15 @@
                             <a href="/">Inicio</a>
                         </li>
                         <li>
-                            <a href="#">Dashboard productores</a>
+                            <a href="
+                            {% if '?pais=1' in request.get_full_path %}
+                              /productores/dashboard/?pais=1
+                            {% elif '?pais=2' in request.get_full_path %}
+                            /productores/dashboard/?pais=2
+                            {% elif '?pais=3' in request.get_full_path %}
+                            /productores/dashboard/?pais=3
+                            {% endif %}
+                            ">Dashboard productores</a>
                         </li>
                         <li class="active">Distribución</li>
                     </ol>
