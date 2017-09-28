@@ -54,6 +54,10 @@ class ServicioInline(NestedTabularInline):
     model = Servicio
     extra = 1
 
+class TablaIngresosInline(NestedTabularInline):
+    model = TablaIngresos
+    extra = 1
+
 class OrganizacionAdmin(NestedModelAdmin):
     fieldsets = (
         (None, {
@@ -83,7 +87,7 @@ class OrganizacionAdmin(NestedModelAdmin):
                MiembrosOficialesInline,NumeroCooperativaInline,
                ProductoresProveedoresInline,EmpleadosOrganizacionInline,
                InfraestructuraInline,SectoresInline,
-               ActividadInline,ServicioInline
+               ActividadInline,ServicioInline,TablaIngresosInline
                ]
 
     class Media:

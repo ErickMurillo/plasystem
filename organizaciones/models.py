@@ -67,7 +67,8 @@ class Organizacion(models.Model):
     tributaria = models.CharField('No. de identificación tributaria', max_length=250, null=True, blank=True)
     vision = models.TextField(null=True, blank=True)
     mision = models.TextField(null=True, blank=True)
-    apoyo = models.IntegerField(choices=CHOICE_SI_NO, null=True, blank=True)
+    apoyo = models.IntegerField(choices=CHOICE_SI_NO, verbose_name='Recibe apoyo de donantes u otras instituciones'
+                                ,null=True, blank=True)
 
 
     def __str__(self):
@@ -105,7 +106,7 @@ class ApoyoDonante(models.Model):
         return self.institucion.nombre
 
     class Meta:
-        verbose_name_plural = '17.Recibe apoyo de donantes u otras instituciones'
+        verbose_name_plural = '17.1 Área reciben apoyo'
 
 
 class OrganizacionPertenece(models.Model):
@@ -139,7 +140,7 @@ class MiembrosOficiales(models.Model):
     organizacion = models.ForeignKey(Organizacion)
 
     class Meta:
-        verbose_name_plural = '19.Miembros'
+        verbose_name_plural = '19.Miembros (directivos de la OP+ indirectos vías Sucursal)'
 
 
 
@@ -206,11 +207,11 @@ CHOICE_TRANSITABLE = (
 CHOICE_SI_NO_STRING = (('1', 'Si'),('2', 'No'))
 
 class Infraestructura(models.Model):
-    vias_finca = models.CharField(max_length=250)
+    vias_finca = models.CharField(max_length=250, verbose_name='Vías de acceso a finca')
     transitable_finca = models.IntegerField(choices=CHOICE_TRANSITABLE)
-    vias_oficina = models.CharField(max_length=250)
+    vias_oficina = models.CharField(max_length=250, verbose_name='Vías de acceso a la oficina')
     transitable_oficina = models.IntegerField(choices=CHOICE_TRANSITABLE)
-    distancia = models.CharField(max_length=150)
+    distancia = models.CharField(max_length=150, verbose_name='Distancia al centro de abastecimiento (Km)')
     acceso_internet = models.CharField(max_length=2, choices=CHOICE_SI_NO_STRING)
     transporte_publico = models.CharField(max_length=2, choices=CHOICE_SI_NO_STRING)
     red_movil = models.CharField(max_length=2, choices=CHOICE_SI_NO_STRING)
@@ -241,7 +242,7 @@ class SectoresProductos(models.Model):
         return self.get_sector_display()
 
     class Meta:
-        verbose_name_plural = '31.Sectores'
+        verbose_name_plural = '31.Cultivo principal'
 
 class ProductosOrg(models.Model):
     nombre = models.CharField(max_length=250)
@@ -275,7 +276,7 @@ class Actividad(models.Model):
     organizacion = models.ForeignKey(Organizacion)
 
     class Meta:
-        verbose_name_plural = 'Actividad'
+        verbose_name_plural = '32.Actividades'
 
 class Servicios(models.Model):
     nombre = models.CharField(max_length=250)
@@ -291,5 +292,15 @@ class Servicio(models.Model):
     organizacion = models.ForeignKey(Organizacion)
 
     class Meta:
-        verbose_name_plural = 'Servicios'
+        verbose_name_plural = '32.1 Servicios'
 
+class TablaIngresos(models.Model):
+    anio = models.CharField('Año', max_length=50)
+    ingresos = models.FloatField()
+    egresos = models.FloatField()
+    adjuntar_archivo = models.FileField(upload_to='documentosIngresos/', max_length=100)
+
+    organizacion = models.ForeignKey(Organizacion)
+
+    class Meta:
+        verbose_name_plural = "Tabla de ingresos"

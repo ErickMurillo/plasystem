@@ -76,15 +76,15 @@ class AumentadoIngresosInline(admin.TabularInline):
     model = AumentadoIngresos
     extra = 1
 
-class AumentadoProductividadInline(admin.TabularInline):
-    model = AumentadoProductividad
-    extra = 1
-    max_num = 1
+#class AumentadoProductividadInline(admin.TabularInline):
+#    model = AumentadoProductividad
+#    extra = 1
+#    max_num = 1
 
 class ResultadosImplementacionAdmin(admin.ModelAdmin):
     inlines = [ProducenComercializanInline,AcuerdoComercialInline,
                IncrementoAbastecimientoInline,
-               AumentadoIngresosInline,AumentadoProductividadInline]
+               AumentadoIngresosInline]
 
     class Media:
         css = {'all': ('css/admin-resultado-implementacion.css',)}
