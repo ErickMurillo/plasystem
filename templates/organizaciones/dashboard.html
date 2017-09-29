@@ -187,7 +187,7 @@
 			</div>
 
 		<div class="row">
-				<!--<div class="col-sm-12">
+				<div class="col-sm-12">
 					<div class="panel panel-primary">
 						<div class="panel-body">
 							<h4 class="m-t-0">Resultados implementación del programa
@@ -195,7 +195,7 @@
 							<div id="grafocontainer" width:'100%' style="height: 350px;"></div>
 						</div>
 					</div>
-				</div> -->
+				</div>
 		</div>
 	</div>
 
@@ -299,6 +299,35 @@ Highcharts.chart('grafico6', {
 });
 
 //carlos grafo
+Highcharts.chart('grafocontainer', {
+   title: {
+       text: ''
+   },
+   xAxis: {
+       categories: ['Café','Cacao','Hortaliza']
+   },
+
+   series: [
+   {% for k,v in grafo_barra_cultivo.items %}
+   		{
+	       type: 'column',
+	       name: '{{k}}',
+	       data: {{v}}
+   		},
+   {% endfor %}
+   	 {
+       type: 'spline',
+       name: 'Promedio precio',
+       data: {{lista_precio_promedio|default:'0'}},
+       marker: {
+           lineWidth: 2,
+           lineColor: Highcharts.getOptions().colors[3],
+           fillColor: 'white'
+       }
+   }]
+});
+
+
 
 </script>
 {% endblock %}
