@@ -1,5 +1,7 @@
 {% extends "organizaciones/base-org-dash.html" %}
 
+{% load staticfiles %}
+
 {% block content %}
 
 <div class="content">
@@ -178,7 +180,7 @@
 							<h4 class="m-t-0">Organizaciones <!--<span class="mdi mdi-help-circle"></span>--></h4>
 							<ul class="list-org">
 								{% for org in orgs %}
-									<li><a href="{% url 'detail-org' org.id %}">{{org}}</a></li>
+									<li><a href="/dashboard/ficha-organizacion/{{org.id}}/">{{org}}</a></li>
 								{% endfor %}
 							</ul>
 						</div>
