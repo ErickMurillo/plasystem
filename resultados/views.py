@@ -153,23 +153,23 @@ def dashboard(request,template="organizaciones/dashboard.html"):
 
     #salida grafo carlos resultado implementacion
     grafo_barra_cultivo = {}
-    grafo_linea_promedio = {}
     for obj in Cultivo.objects.all():
-        grafo_barra_cultivo[obj] = {}
-        for culti in CHOICES_34_1:
-            try:
-                cantidad = ProducenComercializan.objects.filter(cultivo=obj,
-                                            opcion=culti[0]).aggregate(a=Coalesce(Sum('cantidad'),V(0)))['a']
-                
-                promedio_precio = ProducenComercializan.objects.filter(cultivo=obj,
-                                            opcion=culti[0]).aggregate(c=Coalesce(Avg('precio_promedio'),V(0)))['c']
-            except:
-                cantidad = 0
-                promedio_precio = 0
+            lista = ()
+            for data in range(1,2):
+                forma_colectiva = ProducenComercializan.objects.filter(cultivo=obj,
+                                            opcion=1).aggregate(a=Coalesce(Sum('cantidad'),V(0)))['a']
+                producto_sano = ProducenComercializan.objects.filter(cultivo=obj,
+                                            opcion=2).aggregate(a=Coalesce(Sum('cantidad'),V(0)))['a']
+                contrato_plazo = ProducenComercializan.objects.filter(cultivo=obj,
+                                            opcion=3).aggregate(a=Coalesce(Sum('cantidad'),V(0)))['a']
 
-            grafo_barra_cultivo[obj][culti[1]] = cantidad
-            #grafo_linea_promedio[obj][culti[1]] = (promedio_precio_a,promedio_precio_b,promedio_precio_c)  
-    print grafo_barra_cultivo
+                promedio_precio = ProducenComercializan.objects.filter(cultivo=obj
+                                            ).aggregate(c=Coalesce(Avg('precio_promedio'),V(0)))['c']
+
+                lista = (forma_colectiva,producto_sano,contrato_plazo,promedio_precio)
+
+            grafo_barra_cultivo[obj] = lista
+
     return render(request, template, locals())
 
 def detail_org(request,template='organizaciones/detalle-org.html', id=None):
