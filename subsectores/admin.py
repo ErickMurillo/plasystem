@@ -6,6 +6,7 @@ from .forms import *
 class IndicadoresInline(NestedStackedInline):
     model = Indicadores
     extra = 1
+    exclude = ('codigo','programatico_mayor','programatico_menor','ejecucion_mayor','ejecucion_menor')
     fk_name = 'objetivo'
     can_delete = True
 
@@ -65,6 +66,10 @@ class RegistroMesesInline(admin.TabularInline):
 class RegistroPlanAnualAdmin(admin.ModelAdmin):
     inlines = [RegistroMesesInline]
     list_display = ('proyecto','nombre','mostrar_informe_url')
+    fields = ('proyecto', ('intervencion', 'resultado','indicador'),
+              ('nombre','categoria','codigo_financiero'),
+              ('tipo_actividad','es_socio','organizacion'),
+            )
 
     def mostrar_informe_url(self, obj):
         return '<a href="/subsectores/ver/plan/%s">Ver Informe</a>' % (obj.proyecto.id)
@@ -86,6 +91,6 @@ class InformeMensualAdmin(admin.ModelAdmin):
     fields = (('fecha', 'elaborado', 'proyecto'),
               ('intervencion','resultado','indicador'),
               ('alcanzados_mes','gastos_mes','momento_indicador'),
-              'resultados','informacion_cualitativa','subir_archivo')
+              'informacion_cualitativa','subir_archivo')
 
 admin.site.register(InformeMensual,InformeMensualAdmin)
