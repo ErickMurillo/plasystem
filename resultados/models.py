@@ -17,6 +17,8 @@ class Digitador(models.Model):
         verbose_name = 'Digitador'
         verbose_name_plural = 'Digitadores'
 
+GRUPO_CHOICES = ((1,'Grupo de intervención'),(2,'Grupo de control'))
+
 class ResultadosEvaluacion(models.Model):
     digitador = models.ForeignKey(Digitador)
     fecha = models.DateField()
@@ -227,6 +229,7 @@ class ResultadosImplementacion(models.Model):
     fecha = models.DateField()
     organizacion = models.ForeignKey(Organizacion)
     para_quien = models.IntegerField(choices=CHOICE_PARA_QUIEN)
+    grupo = models.IntegerField(choices=GRUPO_CHOICES, null=True, blank=True)
 
     year = models.IntegerField(editable=False)
 
@@ -327,7 +330,9 @@ class AumentadoIngresos(models.Model):
     cantidad = models.FloatField()
     cantidad_certificada = models.FloatField()
     precio_promedio = models.FloatField()
+    costos_promedio = models.FloatField(null=True, blank=True)
     precio_promedio_certificada = models.FloatField(default=0)
+    costos_promedio_certificada = models.FloatField(null=True, blank=True)
 
     resultado_implementacion = models.ForeignKey(ResultadosImplementacion)
 

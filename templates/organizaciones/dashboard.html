@@ -140,7 +140,7 @@
 			                </div>
 			              </div>
 			            </div>
-			          </div>					
+			          </div>
 				</div>
 				<div class="col-sm-8">
 					<div class="panel panel-primary">
@@ -164,7 +164,7 @@
 				<div class="col-sm-6">
 					<div class="panel panel-primary">
 						<div class="panel-body">
-							<h4 class="m-t-0">Servicios y productos que ofrece <!--<span class="mdi mdi-help-circle"></span>--></h4>
+							<h4 class="m-t-0">Sectores: ofrecen servicios y productos <!--<span class="mdi mdi-help-circle"></span>--></h4>
 							<div id="grafico6" width:'100%' style="height: 350px;"></div>
 						</div>
 					</div>
@@ -190,7 +190,7 @@
 				<div class="col-sm-12">
 					<div class="panel panel-primary">
 						<div class="panel-body">
-							<h4 class="m-t-0">Resultados implementación del programa <!--<span class="mdi mdi-help-circle"></span>-->
+							<h4 class="m-t-0">Resultados implementación del programa
 							</h4>
 							<div id="grafocontainer" width:'100%' style="height: 350px;"></div>
 						</div>
@@ -300,38 +300,32 @@ Highcharts.chart('grafico6', {
 
 //carlos grafo
 Highcharts.chart('grafocontainer', {
-    title: {
-        text: ''
-    },
-    xAxis: {
-        categories: [{% for k,v in grafo_barra_cultivo.items %}'{{k}}',{% endfor %}]
-    },
+   title: {
+       text: ''
+   },
+   xAxis: {
+       categories: ['Café','Cacao','Hortaliza']
+   },
 
-    series: [
-    {
-        type: 'column',
-        name: 'a) Producen y comercializan de forma colectiva',
-        data: [3, 2, 1]
-    }, {
-        type: 'column',
-        name: 'b) Producen productos sanos',
-        data: [2, 3, 5]
-    }, {
-        type: 'column',
-        name: 'c) Tienen contratos de largo plazo',
-        data: [4, 3, 3]
-    }, {
-        type: 'spline',
-        name: 'Promedio precio',
-        data: [3, 2.67, 3],
-        marker: {
-            lineWidth: 2,
-            lineColor: Highcharts.getOptions().colors[3],
-            fillColor: 'white'
-        }
-    }]
+   series: [
+   {% for k,v in grafo_barra_cultivo.items %}
+   		{
+	       type: 'column',
+	       name: '{{k}}',
+	       data: {{v}}
+   		},
+   {% endfor %}
+   	 {
+       type: 'spline',
+       name: 'Promedio precio',
+       data: {{lista_precio_promedio|default:'0'}},
+       marker: {
+           lineWidth: 2,
+           lineColor: Highcharts.getOptions().colors[3],
+           fillColor: 'white'
+       }
+   }]
 });
-
 
 
 

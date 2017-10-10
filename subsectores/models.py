@@ -5,6 +5,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 from lugar.models import Pais
 from smart_selects.db_fields import ChainedForeignKey
+from organizaciones.models import Organizacion
 
 # Create your models here.
 
@@ -80,8 +81,8 @@ class DatosGenerales(models.Model):
         return '%s - %s' % (self.nombre, self.pais.nombre)
 
     class Meta:
-        verbose_name = 'Dato General (proyecto)'
-        verbose_name_plural = 'Datos Generales (proyectos)'
+        verbose_name = 'Dato General (subsector)'
+        verbose_name_plural = 'Datos Generales (subsectores)'
 
 
 @python_2_unicode_compatible
@@ -116,11 +117,11 @@ class Indicadores(models.Model):
     objetivo = models.ForeignKey(ObjetivosResultados)
     descripcion_corto = models.CharField(max_length=25, help_text='25 caracteres maximo')
     descripcion_completo = models.TextField()
-    codigo = models.CharField(max_length=50)
-    programatico_mayor = models.FloatField()
-    programatico_menor = models.FloatField()
-    ejecucion_mayor = models.FloatField()
-    ejecucion_menor = models.FloatField()
+    codigo = models.CharField(max_length=50, null=True, blank=True)
+    programatico_mayor = models.FloatField(null=True, blank=True)
+    programatico_menor = models.FloatField(null=True, blank=True)
+    ejecucion_mayor = models.FloatField(null=True, blank=True)
+    ejecucion_menor = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.descripcion_corto
@@ -145,6 +146,7 @@ class CategoriaGastos(models.Model):
 
 
 CHOICES_TIPO_ACTIVIDAD = ((1,'Contribuye'),(2,'No contribuye'),)
+CHOICES_ES_NO_SOCIO = ((1,'Socio directo'),(2,'Socio estratégico'),(3,'Vecoma'))
 
 @python_2_unicode_compatible
 class RegistroPlanAnual(models.Model):
@@ -180,6 +182,8 @@ class RegistroPlanAnual(models.Model):
     tipo_actividad = models.IntegerField(choices=CHOICES_TIPO_ACTIVIDAD,
                     help_text='Contribuye al dato del indicador',
                     verbose_name='Esta actividad contribuye')
+    es_socio = models.IntegerField(choices=CHOICES_ES_NO_SOCIO, null=True, blank=True)
+    organizacion = models.ForeignKey(Organizacion, null=True, blank=True)
     total_metas = models.FloatField(default=0, editable=False, null=True, blank=True)
     total_presupuesto = models.FloatField(default=0, editable=False, null=True, blank=True)
 
@@ -257,17 +261,17 @@ class InformeMensual(models.Model):
         auto_choose=True,
         sort=True
     )
-    alcanzados_mes = models.IntegerField()
-    gastos_mes = models.IntegerField()
-    momento_indicador = models.IntegerField(choices=CHOICE_MOMENTOS_INDICADOR)
-    resultados = models.IntegerField()
-    informacion_cualitativa = models.TextField()
-    subir_archivo = models.FileField(upload_to='informeMensual')
+    alcanzados_mes = models.IntegerField(null=True, blank=True)
+    gastos_mes = models.IntegerField(null=True, blank=True)
+    momento_indicador = models.IntegerField(choices=CHOICE_MOMENTOS_INDICADOR,null=True, blank=True)
+    resultados = models.IntegerField(null=True, blank=True)
+    informacion_cualitativa = models.TextField(null=True, blank=True)
+    subir_archivo = models.FileField(upload_to='informeMensual', null=True, blank=True)
 
     def __str__(self):
         return self.elaborado
 
     class Meta:
-        verbose_name='Informe mensual'
-        verbose_name_plural ='Informes mensuales'
+        verbose_name='Informe trimestral'
+        verbose_name_plural ='Informes trimestrales'
 

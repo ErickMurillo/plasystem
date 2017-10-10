@@ -152,24 +152,31 @@ def dashboard(request,template="organizaciones/dashboard.html"):
     apoyo = Organizacion.objects.filter(id__in = result_list,apoyo = 1).count()
 
     #salida grafo carlos resultado implementacion
-    grafo_barra_cultivo = {}
-    grafo_linea_promedio = {}
-    for obj in Cultivo.objects.all():
-        grafo_barra_cultivo[obj] = {}
-        for culti in CHOICES_34_1:
-            try:
-                cantidad = ProducenComercializan.objects.filter(cultivo=obj,
-                                            opcion=culti[0]).aggregate(a=Coalesce(Sum('cantidad'),V(0)))['a']
-                
-                promedio_precio = ProducenComercializan.objects.filter(cultivo=obj,
-                                            opcion=culti[0]).aggregate(c=Coalesce(Avg('precio_promedio'),V(0)))['c']
-            except:
-                cantidad = 0
-                promedio_precio = 0
+    grafo_barra_cultivo = collections.OrderedDict()
+    for obj in CHOICES_34_1: 
+        cafe = ProducenComercializan.objects.filter(cultivo__tipo=1,
+                                     opcion=obj[0]).aggregate(a=Coalesce(Sum('cantidad'),V(0)))['a']
+        cacao = ProducenComercializan.objects.filter(cultivo__tipo=2,
+                                     opcion=obj[0]).aggregate(a=Coalesce(Sum('cantidad'),V(0)))['a']
+        hortaliza = ProducenComercializan.objects.filter(cultivo__tipo=3,
+                                     opcion=obj[0]).aggregate(a=Coalesce(Sum('cantidad'),V(0)))['a']
 
-            grafo_barra_cultivo[obj][culti[1]] = cantidad
-            #grafo_linea_promedio[obj][culti[1]] = (promedio_precio_a,promedio_precio_b,promedio_precio_c)  
-    print grafo_barra_cultivo
+        # promedio_precio = ProducenComercializan.objects.filter(cultivo=obj
+        #                             ).aggregate(c=Coalesce(Avg('precio_promedio'),V(0)))['c']
+
+
+        grafo_barra_cultivo[obj[1]] = [cafe,cacao,hortaliza]
+
+    
+    promedio_precio_cafe = ProducenComercializan.objects.filter(cultivo__tipo=1,
+                ).aggregate(c=Coalesce(Avg('precio_promedio'),V(0)))['c']
+    promedio_precio_cacao = ProducenComercializan.objects.filter(cultivo__tipo=2,
+                ).aggregate(c=Coalesce(Avg('precio_promedio'),V(0)))['c']
+    promedio_precio_hortaliza = ProducenComercializan.objects.filter(cultivo__tipo=3,
+                ).aggregate(c=Coalesce(Avg('precio_promedio'),V(0)))['c']
+
+    lista_precio_promedio = [promedio_precio_cafe,promedio_precio_cacao,promedio_precio_hortaliza]
+
     return render(request, template, locals())
 
 def detail_org(request,template='organizaciones/detalle-org.html', id=None):
