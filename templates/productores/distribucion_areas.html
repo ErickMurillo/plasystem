@@ -1,0 +1,221 @@
+{% extends "productores/base_dashboard.html" %}
+{% load l10n %}
+
+{% block content %}
+<div class="content">
+  <div class="">
+        <div class="page-header-title">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    {% if not request.session.anio %}
+
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="/">Inicio</a>
+                        </li>
+                        <li>
+                            <a href="
+                            {% if '?pais=1' in request.get_full_path %}
+                              /productores/dashboard/?pais=1
+                            {% elif '?pais=2' in request.get_full_path %}
+                            /productores/dashboard/?pais=2
+                            {% elif '?pais=3' in request.get_full_path %}
+                            /productores/dashboard/?pais=3
+                            {% endif %}
+                            ">Dashboard productores</a>
+                        </li>
+                        <li class="active">Distribución</li>
+                    </ol>
+                    {% else %}
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="/">Inicio</a>
+                        </li>
+                        <li>
+                            <a href="/productores/">Consulta</a>
+                        </li>
+                        <li>
+                            <a href="#">Productores</a>
+                        </li>
+                        <li class="active">Distribución</li>
+                    </ol>
+                    {% endif %}
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <ul class=" nav navbar-nav pull-right nav-pais">
+                        {% if not request.session.anio %}
+                        <li {% if '?pais=1' in request.get_full_path %}class="active"{% endif %}><a href="/productores/dashboard/?pais=1">Nicaragua</a></li>
+                        <li><a href="/productores/dashboard/?pais=2">Honduras</a></li>
+                        <li {% if '?pais=3' in request.get_full_path  %}class="active"{% endif %}><a href="/productores/dashboard/?pais=3">Guatemala</a></li>
+                        {% else %}
+                        <li class="active"><a href="#">{{request.session.pais}}</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+  </div>
+
+  <div class="page-content-wrapper ">
+
+    <div class="container">
+
+      <div class="row">
+                    <div class="col-xs-6 col-sm-4 col-lg-2">
+                        <div class="panel text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title text-muted font-light"><b>Familias</b></h4>
+                            </div>
+                            <div class="panel-body p-t-10">
+                                <h2 class="m-t-0 m-b-15"><b>{{familias}}</b></h2>
+                                <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-lg-2">
+                        <div class="panel text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title text-muted font-light"><b>Hombres</b></h4>
+                            </div>
+                            <div class="panel-body p-t-10">
+                                <h2 class="m-t-0 m-b-15"><b>{{hombres}}</b></h2>
+                                <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-lg-2">
+                        <div class="panel text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title text-muted font-light"><b>Mujeres</b></h4>
+                            </div>
+                            <div class="panel-body p-t-10">
+                                <h2 class="m-t-0 m-b-15"><b>{{mujeres}}</b></h2>
+                                <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-lg-2">
+                        <div class="panel text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title text-muted font-light"><b>Menores de 35</b></h4>
+                            </div>
+                            <div class="panel-body p-t-10">
+                                <h2 class="m-t-0 m-b-15"><b>{{menores_35}}</b></h2>
+                                <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-lg-2">
+                        <div class="panel text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title text-muted font-light"><b>Hectareas</b></h4>
+                            </div>
+                            <div class="panel-body p-t-10">
+                                <h2 class="m-t-0 m-b-15"><b>{{hectareas}}</b></h2>
+                                <p class="text-muted m-b-0 m-t-20"><b>Promedio</b></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-lg-2">
+                        <div class="panel text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title text-muted font-light"><b>Certificación</b></h4>
+                            </div>
+                            <div class="panel-body p-t-10">
+                                <h2 class="m-t-0 m-b-15"><b>{{certificacion}}</b></h2>
+                                <p class="text-muted m-b-0 m-t-20"><b>Productores</b></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+      <div class="row">
+        <div class="col-sm-7">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <h4 class="m-t-0">Distribución de la finca por hectárea promedio <!--<span class="mdi mdi-help-circle"></span>--></h4>
+              <div id="grafico1"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-5">
+            <div class="panel panel-color panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Lista de Productores</h3>
+                </div>
+                <div class="panel-body">
+                    
+                    <div class="table-responsive table-prod">
+                        <table class="table table-hover">
+                            <tbody>
+                                {% for prod in productores %}
+                                    <tr>
+                                        <td>{{prod.productor}}</td>
+                                        <td class="more-ind" >
+                                            <a class="pull-right" {% if '/productores/dashboard/distribucion/?pais=' in request.get_full_path %}href="{% url 'ficha-productor' prod.productor.id %}?pais={{id_pais}}"{% else %}href="{% url 'ficha-productor' prod.productor.id %}"{% endif %}>
+                                                Ver ficha
+                                            </a>
+                                        </td>
+                                   </tr>
+
+                               {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+          <table>
+            <tr>
+             <th></th>
+             <th></th>
+           </tr>
+           
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="/static/js/heatmap.js"></script>
+<script src="/static/js/treemap.js"></script>
+<script type="text/javascript">
+Highcharts.chart('grafico1', {
+    colorAxis: {
+        minColor: '#FFFFFF',
+        maxColor: Highcharts.getOptions().colors[0]
+    },
+    series: [{
+        type: 'treemap',
+        layoutAlgorithm: 'squarified',
+        data: [
+          {% for k,v in distribucion.items %}
+            {
+              name: '{{k}}',
+              value: {{v|default:'0'|unlocalize}},
+              colorValue: {{forloop.counter}}
+            },
+          {% endfor %}
+         ]
+    }],
+    title: {
+        text: ''
+    }
+});
+</script>
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
+{% endblock %}

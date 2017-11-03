@@ -1,0 +1,333 @@
+{% extends "organizaciones/base-org-dash.html" %}
+
+{% block content %}
+
+<div class="content">
+
+	<div class="page-header-title">
+		<div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                {% if not request.session.anio %}
+
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="/">Inicio</a>
+                    </li>
+                    <li class="active">Dashboard organizaciones</li>
+                </ol>
+                {% else %}
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="/">Inicio</a>
+                    </li>
+                    <li>
+                        <a href="/organizaciones/">Consulta</a>
+                    </li>
+                    <li class="active">Organizaciones</li>
+                </ol>
+                {% endif %}
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+                <ul class=" nav navbar-nav pull-right nav-pais">
+                	{% if not request.session.anio %}
+                	<li {% if '?pais=1' in request.get_full_path %}class="active"{% endif %}><a href="/organizaciones/dashboard/?pais=1">Nicaragua</a></li>
+                	<li {% if '?pais=2' in request.get_full_path  %}class="active"{% endif %}><a href="/organizaciones/dashboard/?pais=2">Honduras</a></li>
+                	<li {% if '?pais=3' in request.get_full_path  %}class="active"{% endif %}><a href="/organizaciones/dashboard/?pais=3">Guatemala</a></li>
+                	{% else %}
+                	<li class="active"><a href="#">{{request.session.pais}}</a></li>
+                	{% endif %}
+                </ul>
+            </div>
+        </div>
+
+	</div>
+
+
+	<div class="page-content-wrapper ">
+		<div class="container">
+
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="panel panel-primary">
+			            <div class="panel-body">
+			              <h4 class="m-t-0">Miembros <!--<span class="mdi mdi-help-circle"></span>--> </h4>
+
+			              <div role="tabpanel tabs-grafico">
+			                <!-- Nav tabs -->
+			                <ul class="nav nav-tabs" role="tablist">
+			                  <li role="presentation" class="active">
+			                    <a href="#total" aria-controls="total" role="tab" data-toggle="tab">Total</a>
+			                  </li>
+			                  <li role="presentation">
+			                    <a href="#activos" aria-controls="activos" role="tab" data-toggle="tab">Activos</a>
+			                  </li>
+			                  <li role="presentation">
+			                    <a href="#jovenes" aria-controls="jovenes" role="tab" data-toggle="tab">Jóvenes</a>
+			                  </li>
+			                </ul>
+
+			                <!-- Tab panes -->
+			                <div class="tab-content">
+			                  <div role="tabpanel" class="tab-pane active" id="total">
+			                    <div class="col-xs-6 col-lg-6">
+									<div class="panel text-center">
+										<div class="panel-heading">
+											<h4 class="panel-title text-muted font-light"><b>Hombres</b></h4>
+										</div>
+										<div class="panel-body p-t-10">
+											<h2 class="m-t-0 m-b-15"><b>{{total_hombres|default:"0"}}</b></h2>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-6 col-lg-6">
+									<div class="panel text-center">
+										<div class="panel-heading">
+											<h4 class="panel-title text-muted font-light"><b>Mujeres</b></h4>
+										</div>
+										<div class="panel-body p-t-10">
+											<h2 class="m-t-0 m-b-15"><b>{{total_mujeres|default:"0"}}</b></h2>
+										</div>
+									</div>
+								</div>
+			                  </div>
+			                  <div role="tabpanel" class="tab-pane" id="activos">
+			                    <div class="col-xs-6 col-lg-6">
+									<div class="panel text-center">
+										<div class="panel-heading">
+											<h4 class="panel-title text-muted font-light"><b>Hombres</b></h4>
+										</div>
+										<div class="panel-body p-t-10">
+											<h2 class="m-t-0 m-b-15"><b>{{activos_hombres|default:"0"}}</b></h2>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-6 col-lg-6">
+									<div class="panel text-center">
+										<div class="panel-heading">
+											<h4 class="panel-title text-muted font-light"><b>Mujeres</b></h4>
+										</div>
+										<div class="panel-body p-t-10">
+											<h2 class="m-t-0 m-b-15"><b>{{activos_mujeres|default:"0"}}</b></h2>
+										</div>
+									</div>
+								</div>
+			                  </div>
+			                  <div role="tabpanel" class="tab-pane" id="jovenes">
+			                    <div class="col-xs-6 col-lg-6">
+									<div class="panel text-center">
+										<div class="panel-heading">
+											<h4 class="panel-title text-muted font-light"><b>Hombres</b></h4>
+										</div>
+										<div class="panel-body p-t-10">
+											<h2 class="m-t-0 m-b-15"><b>{{jovenes_hombres|default:"0"}}</b></h2>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-6 col-lg-6">
+									<div class="panel text-center">
+										<div class="panel-heading">
+											<h4 class="panel-title text-muted font-light"><b>Mujeres</b></h4>
+										</div>
+										<div class="panel-body p-t-10">
+											<h2 class="m-t-0 m-b-15"><b>{{jovenes_mujeres|default:"0"}}</b></h2>
+										</div>
+									</div>
+								</div>
+			                  </div>
+			                </div>
+			              </div>
+			            </div>
+			          </div>
+				</div>
+				<div class="col-sm-8">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<h4 class="m-t-0">Empleados de la organización tiempo completo <!--<span class="mdi mdi-help-circle"></span>--></h4>
+							<div id="grafico1" width:'100%' style="height: 350px;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<h4 class="m-t-0">Situación legal y organizativa de la organización <!--<span class="mdi mdi-help-circle"></span>--></h4>
+							<div id="grafico2" width:'100%' style="height: 350px;"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<h4 class="m-t-0">Sectores: ofrecen servicios y productos <!--<span class="mdi mdi-help-circle"></span>--></h4>
+							<div id="grafico6" width:'100%' style="height: 350px;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<h4 class="m-t-0">Organizaciones <!--<span class="mdi mdi-help-circle"></span>--></h4>
+							<ul class="list-org">
+								{% for org in orgs %}
+									<li><a href="{% url 'detail-org' org.id %}">{{org}}</a></li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-primary">
+						<div class="panel-body">
+							<h4 class="m-t-0">Resultados implementación del programa
+							</h4>
+							<div id="grafocontainer" width:'100%' style="height: 350px;"></div>
+						</div>
+					</div>
+				</div>
+		</div>
+	</div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+<script type="text/javascript">
+Highcharts.chart('grafico1', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Total', 'Adultos', 'Jovenes']
+    },
+    credits: {
+        enabled: false
+    },
+    series: [{
+        name: 'Hombres',
+        data: [{{empleados_org.values.3|default:"0"}}, {{empleados_org.values.0|default:"0"}}, {{empleados_org.values.4|default:"0"}}]
+    }, {
+        name: 'Mujeres',
+        data: [{{empleados_org.values.2|default:"0"}}, {{empleados_org.values.5|default:"0"}}, {{empleados_org.values.1|default:"0"}}]
+    }]
+});
+
+Highcharts.chart('grafico2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Cuenta con personería jurídica', 'Actualmente en operaciones', 'Recibe apoyo de donantes u otras instituciones']
+    },
+    credits: {
+        enabled: false
+    },
+    series: [{
+        name: 'Organizaciones',
+        data: [{{personeria|default:"0"}}, {{en_operaciones|default:"0"}}, {{apoyo|default:"0"}}]
+    }]
+});
+
+Highcharts.chart('grafico6', {
+    chart: {
+        type: 'pie'
+    },
+    title: {
+        text: ''
+    },
+    subtitle: {
+        text: 'Click para ver detalles'
+    },
+    plotOptions: {
+        series: {
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}: {point.percentage:.1f}%'
+            }
+        }
+    },
+
+    tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.percentage:.2f}%</b> del total<br/>'
+    },
+    series: [{
+        name: 'Sectores',
+        colorByPoint: true,
+        data: [
+        {% for key,value in sectores.items %}
+    		{
+	            name: '{{key}}',
+	            y: {{value.0}},
+	            drilldown: '{{key}}'
+        	},
+        {% endfor %}]
+    }],
+    drilldown: {
+        series: [
+
+        {% for key,value in sectores.items %}
+        	{
+	            name: '{{key}}',
+	            id: '{{key}}',
+	            data: [
+		            {% for v in value.1 %}
+		            	['{{v.0.0}}', {{v.1}}],
+		            {% endfor %}
+	            ]
+	        },
+        {% endfor %}]
+    }
+});
+
+//carlos grafo
+Highcharts.chart('grafocontainer', {
+   title: {
+       text: ''
+   },
+   xAxis: {
+       categories: ['Café','Cacao','Hortaliza']
+   },
+
+   series: [
+   {% for k,v in grafo_barra_cultivo.items %}
+   		{
+	       type: 'column',
+	       name: '{{k}}',
+	       data: {{v}}
+   		},
+   {% endfor %}
+   	 {
+       type: 'spline',
+       name: 'Promedio precio',
+       data: {{lista_precio_promedio|default:'0'}},
+       marker: {
+           lineWidth: 2,
+           lineColor: Highcharts.getOptions().colors[3],
+           fillColor: 'white'
+       }
+   }]
+});
+
+
+
+</script>
+{% endblock %}

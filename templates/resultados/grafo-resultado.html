@@ -1,0 +1,170 @@
+{% extends "organizaciones/base-org-dash.html" %}
+
+{% block extra_js %}
+<script type="text/javascript">
+	Highcharts.chart('container', {
+    chart: {
+        type: 'areaspline'
+    },
+    title: {
+        text: 'Comparativo por año evaluación SCOPE Pro'
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'left',
+        verticalAlign: 'top',
+        x: 150,
+        y: 100,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+    },
+    xAxis: {
+        categories: [
+            'bloque1',
+            'bloque2',
+            'bloque3',
+            'bloque4',
+            'bloque5',
+            'bloque6',
+            'bloque7',
+            'bloque8',
+            'bloque9',
+        ],
+        plotBands: [{ // visualize the weekend
+            from: 4.5,
+            to: 6.5,
+            color: 'rgba(68, 170, 213, .2)'
+        }]
+    },
+    yAxis: {
+        title: {
+            text: 'valor'
+        }
+    },
+    tooltip: {
+        shared: true,
+        valueSuffix: ' '
+    },
+    credits: {
+        enabled: false
+    },
+    plotOptions: {
+        areaspline: {
+            fillOpacity: 0.5
+        }
+    },
+    series: [
+    {% for k,v in comparativa.items %}
+    	{
+        	name: '{{k}}',
+        	data: {{v}}
+    	},
+    {% endfor %}
+    ]
+});
+
+// grafo volumen
+Highcharts.chart('container1', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Cantidad de productores que incrementan volumen de abastecimiento de productos sanos'
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        type: 'category'
+    },
+    yAxis: {
+        title: {
+            text: 'conteo'
+        }
+
+    },
+    legend: {
+        enabled: false
+    },
+    plotOptions: {
+        series: {
+            borderWidth: 0,
+            dataLabels: {
+                enabled: true,
+                format: '{point.y:.1f}'
+            }
+        }
+    },
+
+    tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> of total<br/>'
+    },
+
+    series: [{
+        name: 'Brands',
+        colorByPoint: true,
+        data: [
+        {% for k,v in grafo_volumen.items %}
+            {
+                name: '{{k}}',
+                y: {{v}},
+
+            },
+        {% endfor %}
+          ]
+    }]
+
+});
+
+Highcharts.chart('container2', {
+
+    title: {
+        text: 'Cantidad de productores que han incrementado sus ingresos por cultivos'
+    },
+
+    subtitle: {
+        text: ''
+    },
+
+    yAxis: {
+        title: {
+            text: 'Number of Employees'
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+
+    plotOptions: {
+        series: {
+            pointStart: {{inicio_incremento}}
+        }
+    },
+
+    series: [
+    {% for k,v in grafo_incremento.items %}
+        {
+            name: '{{k}}',
+            data: [{{v}},]
+        },
+    {% endfor %}
+    ]
+
+});
+</script>
+
+{% endblock extra_js %}
+
+{% block content %}
+<br><br><br><br><br>
+    <p>Hola grafo</p>
+    <div id="container" width:'100%' style="height: 350px;"></div>
+    <br><br>
+    <div id="container1" width:'100%' style="height: 350px;"></div>
+    <br><br>
+    <div id="container2" width:'100%' style="height: 350px;"></div>
+{% endblock content %}

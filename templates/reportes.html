@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block extra_css %}
+	<link href="/static/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="/static/css/mediabtn.css" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block content %}
+<div class="col-md-12">
+	<div class="panel panel-primary panel-list">
+        <div class="panel-body">
+            <h4 class="m-t-0">Lista de organizaciones</h4>
+          	<div class="table-responsive">
+        		<table id="example" class="table" cellspacing="0" width="100%">
+					<thead>
+						<tr>
+							<th>Titulo:</th>
+							<th>Fecha elaborado:</th>
+							<th>Donante:</th>
+							<th>Subsector:</th>
+							<th>Pais</th>
+							<th>Tipo</th>
+							<th></th>
+						</tr>
+					</thead>
+
+					<tbody>
+						{% for obj in object_list %}
+							<tr>
+								<td>{{obj.titulo}}</td>
+								<td>{{obj.fecha_elaborado}}</td>
+								<td>{{obj.donante}}</td>
+								<td>{{obj.subsector}}</td>
+								<td>{{obj.pais}}</td>
+								<td>{{obj.tipo}}</td>
+								<td class="more-ind"><a class=" waves-effect waves-light" href="{{obj.archivo}}" download>Descargar</a></td>
+
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+          	</div>
+            
+   		</div>
+	</div>
+			
+</div>
+
+{% endblock content %}
+{% block extra_js %}
+	<script src="/static/js/jquery.dataTables.js"></script>
+  	<script src="/static/js/dataTables.bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			responsive: true;
+		    var table = $('#example').DataTable({
+				"language": {
+				                "sProcessing":     "Procesando...",
+							    "sLengthMenu":     "Mostrar _MENU_ registros",
+							    "sZeroRecords":    "No se encontraron resultados",
+							    "sEmptyTable":     "Ningún dato disponible en esta tabla",
+							    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+							    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+							    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+							    "sInfoPostFix":    "",
+							    "sSearch":         "Buscar:",
+							    "sUrl":            "",
+							    "sInfoThousands":  ",",
+							    "sLoadingRecords": "Cargando...",
+							    "oPaginate": {
+							        "sFirst":    "Primero",
+							        "sLast":     "Último",
+							        "sNext":     "Siguiente",
+							        "sPrevious": "Anterior"
+							    },
+							    "oAria": {
+							        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+							        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+							    }
+				        }
+
+		    });
+		 
+		    $("#example .filtro th").each( function ( i ) {
+		        var select = $('<select class="form-control"><option value=""></option></select>')
+		            .prependTo( $(this).empty() )
+		            .on( 'change', function () {
+		                var val = $(this).val();
+		 
+		                table.column( i )
+		                    .search( val ? '^'+$(this).val()+'$' : val, true, false )
+		                    .draw();
+		            } );
+		 
+		        table.column( i ).data().unique().sort().each( function ( d, j ) {
+		            select.append( '<option value="'+d+'">'+d+'</option>' )
+		        } );
+		    } );
+		} );
+	</script>
+	<script type="text/javascript">
+    $( ".navbar-default ul li" ).removeClass( "active" );
+    $( ".navbar-default ul li.rep" ).addClass( "active" );
+
+	</script>
+
+
+{% endblock %}

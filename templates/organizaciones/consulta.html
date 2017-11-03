@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+
+{% endblock %}
+<link rel="stylesheet" href="static/css/bootstrap-multiselect.css">
+{% block content %}
+<style type="text/css">
+  .footer3 {background-color: #2a323c;color: white;padding: 20px;width: 100%;position: absolute;bottom: 0px;}
+  .footer3 a{color: white;}
+</style>
+
+<div class="col-md-6 col-md-offset-3">
+    <div class="panel panel-color panel-primary panel-pages">
+
+        <div class="panel-body">
+            <h4 class="m-t-0">
+                Consulta organizaciones
+            </h4>
+
+            <form class="form-horizontal m-t-20" action="." method="post">{% csrf_token %}
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Año</label>
+                            <div class="col-md-9">
+                                {{form.anio}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">País</label>
+                            <div class="col-md-9">
+                                {{form.pais}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Organización</label>
+                            <div class="col-md-9">
+                                {{form.organizacion}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center m-t-40">
+                    <div class="col-xs-6">
+                        <a class="btn btn-primary pull-left waves-effect waves-light" href="/organizaciones/ver/organizaciones/">Lista de organizaciones</a>
+                    </div>
+                    <div class="col-xs-6">
+                        <button class="btn btn-primary pull-right waves-effect waves-light" type="submit">Consultar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/bootstrap-multiselect.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#id_anio").addClass("form-control").multiselect({
+      buttonWidth: '100%',
+      includeSelectAllOption: true,
+      selectAllText: "Seleccionar todos",
+      buttonText: function(options, select) {
+        if (options.length === 0) {
+          return "Sin selección ...";
+        }
+        else if (options.length > 3) {
+          return "Varias opciones seleccionadas!";
+        }
+        else {
+          var labels = [];
+          options.each(function() {
+            if ($(this).attr('label') !== undefined) {
+              labels.push($(this).attr('label'));
+            }
+            else {
+              labels.push($(this).html());
+            }
+          });
+          return labels.join(', ') + '';
+        }
+      }
+    });
+
+    $("#id_pais").addClass("form-control").multiselect({
+      buttonWidth: '100%',
+      includeSelectAllOption: true,
+      selectAllText: "Seleccionar todos",
+      buttonText: function(options, select) {
+        if (options.length === 0) {
+          return "Sin selección ...";
+        }
+        else if (options.length > 3) {
+          return "Varias opciones seleccionadas!";
+        }
+        else {
+          var labels = [];
+          options.each(function() {
+            if ($(this).attr('label') !== undefined) {
+              labels.push($(this).attr('label'));
+            }
+            else {
+              labels.push($(this).html());
+            }
+          });
+          return labels.join(', ') + '';
+        }
+      }
+    });
+
+    $("#id_organizacion").addClass("form-control").multiselect({
+      buttonWidth: '100%',
+      includeSelectAllOption: true,
+      selectAllText: "Seleccionar todos",
+      buttonText: function(options, select) {
+        if (options.length === 0) {
+          return "Sin selección ...";
+        }
+        else if (options.length > 3) {
+          return "Varias opciones seleccionadas!";
+        }
+        else {
+          var labels = [];
+          options.each(function() {
+            if ($(this).attr('label') !== undefined) {
+              labels.push($(this).attr('label'));
+            }
+            else {
+              labels.push($(this).html());
+            }
+          });
+          return labels.join(', ') + '';
+        }
+      }
+    });
+});
+
+
+// org
+  var pais = [];
+  $(document).on('change','#id_pais',function(){
+    $('#id_pais :selected').each(function(i, selected){
+      pais[i] = $(selected).val();
+    });
+    $.getJSON('/organizaciones/ajax/orgs/?ids='+pais.join(","), function(data){
+      $('#id_organizacion').html('');
+      $("#id_organizacion").multiselect('enable');
+      $("#id_organizacion").multiselect('refresh');
+      if(data){
+        $.each(data, function(i, item){
+          $('#id_organizacion').append($('<option></option>').val(item.id).html(item.nombre));
+        });
+        $('#id_organizacion').multiselect('rebuild');
+      }
+    });
+
+  });
+</script>
+<script type="text/javascript">
+    $( ".navbar-default ul li" ).removeClass( "active" );
+    $( ".navbar-default ul li.org" ).addClass( "active" );
+
+</script>
+{% endblock %}

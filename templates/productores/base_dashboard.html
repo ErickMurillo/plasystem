@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Plasystem</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta content="Admin Dashboard" name="description" />
+    <meta content="ThemeDesign" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/icons.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css">
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="fixed-left">
+
+  <!-- Begin page -->
+<div id="wrapper">
+<div class="topbar">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/"><img src="/static/nuevo/logo_veco_mesoamerica.png" alt=""></a>
+            </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="inicio active">
+                        <a href="/" id="" class="waves-effect  profile">Inicio</a>
+                    </li>
+
+                    <li class="prod">
+                        <a href="/productores/"  class="waves-effect  profile">Productores</a>
+                    </li>
+                    <li class="org">
+                        <a href="/organizaciones/"  class="waves-effect  profile">Organizaciones</a>
+                    </li>
+                    <li class="sub disabled">
+                        <a href="#"  class="waves-effect  profile">Subsectores</a>
+                    </li>
+                    
+                    <li class="rep">
+                        <a href="/reportes/" class="waves-effect  profile">Reportes </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true">
+                            {% if user.get_full_name %}<i class="fa fa-user" aria-hidden="true"> </i> {{user.get_full_name}}{% else %}<i class="fa fa-user" aria-hidden="true"> </i> {{ user.username }}{% endif %} <b class="caret"></b><!--<small>Gerente</small>-->
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/admin"> Administrador</a></li>
+                            <li><a href="/logout"> Cerrar sesion</a></li>
+                        </ul>
+                    </li>
+                </ul>
+        </div><!-- /.navbar-collapse -->
+    </div>
+</nav>
+</div>
+
+    <!-- Top Bar End -->
+
+
+    <!-- ========== Left Sidebar Start ========== 
+
+    <div class="left side-menu" style="overflow: inherit;">
+      <div class="sidebar-inner slimscrollleft" style="overflow: inherit;">
+
+        <div class="user-details">
+
+          <div class="user-info">
+            <h4>Consultar</h4>
+
+
+          </div>
+        </div>
+
+
+
+        <div id="sidebar-menu">
+          <form class="container-fluid" action="." method="post">{% csrf_token %}
+            <div class="form-group">
+              <label class="control-label">Año</label>
+              {{form.anio}}
+            </div>
+            <div class="form-group">
+              <label class="control-label">Edad</label>
+              {{form.edad}}
+            </div>
+            <div class="form-group">
+              <label class="control-label">Sexo</label>
+              {{form.sexo}}
+            </div>
+            <div class="form-group">
+              <label class="control-label">País</label>
+              {{form.pais}}
+            </div>
+            <div class="form-group">
+              <label class="control-label">Departamento</label>
+              {{form.departamento}}
+            </div>
+            <div class="form-group">
+              <label class="control-label">Municipio</label>
+              {{form.municipio}}
+            </div>
+            <div class="form-group">
+              <label class="control-label">Organización</label>
+              {{form.organizacion}}
+            </div>
+
+            <button class="btn btn-primary waves-effect waves-light" type="submit">Consulta</button>
+          </form>
+        </div>
+
+        <div class="clearfix"></div>
+      </div>
+    </div>
+ Left Sidebar End -->
+
+    <!-- Start right Content here -->
+
+    <div class="principal-dashboard">
+
+      {% block content %}{% endblock %}
+
+      <div class="footer3">
+        Desarrollado por <a href="">SIMAS</a>
+      </div>
+
+    </div>
+    <!-- End Right content here -->
+
+  </div>
+  <!-- END wrapper -->
+
+
+  <!-- jQuery  -->
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+  <script src="/static/js/modernizr.min.js"></script>
+  <script src="/static/js/detect.js"></script>
+  <script src="/static/js/fastclick.js"></script>
+  <script src="/static/js/jquery.slimscroll.js"></script>
+  <script src="/static/js/jquery.blockUI.js"></script>
+  <script src="/static/js/waves.js"></script>
+  <script src="/static/js/wow.min.js"></script>
+  <script src="/static/js/jquery.nicescroll.js"></script>
+  <script src="/static/js/jquery.scrollTo.min.js"></script>
+  <script src="/static/js/app.js"></script>
+  <script src="http://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/highcharts-more.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="/static/js/bootstrap-multiselect.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $("#id_edad").addClass("form-control")
+    $("#id_anio").addClass("form-control").multiselect({
+      buttonWidth: '100%',
+      includeSelectAllOption: true,
+      selectAllText: "Seleccionar todos",
+      buttonText: function(options, select) {
+        if (options.length === 0) {
+          return "Sin selección ...";
+        }
+        else if (options.length > 3) {
+          return "Varias opciones seleccionadas!";
+        }
+        else {
+          var labels = [];
+          options.each(function() {
+            if ($(this).attr('label') !== undefined) {
+              labels.push($(this).attr('label'));
+            }
+            else {
+              labels.push($(this).html());
+            }
+          });
+          return labels.join(', ') + '';
+        }
+      }
+    });
+    $("#id_pais").addClass("form-control");
+
+    $("#id_departamento").addClass("form-control").multiselect({
+      buttonWidth: '100%',
+      includeSelectAllOption: true,
+      selectAllText: "Seleccionar todos",
+      buttonText: function(options, select) {
+        if (options.length === 0) {
+          return "Sin selección ...";
+        }
+        else if (options.length > 3) {
+          return "Varias opciones seleccionadas!";
+        }
+        else {
+          var labels = [];
+          options.each(function() {
+            if ($(this).attr('label') !== undefined) {
+              labels.push($(this).attr('label'));
+            }
+            else {
+              labels.push($(this).html());
+            }
+          });
+          return labels.join(', ') + '';
+        }
+      }
+    });
+    $("#id_municipio").addClass("form-control").multiselect({
+      buttonWidth: '100%',
+      includeSelectAllOption: true,
+      selectAllText: "Seleccionar todos",
+      buttonText: function(options, select) {
+        if (options.length === 0) {
+          return "Sin selección ...";
+        }
+        else if (options.length > 3) {
+          return "Varias opciones seleccionadas!";
+        }
+        else {
+          var labels = [];
+          options.each(function() {
+            if ($(this).attr('label') !== undefined) {
+              labels.push($(this).attr('label'));
+            }
+            else {
+              labels.push($(this).html());
+            }
+          });
+          return labels.join(', ') + '';
+        }
+      }
+    });
+    $("#id_organizacion").addClass("form-control").multiselect({
+      buttonWidth: '100%',
+      includeSelectAllOption: true,
+      selectAllText: "Seleccionar todos",
+      buttonText: function(options, select) {
+        if (options.length === 0) {
+          return "Sin selección ...";
+        }
+        else if (options.length > 3) {
+          return "Varias opciones seleccionadas!";
+        }
+        else {
+          var labels = [];
+          options.each(function() {
+            if ($(this).attr('label') !== undefined) {
+              labels.push($(this).attr('label'));
+            }
+            else {
+              labels.push($(this).html());
+            }
+          });
+          return labels.join(', ') + '';
+        }
+      }
+    });
+    $("#id_sexo").addClass("form-control");
+
+    $("#id_departamento").multiselect('disable');
+    $("#id_municipio").multiselect('disable');
+
+    // deptos
+    var deptos = [];
+    $(document).on('change','#id_pais',function(){
+      $('#id_pais :selected').each(function(i, selected){
+        deptos[i] = $(selected).val();
+        $('#id_departamento').multiselect('rebuild');
+      });
+      $.getJSON('/productores/ajax/deptos/?ids='+deptos.join(","), function(data){
+        $('#id_departamento').html('');
+        $("#id_departamento").multiselect('enable');
+        $("#id_departamento").multiselect('refresh');
+        if(data){
+          $.each(data, function(i, item){
+            $('#id_departamento').append($('<option></option>').val(item.id).html(item.nombre));
+          });
+          $('#id_departamento').multiselect('rebuild');
+        }
+      });
+
+    });
+
+    //municipios
+    var foo = [];
+    $(document).on('change','#id_departamento',function(){
+      $('#id_departamento :selected').each(function(i, selected){
+        foo[i] = $(selected).val();
+        $('#id_municipio').multiselect('rebuild');
+      });
+      $.getJSON('/productores/ajax/municipios/?ids='+foo.join(","), function(data){
+        $('#id_municipio').html('');
+        $('#id_municipio').multiselect('enable');
+        $("#id_municipio").multiselect('refresh');
+        var municipio = $('#id_municipio');
+        if(data){
+          $.each(data, function(i, item){
+            $.each(item, function(j, item2){
+              var group = $('<optgroup></optgroup>').attr('label', j);
+              $.each(item2, function(k, item3){
+                group.append($('<option></option>').val(item3.id).html(item3.nombre));
+              });
+              group.appendTo(municipio);
+              $('#id_municipio').multiselect('rebuild');
+            });
+          });
+        }
+      });
+    });
+
+  });
+  </script>
+
+  <script type="text/javascript">
+  $( document ).ready(function() {
+    {% if request.session.anio %}
+    $('#id_anio').multiselect('select', [{% for anio in request.session.anio %}'{{anio}}',{% endfor %} ]);
+    {% endif %}
+
+    {% if request.session.pais %}
+    $("#id_pais option[value='{{request.session.pais.id}}']").prop('selected', true);;
+    {% endif %}
+
+    {% if request.session.edad %}
+    $("#id_edad option[value='{{request.session.edad}}']").prop('selected', true);;
+    {% endif %}
+
+    {% if request.session.sexo %}
+    $("#id_sexo option[value='{{request.session.sexo}}']").prop('selected', true);;
+    {% endif %}
+
+    {% if request.session.organizacion %}
+    $('#id_organizacion').multiselect('select', [{% for org in request.session.organizacion %}'{{org}}',{% endfor %} ]);
+    {% endif %}
+
+    {% if request.session.departamento %}
+    $('#id_departamento').multiselect('select', [{% for depto in request.session.departamento %}'{{depto}}',{% endfor %} ]);
+    {% endif %}
+
+    {% if request.session.municipio %}
+    $('#id_municipio').multiselect('select', [{% for muni in request.session.municipio %}'{{muni}}',{% endfor %} ]);
+    {% endif %}
+
+  });
+  </script>
+
+
+  {% block extra_js %}{% endblock %}
+
+</body>
+</html>
