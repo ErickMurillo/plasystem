@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^subsectores/', include('subsectores.urls')),
     url(r'^reportes/', list_reportes, name='list-reportes'),
     url(r'^mapa-index/$', obtener_lista, name='obtener-lista'),
+    url(r'^mapa-index2/$', obtener_lista_org, name='obtener-lista-org'),
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

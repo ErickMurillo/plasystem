@@ -6,9 +6,25 @@
     <div class="panel-body index-body">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-                <div id="gmaps-markers" class="gmaps"></div>
+                
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active update" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Productores</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link update" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Organizaciones</a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                      <div id="gmaps-markers" class="gmaps"></div>
+                  </div>
+                  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div id="gmaps-markers2" class="gmaps"></div>
+                    </div>
+                </div>
 
-                <ul class="leyenda">
+                <!--<ul class="leyenda">
                     <li>
                         <span> <img src="/static/nuevo/m2.png" height="52" width="53" alt=""></span>
                         Productores
@@ -18,7 +34,7 @@
                         Organizaciones
                     </li>
 
-                </ul>
+                </ul>-->
 
             </div>
             <div class="col-xs-12 col-sm412 col-md-5 col-lg-5">
@@ -156,7 +172,7 @@
         var infowindow = new google.maps.InfoWindow();
         var myLatlng = new google.maps.LatLng(13.6477817,-85.543151);
         var myOptions = {
-            zoom: 6,
+            zoom: 5,
             center: myLatlng,
         }
 
@@ -165,35 +181,89 @@
         var infowindow = new google.maps.InfoWindow();
 
 
-        // $.getJSON("{% url 'obtener-lista' %}", function(data){
-        //     $.each(data, function(i, elemento){
-        //         var latlng = new google.maps.LatLng(elemento.lat, elemento.lon);
-        //         bounds.extend(latlng);
-        //         var marker = new google.maps.Marker({
-        //             position: latlng,
-        //             map: map,
-        //             title: elemento.nombre,
-        //             // icon: image,
-        //             item: '',
-        //             id: elemento.id
-        //         });
-        //         markers.push(marker);
+        $.getJSON("{% url 'obtener-lista' %}", function(data){
+            $.each(data, function(i, elemento){
+                var latlng = new google.maps.LatLng(elemento.lat, elemento.lon);
+                bounds.extend(latlng);
+                var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map,
+                    title: elemento.nombre,
+                    // icon: image,
+                    item: '',
+                    id: elemento.id
+                });
+                markers.push(marker);
 
-        //         google.maps.event.addListener(marker, 'click', (function(mm, tt) {
-        //             return function() {
-        //                 infowindow.setContent(tt);
-        //                 infowindow.open(map, mm);
-        //             }
-        //         })(marker, elemento.nombre));
+                // google.maps.event.addListener(marker, 'click', (function(mm, tt) {
+                //     return function() {
+                //         infowindow.setContent(tt);
+                //         infowindow.open(map, mm);
+                //     }
+                // })(marker, elemento.nombre));
 
-        //     });
-        //     var markerCluster = new MarkerClusterer(map, markers);
+            });
+            var markerCluster = new MarkerClusterer(map, markers);
 
-        // });
+        });
 
-        //map.fitBounds(bounds);
+        // map.fitBounds(bounds);
+    }
+
+    var markers2 = [];
+    function initialize2()
+    {
+        var infowindow = new google.maps.InfoWindow();
+        var myLatlng = new google.maps.LatLng(13.6477817,-85.543151);
+        var myOptions = {
+            zoom: 5,
+            center: myLatlng,
+        }
+
+        var map = new google.maps.Map(document.getElementById('gmaps-markers2'), myOptions);
+        var bounds = new google.maps.LatLngBounds();
+        var infowindow = new google.maps.InfoWindow();
+
+
+        $.getJSON("{% url 'obtener-lista-org' %}", function(data){
+            $.each(data, function(i, elemento){
+                var latlng = new google.maps.LatLng(elemento.lat, elemento.lon);
+                bounds.extend(latlng);
+                var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map,
+                    title: elemento.nombre,
+                    // icon: image,
+                    item: '',
+                    id: elemento.id
+                });
+                markers2.push(marker);
+
+                // google.maps.event.addListener(marker, 'click', (function(mm, tt) {
+                //     return function() {
+                //         infowindow.setContent(tt);
+                //         infowindow.open(map, mm);
+                //     }
+                // })(marker, elemento.nombre));
+
+            });
+            var markerCluster = new MarkerClusterer(map, markers2);
+
+        });
+
+        // map.fitBounds(bounds);
     }
 
     google.maps.event.addDomListener(window, 'load', initialize);
+    google.maps.event.addDomListener(window, 'load', initialize2);
+
+$('.update').on('shown.bs.tab', function(e) {
+  google.maps.event.trigger(gmaps, 'resize');
+  // map_{{year}}.setCenter(latlng);
+});
+
+ $(function () {
+    $('#myTab #home-tab').tab('show')
+  })
 </script>
 {% endblock %}

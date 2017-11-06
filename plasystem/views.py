@@ -35,7 +35,19 @@ def obtener_lista(request):
                         lon=float(objeto.municipio.longitud),
                         lat=float(objeto.municipio.latitud)
                         )
-            print dicc
+            lista.append(dicc)
+
+        serializado = simplejson.dumps(lista)
+        return HttpResponse(serializado, content_type = 'application/json')
+
+def obtener_lista_org(request):
+    if request.is_ajax():
+        lista = []
+        for objeto in Organizacion.objects.filter(municipio__isnull = False):
+            dicc = dict(nombre=objeto.municipio.nombre, id=objeto.id,
+                        lon=float(objeto.municipio.longitud),
+                        lat=float(objeto.municipio.latitud)
+                        )
             lista.append(dicc)
 
         serializado = simplejson.dumps(lista)
