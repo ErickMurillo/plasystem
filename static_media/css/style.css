@@ -3705,7 +3705,7 @@ File: nuevo css
   list-style: none;
   padding: 0px;
   font-family: "Museo500-Regular";
-  
+
 }
 .listdata-prod li{
   display: inline-block;
@@ -3816,7 +3816,7 @@ Lista de organizaciones
   width: 100%;
 }
 .panel-list{
-  min-height:475px;
+  min-height:500px;
 }
 .list{
   list-style: none;
@@ -3862,7 +3862,7 @@ Lista de organizaciones
     min-height: 105px;
 }
 .index-body{
-    padding-bottom: 0px !important; 
+    padding-bottom: 0px !important;
 }
 .navbar-nav>li>a, .dropdown-menu > li > a{
     line-height: 31px;

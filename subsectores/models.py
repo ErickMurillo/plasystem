@@ -216,6 +216,7 @@ class RegistroMeses(models.Model):
     mes = models.IntegerField(choices=CHOICES_MESES, verbose_name='Trimestres')
     anios = models.IntegerField('años')
     meta = models.FloatField()
+    meta_cualitativa = models.CharField(max_length=500, null=True, blank=True)
     presupuesto = models.FloatField()
 
     def __str__(self):

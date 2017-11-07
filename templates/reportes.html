@@ -18,7 +18,7 @@
 							<th>Subsector:</th>
 							<th>Pais</th>
 							<th>Tipo</th>
-							<th></th>
+							<th>Archivo</th>
 						</tr>
 					</thead>
 
@@ -38,10 +38,10 @@
 					</tbody>
 				</table>
           	</div>
-            
+
    		</div>
 	</div>
-			
+
 </div>
 
 {% endblock content %}
@@ -78,18 +78,18 @@
 				        }
 
 		    });
-		 
+
 		    $("#example .filtro th").each( function ( i ) {
 		        var select = $('<select class="form-control"><option value=""></option></select>')
 		            .prependTo( $(this).empty() )
 		            .on( 'change', function () {
 		                var val = $(this).val();
-		 
+
 		                table.column( i )
 		                    .search( val ? '^'+$(this).val()+'$' : val, true, false )
 		                    .draw();
 		            } );
-		 
+
 		        table.column( i ).data().unique().sort().each( function ( d, j ) {
 		            select.append( '<option value="'+d+'">'+d+'</option>' )
 		        } );
