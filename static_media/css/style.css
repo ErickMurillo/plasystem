@@ -3612,6 +3612,9 @@ File: nuevo css
 .apps h4{
   text-align: center;
 }
+.apps .panel .panel-body{
+  padding: 15px;
+}
 .apps .descripcion{
   min-height: 160px;
   font-size: 15px;
@@ -3787,6 +3790,7 @@ File: Responsive
     text-align: center;
     padding: 10px 15px 88px 20px;
   }
+  
 }
 @media (max-width: 480px) {
   .side-menu {
@@ -3798,11 +3802,13 @@ File: Responsive
   .search-bar {
     display: none !important;
   }
+
 }
 @media (max-width: 420px) {
   .hide-phone {
     display: none !important;
   }
+
 }
 /**********
 Lista de organizaciones
@@ -3855,8 +3861,8 @@ Lista de organizaciones
     display: inline-block;
 }
 .titulo-icon img{
-    margin: 10px 20px;
-    width: 70px;
+    margin: 10px 5px;
+    width: 60px;
 }
 .descripcion .texto{
     min-height: 105px;
@@ -3876,7 +3882,9 @@ Lista de organizaciones
 .navbar{
     min-height:60px;
 }
-
+.navbar-collapse{
+    margin-top: 10px;
+  }
 /****************************************************/
 /*----------------Dashboard
 /*****************************************************/
