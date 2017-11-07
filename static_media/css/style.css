@@ -3934,3 +3934,19 @@ Lista de organizaciones
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
     vertical-align: middle;
 }
+
+/****************************************************/
+/*----------------Social
+/*****************************************************/
+.social-link{
+  background: #b5bd00;
+  text-align: center;
+  padding: 12px 0px;
+  border: 1px solid white;
+  color: white;
+}
+.social-link:hover, .social-link:focus{
+  background: #3d3935;
+  color: white;
+  cursor: pointer;
+}

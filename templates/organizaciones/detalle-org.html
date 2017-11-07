@@ -50,15 +50,15 @@
 		<div class="container">
             
             <div class="clearfix"></div>
-
-			<div class="row">
-                <div class="col-sm-5">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
                     
                     <div class="panel panel-primary">
                         <div class="panel-body">
                             <h4 class="m-t-0">
                                 {{org.nombre}}
-                            </h4> 
+                            </h4>
+                            <p><b>Dirección: </b>{{org.direccion}}</p>
                             <ul class="list-inline span-green">
                                 <li>
                                     <i class="fa fa-map-marker"></i> {{org.pais}} </li>
@@ -72,36 +72,119 @@
 
                             </ul>
                             <p><b>Cuenta con personería Jurídica: </b>{{org.get_personeria_display}}</p>
-                            <p><b>En operaciones: </b>{{org.get_en_operaciones_display}}</p>
-                            <p><b>Año de incorporación: </b>{{org.incorporacion}}</p>
-                            <p><b>Apoyo: </b>{{org.get_apoyo_display}}</p>
-                            <p><b>Cooperativas que son miembros: </b>{{cooprativas.0}}</p>
+                            <ul class="list-inline">
+                                <li>
+                                    <p><b>En operaciones: </b>{{org.get_en_operaciones_display}}</p>
+                                </li>
+                                <li>
+                                   <p><b>Año de incorporación: </b>{{org.incorporacion}}</p> 
+                                </li>
+                                <li>
+                                    <p><b>No. de licencia empresarial: </b>{{org.licencia}}</p>
+                                </li>
+                                <li>
+                                    <p><b>Apoyo: </b>{{org.get_apoyo_display}}</p>
+                                </li>
+                                <li>
+                                    <p><b>Cooperativas que son miembros: </b>{{cooprativas.0}}</p>
+                                </li>
+                            </ul>
+                            <p><b>Contacto: </b></p>
+                            <ul class="list-inline">
+                                <li>
+                                    <i class="fa fa-phone"></i> {{org.oficina_numero}} </li>
+                                <li>
+                                    <i class="fa fa-envelope"></i><a href="mailto:{{org.oficina_correo}}"> {{org.oficina_correo}}</a>  </li>
+                                <li>
+                                    <i class="fa fa-globe"></i> <a href="{{org.sitio_web}} ">{{org.sitio_web}} </a></li>
+
+                            </ul>
+                            <br>
+                            <p><b>Redes sociales: </b></p>
+                            <div class="row">
+                                <a href="{{org.red_social1}}" class="col-xs-4 col-sm-4 col-md-4 col-lg-3 social-link" target="_blank">
+                                    Red social 1
+                                </a>
+                                <a href="{{org.red_social2}}" class="col-xs-4 col-sm-4 col-md-4 col-lg-3 social-link" target="_blank">
+                                    Red social 2
+                                </a>
+                                <a href="{{org.red_social3}}" class="col-xs-4 col-sm-4 col-md-4 col-lg-3 social-link" target="_blank">
+                                    Red social 3
+                                </a>
+                                <a href="{{org.red_social4}}" class="col-xs-4 col-sm-4 col-md-4 col-lg-3 social-link" target="_blank">
+                                    Red social 4
+                                </a>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
-				<div class="col-sm-7">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-body">
+                            <h4 class="m-t-0">
+                                <i class="fa fa-edit"></i> Personas de contacto 
+                            </h4>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 border-rigth">
+                                    <p><b>{{org.persona1_contacto}}</b></p>
+                                    <p><b><i class="fa fa-briefcase"></i> Cargo: </b> {{org.persona1_cargo}}</p>
+                                    <p><b><i class="fa fa-phone"></i> Teléfono:</b> {{org.persona1_telefono}} </p>
+                                    <p><b><i class="fa fa-envelope"></i> Correo: </b> <a href="mailto:{{org.persona1_correo}}">{{org.persona1_correo}}</a></p>
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <p><b>{{org.persona2_contacto}}</b></p>
+                                    <p><b><i class="fa fa-briefcase"></i> Cargo: </b> {{org.persona2_cargo}}</p>
+                                    <p><b><i class="fa fa-phone"></i> Teléfono:</b> {{org.persona2_telefono}}</p>
+                                    <p><b><i class="fa fa-envelope"></i> Correo: </b> <a href="mailto:{{org.persona2_correo}}">{{org.persona2_correo}}</a></p>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading ph-costum">
+                             <ul class="nav nav-tabs tab-costum" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Visión</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#tab" aria-controls="tab" role="tab" data-toggle="tab">Misión</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="panel-body tab-content">
+                            
+                            <div role="tabpanel" class="tab-pane active" id="home">{{org.vision}}</div>
+                            <div role="tabpanel" class="tab-pane" id="tab">{{org.mision}}</div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div class="row">
+                
+				<div class="col-xs-12 col-sm-6">
 					<div class="panel panel-primary">
 						<div class="panel-body">
 							<h4 class="m-t-0">Área reciben apoyo <!-- <span class="mdi mdi-help-circle"></span> --></h4>
-							<div id="grafico3" width:'100%' style="height: 300px;"></div>
+							<div id="grafico3" width:'100%' style="height: 350px;"></div>
 						</div>
 					</div>
 				</div>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-body">
+                            <h4 class="m-t-0">Miembros (directivos de la OP+ indirectos vías Sucursal) <!-- <span class="mdi mdi-help-circle"></span> --></h4>
+                            <div id="grafico4" width:'100%' style="height: 350px;"></div>
+                        </div>
+                    </div>
+                </div>
 			</div>
 
 			<div class="row">
-				<div class="col-sm-12">
-					<div class="panel panel-primary">
-						<div class="panel-body">
-							<h4 class="m-t-0">Miembros (directivos de la OP+ indirectos vías Sucursal) <!-- <span class="mdi mdi-help-circle"></span> --></h4>
-							<div id="grafico4" width:'100%' style="height: 350px;"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-sm-12">
+				<div class="col-xs-12 col-sm-6">
 					<div class="panel panel-primary">
 						<div class="panel-body">
 							<h4 class="m-t-0">Productores proveedores no socios <!-- <span class="mdi mdi-help-circle"></span> --></h4>
@@ -109,23 +192,19 @@
 						</div>
 					</div>
 				</div>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-body">
+                            <h4 class="m-t-0">Tipo de organizaciones a las que pertenece <!-- <span class="mdi mdi-help-circle"></span> --></h4>
+                            <ul>
+                                {% for org in org_pertenece %}
+                                    <li>{{org}}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 			</div>
-
-			<div class="row">
-				<div class="col-sm-6">
-					<div class="panel panel-primary">
-						<div class="panel-body">
-							<h4 class="m-t-0">Tipo de organizaciones a las que pertenece <!-- <span class="mdi mdi-help-circle"></span> --></h4>
-							<ul>
-								{% for org in org_pertenece %}
-									<li>{{org}}</li>
-								{% endfor %}
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="panel panel-primary">
@@ -229,7 +308,7 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-xs-12 col-sm-6">
                     <div class="panel panel-primary">
                         <div class="panel-body">
                             <h4 class="m-t-0">Cantidad de productores que incrementan volumen de abastecimiento de productos sanos<!-- <span class="mdi mdi-help-circle"></span> --></h4>
@@ -237,10 +316,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-sm-12">
+                <div class="col-xs-12 col-sm-6">
                     <div class="panel panel-primary">
                         <div class="panel-body">
                             <h4 class="m-t-0">Cantidad de productores que han incrementado sus ingresos por cultivos<!-- <span class="mdi mdi-help-circle"></span> --></h4>
