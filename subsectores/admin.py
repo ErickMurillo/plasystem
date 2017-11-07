@@ -65,15 +65,17 @@ class RegistroMesesInline(admin.TabularInline):
 
 class RegistroPlanAnualAdmin(admin.ModelAdmin):
     inlines = [RegistroMesesInline]
-    list_display = ('proyecto','nombre','mostrar_informe_url')
+    list_display = ('proyecto','nombre','intervencion','resultado','tipo_actividad')
+    search_fields = ('nombre',)
+    list_filter = ('tipo_actividad','intervencion',)
     fields = ('proyecto', ('intervencion', 'resultado','indicador'),
               ('nombre','categoria','codigo_financiero'),
               ('tipo_actividad','es_socio','organizacion'),
             )
 
-    def mostrar_informe_url(self, obj):
-        return '<a href="/subsectores/ver/plan/%s">Ver Informe</a>' % (obj.proyecto.id)
-    mostrar_informe_url.allow_tags = True
+    # def mostrar_informe_url(self, obj):
+    #     return '<a href="/subsectores/ver/plan/%s">Ver Informe</a>' % (obj.proyecto.id)
+    # mostrar_informe_url.allow_tags = True
 
     # def save_model(self, request, obj, form, change):
     #     print "el save model"
