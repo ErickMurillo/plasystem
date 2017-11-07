@@ -3744,10 +3744,16 @@ File: Responsive
   .search-bar {
     display: none !important;
   }
+    .navbar-nav{
+     margin-top: 10px;
+  }
 }
 @media (max-width: 767px) {
   body {
     overflow-x: hidden;
+  }
+  .navbar-collapse{
+    margin-top: 10px;
   }
   .content-page {
     margin-left: 0 !important;
@@ -3775,6 +3781,7 @@ File: Responsive
   .footer {
     left: 0 !important;
   }
+
 }
 @media (max-width: 620px) {
   .topbar-left {
@@ -3791,6 +3798,8 @@ File: Responsive
     padding: 10px 15px 88px 20px;
   }
   
+
+
 }
 @media (max-width: 480px) {
   .side-menu {
@@ -3882,9 +3891,7 @@ Lista de organizaciones
 .navbar{
     min-height:60px;
 }
-.navbar-collapse{
-    margin-top: 10px;
-  }
+
 /****************************************************/
 /*----------------Dashboard
 /*****************************************************/
