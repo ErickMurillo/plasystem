@@ -404,13 +404,13 @@ Highcharts.chart('grafico1', {
   },
   series: [{
     name: 'Café',
-    data: [{% for v in anios.values %}{{v.0|intcomma|floatformat:'2'|default:'0'}},{% endfor %}]
+    data: [{% for v in anios.values %}{{v.0|floatformat:'2'|default:'0'}},{% endfor %}]
   }, {
     name: 'Cacao',
-    data: [{% for v in anios.values %}{{v.1|intcomma|floatformat:'2'|default:'0'}},{% endfor %}]
+    data: [{% for v in anios.values %}{{v.1|floatformat:'2'|default:'0'}},{% endfor %}]
   }, {
     name: 'Hortalizas',
-    data: [{% for v in anios.values %}{{v.2|intcomma|floatformat:'2'|default:'0'}},{% endfor %}]
+    data: [{% for v in anios.values %}{{v.2|floatformat:'2'|default:'0'}},{% endfor %}]
   }]
 });
 Highcharts.chart('grafico2', {
@@ -700,7 +700,7 @@ Highcharts.chart('grafico2', {
               },
               series: [{
                 name: 'Margen bruto',
-                data: [{% for k,v in ingresos_cafe.items %}{{v.4|intcomma|default:'0'|floatformat:'2'}},{% endfor %}]
+                data: [{% for k,v in ingresos_cafe.items %}{{v.4|default:'0'|floatformat:'2'}},{% endfor %}]
               }]
             });
             Highcharts.chart('grafico6-cafe', {
