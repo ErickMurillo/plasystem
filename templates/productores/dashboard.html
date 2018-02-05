@@ -725,12 +725,12 @@ Highcharts.chart('grafico2', {
               },
               series: [{
                 name: 'Ingreso promedio del productor',
-                data: [{% for k,v in ingresos_cafe.items %}{{v.0|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
+                data: [{% for k,v in ingresos_cafe.items %}{{v.0|default:'0'|floatformat:'2'}},{% endfor %}],
                 color: '#f7a35c'
               },
               {
                 name: 'Ingreso promedio nacional',
-                data: [{% for k,v in ingresos_cafe.items %}{{v.1|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
+                data: [{% for k,v in ingresos_cafe.items %}{{v.1|default:'0'|floatformat:'2'}},{% endfor %}],
                 color: '#050f2c'
               },
             ]
@@ -757,11 +757,11 @@ Highcharts.chart('grafico2', {
             },
             series: [{
               name: 'Costos promedio del productor',
-              data: [{% for k,v in ingresos_cafe.items %}{{v.2|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
+              data: [{% for k,v in ingresos_cafe.items %}{{v.2|default:'0'|floatformat:'2'}},{% endfor %}],
               color: '#90ed7d'
             },{
               name: 'Costos promedio nacional',
-              data: [{% for k,v in ingresos_cafe.items %}{{v.3|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
+              data: [{% for k,v in ingresos_cafe.items %}{{v.3|default:'0'|floatformat:'2'}},{% endfor %}],
               color: '#050f2c'
             }]
           });
