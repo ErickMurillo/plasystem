@@ -454,7 +454,7 @@ Highcharts.chart('grafico2', {
     data: [{% for values in anios.values %}
       {% for k,v in values.10.items %}
       {% if k == 'Café' %}
-      {{v.0|default:'0'|unlocalize}},
+      {{v.0|default:'0'|floatformat:'2'|unlocalize}},
       {% endif %}
       {% endfor %}
       {% endfor %}]
@@ -463,7 +463,7 @@ Highcharts.chart('grafico2', {
       data: [{% for values in anios.values %}
         {% for k,v in values.10.items %}
         {% if k == 'Café' %}
-        {{v.1|default:'0'|unlocalize}},
+        {{v.1|default:'0'|floatformat:'2'|unlocalize}},
         {% endif %}
         {% endfor %}
         {% endfor %}]
@@ -510,7 +510,7 @@ Highcharts.chart('grafico2', {
         data: [{% for values in anios.values %}
           {% for k,v in values.10.items %}
           {% if k == 'Cacao' %}
-          {{v.0|default:'0'|unlocalize}},
+          {{v.0|default:'0'|floatformat:'2'|unlocalize}},
           {% endif %}
           {% endfor %}
           {% endfor %}]
@@ -519,7 +519,7 @@ Highcharts.chart('grafico2', {
           data: [{% for values in anios.values %}
             {% for k,v in values.10.items %}
             {% if k == 'Cacao' %}
-            {{v.1|default:'0'|unlocalize}},
+            {{v.1|default:'0'|floatformat:'2'|unlocalize}},
             {% endif %}
             {% endfor %}
             {% endfor %}]
@@ -566,7 +566,7 @@ Highcharts.chart('grafico2', {
             data: [{% for values in anios.values %}
               {% for k,v in values.10.items %}
               {% if k == 'Hortaliza' %}
-              {{v.0|default:'0'|unlocalize}},
+              {{v.0|default:'0'|floatformat:'2'|unlocalize}},
               {% endif %}
               {% endfor %}
               {% endfor %}]
@@ -575,7 +575,7 @@ Highcharts.chart('grafico2', {
               data: [{% for values in anios.values %}
                 {% for k,v in values.10.items %}
                 {% if k == 'Hortaliza' %}
-                {{v.1|default:'0'|unlocalize}},
+                {{v.1|default:'0'|floatformat:'2'|unlocalize}},
                 {% endif %}
                 {% endfor %}
                 {% endfor %}]
