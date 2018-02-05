@@ -789,7 +789,7 @@ Highcharts.chart('grafico2', {
               },
               series: [{
                 name: 'Margen bruto',
-                data: [{% for k,v in ingresos_cacao.items %}{{v.4|intcomma|default:'0'|floatformat:'2'}},{% endfor %}]
+                data: [{% for k,v in ingresos_cacao.items %}{{v.4|default:'0'|floatformat:'2'}},{% endfor %}]
               }]
             });
             Highcharts.chart('grafico6-cacao', {
