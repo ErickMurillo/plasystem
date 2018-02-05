@@ -1,5 +1,6 @@
 {% extends "productores/base_dashboard.html" %}
 {% load l10n %}
+{% load humanize %}
 
 {% block content %}
 <div class="content">
@@ -57,7 +58,7 @@
                                 <h4 class="panel-title text-muted font-light"><b>Familias</b></h4>
                             </div>
                             <div class="panel-body p-t-10">
-                                <h2 class="m-t-0 m-b-15"><b>{{familias}}</b></h2>
+                                <h2 class="m-t-0 m-b-15"><b>{{familias|intcomma}}</b></h2>
                                 <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
                             </div>
                         </div>
@@ -69,7 +70,7 @@
                                 <h4 class="panel-title text-muted font-light"><b>Hombres</b></h4>
                             </div>
                             <div class="panel-body p-t-10">
-                                <h2 class="m-t-0 m-b-15"><b>{{hombres}}</b></h2>
+                                <h2 class="m-t-0 m-b-15"><b>{{hombres|intcomma}}</b></h2>
                                 <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
                             </div>
                         </div>
@@ -81,7 +82,7 @@
                                 <h4 class="panel-title text-muted font-light"><b>Mujeres</b></h4>
                             </div>
                             <div class="panel-body p-t-10">
-                                <h2 class="m-t-0 m-b-15"><b>{{mujeres}}</b></h2>
+                                <h2 class="m-t-0 m-b-15"><b>{{mujeres|intcomma}}</b></h2>
                                 <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
                             </div>
                         </div>
@@ -93,7 +94,7 @@
                                 <h4 class="panel-title text-muted font-light"><b>Menores de 35</b></h4>
                             </div>
                             <div class="panel-body p-t-10">
-                                <h2 class="m-t-0 m-b-15"><b>{{menores_35}}</b></h2>
+                                <h2 class="m-t-0 m-b-15"><b>{{menores_35|intcomma}}</b></h2>
                                 <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
                             </div>
                         </div>
@@ -105,7 +106,7 @@
                                 <h4 class="panel-title text-muted font-light"><b>Hectareas</b></h4>
                             </div>
                             <div class="panel-body p-t-10">
-                                <h2 class="m-t-0 m-b-15"><b>{{hectareas}}</b></h2>
+                                <h2 class="m-t-0 m-b-15"><b>{{hectareas|floatformat:"2"}}</b></h2>
                                 <p class="text-muted m-b-0 m-t-20"><b>Promedio</b></p>
                             </div>
                         </div>
@@ -117,7 +118,7 @@
                                 <h4 class="panel-title text-muted font-light"><b>Certificación</b></h4>
                             </div>
                             <div class="panel-body p-t-10">
-                                <h2 class="m-t-0 m-b-15"><b>{{certificacion}}</b></h2>
+                                <h2 class="m-t-0 m-b-15"><b>{{certificacion|intcomma}}</b></h2>
                                 <p class="text-muted m-b-0 m-t-20"><b>Productores</b></p>
                             </div>
                         </div>
@@ -403,13 +404,13 @@ Highcharts.chart('grafico1', {
   },
   series: [{
     name: 'Café',
-    data: [{% for v in anios.values %}{{v.0|floatformat:'2'|default:'0'}},{% endfor %}]
+    data: [{% for v in anios.values %}{{v.0|intcomma|floatformat:'2'|default:'0'}},{% endfor %}]
   }, {
     name: 'Cacao',
-    data: [{% for v in anios.values %}{{v.1|floatformat:'2'|default:'0'}},{% endfor %}]
+    data: [{% for v in anios.values %}{{v.1|intcomma|floatformat:'2'|default:'0'}},{% endfor %}]
   }, {
     name: 'Hortalizas',
-    data: [{% for v in anios.values %}{{v.2|floatformat:'2'|default:'0'}},{% endfor %}]
+    data: [{% for v in anios.values %}{{v.2|intcomma|floatformat:'2'|default:'0'}},{% endfor %}]
   }]
 });
 Highcharts.chart('grafico2', {
@@ -453,7 +454,7 @@ Highcharts.chart('grafico2', {
     data: [{% for values in anios.values %}
       {% for k,v in values.10.items %}
       {% if k == 'Café' %}
-      {{v.0|default:'0'|unlocalize}},
+      {{v.0|default:'0'|unlocalize|intcomma|floatformat:"2"}},
       {% endif %}
       {% endfor %}
       {% endfor %}]
@@ -462,7 +463,7 @@ Highcharts.chart('grafico2', {
       data: [{% for values in anios.values %}
         {% for k,v in values.10.items %}
         {% if k == 'Café' %}
-        {{v.1|default:'0'|unlocalize}},
+        {{v.1|default:'0'|unlocalize|intcomma|floatformat:"2"}},
         {% endif %}
         {% endfor %}
         {% endfor %}]
@@ -699,7 +700,7 @@ Highcharts.chart('grafico2', {
               },
               series: [{
                 name: 'Margen bruto',
-                data: [{% for k,v in ingresos_cafe.items %}{{v.4|default:'0'|floatformat:'2'}},{% endfor %}]
+                data: [{% for k,v in ingresos_cafe.items %}{{v.4|intcomma|default:'0'|floatformat:'2'}},{% endfor %}]
               }]
             });
             Highcharts.chart('grafico6-cafe', {
@@ -724,12 +725,12 @@ Highcharts.chart('grafico2', {
               },
               series: [{
                 name: 'Ingreso promedio del productor',
-                data: [{% for k,v in ingresos_cafe.items %}{{v.0|default:'0'|floatformat:'2'}},{% endfor %}],
+                data: [{% for k,v in ingresos_cafe.items %}{{v.0|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
                 color: '#f7a35c'
               },
               {
                 name: 'Ingreso promedio nacional',
-                data: [{% for k,v in ingresos_cafe.items %}{{v.1|default:'0'|floatformat:'2'}},{% endfor %}],
+                data: [{% for k,v in ingresos_cafe.items %}{{v.1|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
                 color: '#050f2c'
               },
             ]
@@ -756,11 +757,11 @@ Highcharts.chart('grafico2', {
             },
             series: [{
               name: 'Costos promedio del productor',
-              data: [{% for k,v in ingresos_cafe.items %}{{v.2|default:'0'|floatformat:'2'}},{% endfor %}],
+              data: [{% for k,v in ingresos_cafe.items %}{{v.2|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
               color: '#90ed7d'
             },{
               name: 'Costos promedio nacional',
-              data: [{% for k,v in ingresos_cafe.items %}{{v.3|default:'0'|floatformat:'2'}},{% endfor %}],
+              data: [{% for k,v in ingresos_cafe.items %}{{v.3|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
               color: '#050f2c'
             }]
           });
@@ -788,7 +789,7 @@ Highcharts.chart('grafico2', {
               },
               series: [{
                 name: 'Margen bruto',
-                data: [{% for k,v in ingresos_cacao.items %}{{v.4|default:'0'|floatformat:'2'}},{% endfor %}]
+                data: [{% for k,v in ingresos_cacao.items %}{{v.4|intcomma|default:'0'|floatformat:'2'}},{% endfor %}]
               }]
             });
             Highcharts.chart('grafico6-cacao', {
@@ -813,12 +814,12 @@ Highcharts.chart('grafico2', {
               },
               series: [{
                 name: 'Ingreso promedio del productor',
-                data: [{% for k,v in ingresos_cacao.items %}{{v.0|default:'0'|floatformat:'2'}},{% endfor %}],
+                data: [{% for k,v in ingresos_cacao.items %}{{v.0|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
                 color: '#f7a35c'
               },
               {
                 name: 'Ingreso promedio nacional',
-                data: [{% for k,v in ingresos_cacao.items %}{{v.1|default:'0'|floatformat:'2'}},{% endfor %}],
+                data: [{% for k,v in ingresos_cacao.items %}{{v.1|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
                 color: '#050f2c'
               },
             ]
@@ -845,11 +846,11 @@ Highcharts.chart('grafico2', {
             },
             series: [{
               name: 'Costos promedio del productor',
-              data: [{% for k,v in ingresos_cacao.items %}{{v.2|default:'0'|floatformat:'2'}},{% endfor %}],
+              data: [{% for k,v in ingresos_cacao.items %}{{v.2|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
               color: '#90ed7d'
             },{
               name: 'Costos promedio nacional',
-              data: [{% for k,v in ingresos_cacao.items %}{{v.3|default:'0'|floatformat:'2'}},{% endfor %}],
+              data: [{% for k,v in ingresos_cacao.items %}{{v.3|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
               color: '#050f2c'
             }]
           });
@@ -877,7 +878,7 @@ Highcharts.chart('grafico2', {
               },
               series: [{
                 name: 'Margen bruto',
-                data: [{% for k,v in ingresos_hostalizas.items %}{{v.4|default:'0'|floatformat:'2'}},{% endfor %}]
+                data: [{% for k,v in ingresos_hostalizas.items %}{{v.4|intcomma|default:'0'|floatformat:'2'}},{% endfor %}]
               }]
             });
             Highcharts.chart('grafico6-horta', {
@@ -902,12 +903,12 @@ Highcharts.chart('grafico2', {
               },
               series: [{
                 name: 'Ingreso promedio del productor',
-                data: [{% for k,v in ingresos_hostalizas.items %}{{v.0|default:'0'|floatformat:'2'}},{% endfor %}],
+                data: [{% for k,v in ingresos_hostalizas.items %}{{v.0|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
                 color: '#f7a35c'
               },
               {
                 name: 'Ingreso promedio nacional',
-                data: [{% for k,v in ingresos_hostalizas.items %}{{v.1|default:'0'|floatformat:'2'}},{% endfor %}],
+                data: [{% for k,v in ingresos_hostalizas.items %}{{v.1|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
                 color: '#050f2c'
               },
             ]
@@ -934,11 +935,11 @@ Highcharts.chart('grafico2', {
             },
             series: [{
               name: 'Costos promedio del productor',
-              data: [{% for k,v in ingresos_hostalizas.items %}{{v.2|default:'0'|floatformat:'2'}},{% endfor %}],
+              data: [{% for k,v in ingresos_hostalizas.items %}{{v.2|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
               color: '#90ed7d'
             },{
               name: 'Costos promedio nacional',
-              data: [{% for k,v in ingresos_hostalizas.items %}{{v.3|default:'0'|floatformat:'2'}},{% endfor %}],
+              data: [{% for k,v in ingresos_hostalizas.items %}{{v.3|intcomma|default:'0'|floatformat:'2'}},{% endfor %}],
               color: '#050f2c'
             }]
           });

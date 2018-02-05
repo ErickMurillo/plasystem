@@ -1,4 +1,5 @@
 {% extends "productores/base_dashboard.html" %}
+{% load humanize %}
 
 {% block content %}
 <div class="content">
@@ -66,7 +67,7 @@
                                 <h4 class="panel-title text-muted font-light"><b>Familias</b></h4>
                             </div>
                             <div class="panel-body p-t-10">
-                                <h2 class="m-t-0 m-b-15"><b>{{familias}}</b></h2>
+                                <h2 class="m-t-0 m-b-15"><b>{{familias|intcomma}}</b></h2>
                                 <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
                             </div>
                         </div>
@@ -78,7 +79,7 @@
                                 <h4 class="panel-title text-muted font-light"><b>Hombres</b></h4>
                             </div>
                             <div class="panel-body p-t-10">
-                                <h2 class="m-t-0 m-b-15"><b>{{hombres}}</b></h2>
+                                <h2 class="m-t-0 m-b-15"><b>{{hombres|intcomma}}</b></h2>
                                 <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
                             </div>
                         </div>
@@ -90,7 +91,7 @@
                                 <h4 class="panel-title text-muted font-light"><b>Mujeres</b></h4>
                             </div>
                             <div class="panel-body p-t-10">
-                                <h2 class="m-t-0 m-b-15"><b>{{mujeres}}</b></h2>
+                                <h2 class="m-t-0 m-b-15"><b>{{mujeres|intcomma}}</b></h2>
                                 <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
                             </div>
                         </div>
@@ -102,7 +103,7 @@
                                 <h4 class="panel-title text-muted font-light"><b>Menores de 35</b></h4>
                             </div>
                             <div class="panel-body p-t-10">
-                                <h2 class="m-t-0 m-b-15"><b>{{menores_35}}</b></h2>
+                                <h2 class="m-t-0 m-b-15"><b>{{menores_35|intcomma}}</b></h2>
                                 <p class="text-muted m-b-0 m-t-20"><b>Total</b></p>
                             </div>
                         </div>
@@ -114,7 +115,7 @@
                                 <h4 class="panel-title text-muted font-light"><b>Hectareas</b></h4>
                             </div>
                             <div class="panel-body p-t-10">
-                                <h2 class="m-t-0 m-b-15"><b>{{hectareas}}</b></h2>
+                                <h2 class="m-t-0 m-b-15"><b>{{hectareas|intcomma|floatformat:"2"}}</b></h2>
                                 <p class="text-muted m-b-0 m-t-20"><b>Promedio</b></p>
                             </div>
                         </div>
@@ -126,7 +127,7 @@
                                 <h4 class="panel-title text-muted font-light"><b>Certificación</b></h4>
                             </div>
                             <div class="panel-body p-t-10">
-                                <h2 class="m-t-0 m-b-15"><b>{{certificacion}}</b></h2>
+                                <h2 class="m-t-0 m-b-15"><b>{{certificacion|intcomma}}</b></h2>
                                 <p class="text-muted m-b-0 m-t-20"><b>Productores</b></p>
                             </div>
                         </div>
@@ -169,29 +170,29 @@
                       <tbody id="tbody-sparkline">
                         <tr>
                           <th>Café</th>
-                          <td>{{values.28|default:'0'|floatformat:'2'}}</td>
+                          <td>{{values.28|intcomma|default:'0'|floatformat:'2'}}</td>
                           <!-- <td data-sparkline="71, 78, 39, 66 "/> -->
-                          <td>{{values.16|default:'0'|floatformat:'2'}}</td>
+                          <td>{{values.16|intcomma|default:'0'|floatformat:'2'}}</td>
                           <!-- <td data-sparkline="68, 52, 80, 96 "/> -->
-                          <td>{{values.14|default:'0'|floatformat:'2'}}</td>
+                          <td>{{values.14|intcomma|default:'0'|floatformat:'2'}}</td>
                           <!-- <td data-sparkline="3, 26, -41, -30 ; column"/> -->
                         </tr>
                         <tr>
                           <th>Cacao</th>
-                          <td>{{values.29|default:'0'|floatformat:'2'}}</td>
+                          <td>{{values.29|intcomma|default:'0'|floatformat:'2'}}</td>
                           <!-- <td data-sparkline="71, 78, 39, 66 "/> -->
-                          <td>{{values.19|default:'0'|floatformat:'2'}}</td>
+                          <td>{{values.19|intcomma|default:'0'|floatformat:'2'}}</td>
                           <!-- <td data-sparkline="68, 52, 80, 96 "/> -->
-                          <td>{{values.17|default:'0'|floatformat:'2'}}</td>
+                          <td>{{values.17|intcomma|default:'0'|floatformat:'2'}}</td>
                           <!-- <td data-sparkline="3, 26, -41, -30 ; column"/> -->
                         </tr>
                         <tr>
                           <th>Hortalizas</th>
-                          <td>{{values.30|default:'0'|floatformat:'2'}}</td>
+                          <td>{{values.30|intcomma|default:'0'|floatformat:'2'}}</td>
                           <!-- <td data-sparkline="71, 78, 39, 66 "/> -->
-                          <td>{{values.22|default:'0'|floatformat:'2'}}</td>
+                          <td>{{values.22|intcomma|default:'0'|floatformat:'2'}}</td>
                           <!-- <td data-sparkline="68, 52, 80, 96 "/> -->
-                          <td>{{values.20|default:'0'|floatformat:'2'}}</td>
+                          <td>{{values.20|intcomma|default:'0'|floatformat:'2'}}</td>
                           <!-- <td data-sparkline="3, 26, -41, -30 ; column"/> -->
                         </tr>
                       </tbody>
@@ -1069,22 +1070,22 @@ borderWidth: 0
 series: [{
 name: 'Vol. de producción',
 color: 'rgba(165,170,217,1)',
-data: [{{values.2|floatformat:'2'|default:'0'}},{{values.6|floatformat:'2'|default:'0'}},
-{{values.10|floatformat:'2'|default:'0'}},],
+data: [{{values.2|intcomma|floatformat:'2'|default:'0'}},{{values.6|intcomma|floatformat:'2'|default:'0'}},
+{{values.10|intcomma|floatformat:'2'|default:'0'}},],
 pointPadding: 0.3,
 pointPlacement: -0.2
 }, {
 name: 'Rendimientos',
 color: 'rgba(126,86,134,.9)',
-data: [{{values.3|floatformat:'2'|default:'0'}},{{values.7|floatformat:'2'|default:'0'}},
-{{values.11|floatformat:'2'|default:'0'}},],
+data: [{{values.3|intcomma|floatformat:'2'|default:'0'}},{{values.7|intcomma|floatformat:'2'|default:'0'}},
+{{values.11|intcomma|floatformat:'2'|default:'0'}},],
 pointPadding: 0.4,
 pointPlacement: -0.2
 }, {
 name: 'Área cosechada',
 color: 'rgba(248,161,63,1)',
-data: [{{values.4|floatformat:'2'|default:'0'}},{{values.8|floatformat:'2'|default:'0'}},
-{{values.12|floatformat:'2'|default:'0'}},],
+data: [{{values.4|intcomma|floatformat:'2'|default:'0'}},{{values.8|intcomma|floatformat:'2'|default:'0'}},
+{{values.12|intcomma|floatformat:'2'|default:'0'}},],
 tooltip: {
 valueSuffix: ' ha'
 },
@@ -1094,8 +1095,8 @@ yAxis: 1
 }, {
 name: 'Área sembrada',
 color: 'rgba(186,60,61,.9)',
-data: [{{values.5|floatformat:'2'|default:'0'}},{{values.9|floatformat:'2'|default:'0'}},
-{{values.13|floatformat:'2'|default:'0'}},],
+data: [{{values.5|intcomma|floatformat:'2'|default:'0'}},{{values.9|intcomma|floatformat:'2'|default:'0'}},
+{{values.13|intcomma|floatformat:'2'|default:'0'}},],
 tooltip: {
 valueSuffix: ' ha'
 },
@@ -1129,7 +1130,7 @@ pointStart: {{anios.keys.0}}
 },
 series: [{
 name: 'Ingresos',
-data: [{% for k,v in anios.items %}{{v.14|default:'0'}},{% endfor %}],
+data: [{% for k,v in anios.items %}{{v.14|intcomma|floatformat:'2'|default:'0'}},{% endfor %}],
 color: '#90ed7d'
 }]
 });
@@ -1156,7 +1157,7 @@ pointStart: {{anios.keys.0}}
 },
 series: [{
 name: 'Hectáreas',
-data: [{% for k,v in anios.items %}{{v.15|default:'0'}},{% endfor %}],
+data: [{% for k,v in anios.items %}{{v.15|intcomma|floatformat:'2'|default:'0'}},{% endfor %}],
 color: '#050f2c'
 }]
 });
@@ -1183,7 +1184,7 @@ pointStart: {{anios.keys.0}}
 },
 series: [{
 name: 'Precio',
-data: [{% for k,v in anios.items %}{{v.16|default:'0'}},{% endfor %}],
+data: [{% for k,v in anios.items %}{{v.16|intcomma|floatformat:'2'|default:'0'}},{% endfor %}],
 color: '#f7a35c'
 }]
 });
@@ -1210,7 +1211,7 @@ pointStart: {{anios.keys.0}}
 },
 series: [{
 name: 'Ingresos',
-data: [{% for k,v in anios.items %}{{v.17|default:'0'}},{% endfor %}],
+data: [{% for k,v in anios.items %}{{v.17|intcomma|floatformat:'2'|default:'0'}},{% endfor %}],
 color: '#90ed7d'
 }]
 });
@@ -1237,7 +1238,7 @@ pointStart: {{anios.keys.0}}
 },
 series: [{
 name: 'Hectáreas',
-data: [{% for k,v in anios.items %}{{v.18|default:'0'}},{% endfor %}],
+data: [{% for k,v in anios.items %}{{v.18|intcomma|floatformat:'2'|default:'0'}},{% endfor %}],
 color: '#050f2c'
 }]
 });
@@ -1264,7 +1265,7 @@ pointStart: {{anios.keys.0}}
 },
 series: [{
 name: 'Precio',
-data: [{% for k,v in anios.items %}{{v.19|default:'0'}},{% endfor %}],
+data: [{% for k,v in anios.items %}{{v.19|intcomma|floatformat:'2'|default:'0'}},{% endfor %}],
 color: '#f7a35c'
 }]
 });
@@ -1291,7 +1292,7 @@ pointStart: {{anios.keys.0}}
 },
 series: [{
 name: 'Ingresos',
-data: [{% for k,v in anios.items %}{{v.20|default:'0'}},{% endfor %}],
+data: [{% for k,v in anios.items %}{{v.20|intcomma|floatformat:'2'|default:'0'}},{% endfor %}],
 color: '#90ed7d'
 }]
 });
@@ -1318,7 +1319,7 @@ pointStart: {{anios.keys.0}}
 },
 series: [{
 name: 'Hectáreas',
-data: [{% for k,v in anios.items %}{{v.21|default:'0'}},{% endfor %}],
+data: [{% for k,v in anios.items %}{{v.21|intcomma|floatformat:'2'|default:'0'}},{% endfor %}],
 color: '#050f2c'
 }]
 });
@@ -1345,7 +1346,7 @@ pointStart: {{anios.keys.0}}
 },
 series: [{
 name: 'Precio',
-data: [{% for k,v in anios.items %}{{v.22|default:'0'}},{% endfor %}],
+data: [{% for k,v in anios.items %}{{v.22|intcomma|floatformat:'2'|default:'0'}},{% endfor %}],
 color: '#f7a35c'
 }]
 });
@@ -1371,21 +1372,21 @@ series: [
 {
 name: 'Café',
 data: [{% for values in anios.values %}
-{{values.4|default:'0'}},
+{{values.4|intcomma|floatformat:'2'|default:'0'}},
 {% endfor %}]
 },
 
 {
 name: 'Cacao',
 data: [{% for values in anios.values %}
-{{values.8|default:'0'}},
+{{values.8|intcomma|floatformat:'2'|default:'0'}},
 {% endfor %}]
 },
 
 {
 name: 'Hortalizas',
 data: [{% for values in anios.values %}
-{{values.12|default:'0'}},
+{{values.12|intcomma|floatformat:'2'|default:'0'}},
 {% endfor %}]
 },
 
